@@ -1,0 +1,119 @@
+<!--{ ? data.list}-->
+<!--{ @ data.list}-->
+<div class="article js-pr-row" data-sno="{.sno}">
+    <div class="summary">
+        <div><a href="../goods/goods_view.php?goodsNo={=.goodsNo}" target="_blank"><img src="{.goodsImageSrc}" class="image"></a></div>
+    </div>
+    <div class="content-container">
+        <div class="content">
+            <div class="goods-name">
+                <div class="title <!--{ ? .isNew == 'y'}-->new<!--{/}-->">{=.goodsNm}</div>
+                <div class="star"><!--{ @range(1,.goodsPt) }-->★<!--{/}--></div>
+            </div>
+            <div class="writer">
+                <div class="date">{=.regDate}</div>
+                <div>{=.writer}</div>
+            </div>
+            <div class="clear-both"></div>
+        </div>
+        <!--{ ? .addFormData || .option}-->
+        <div class="goods-info">
+            <!--{@ .addFormData}-->
+            <div class="item">
+                <div class="title">{..key_}</div>
+                <div class="content-container">{..value_}</div>
+                <div class="clear-both"></div>
+            </div>
+            <!--{/}-->
+            <!--{ @ .option}-->
+            <div class="item">
+                <div class="title">{..name}</div>
+                <div class="content-container">{..value}</div>
+                <div class="clear-both"></div>
+            </div>
+            <!--{/}-->
+        </div>
+        <!--{/}-->
+        <div class="text-container js-pr-contents-short">{=.listContents}
+            <!--{? .isMore == 'y'}-->
+
+            <span class="more"><a href="javascript:void(0)" class="js-pr-btn-contents-more" data-type="open">더보기</a></span><!--{/}--></div>
+
+        <div class="text-container js-pr-contents-desc" style="display:none">{=.viewContents}
+            <!--{? .isMore == 'y'}--><span class="more"><a href="javascript:void(0)" class="js-pr-btn-contents-more" data-type="close">닫기</a></span><!--{/}--></div>
+
+        <div class="clear-both"></div>
+        <div class="filelist">
+            <!--{@.uploadedFile}-->
+            <div style="display:inline-block;position:relative">
+                <img src="{=..thumSquareSrc}" class="file js-pr-thum-img js-pr-btn-image" data-sno="{.sno}">
+                <img src="{=..src}" class="js-pr-zoom-img" style="position:absolute;display:none;left:0px;top:55px;z-index:6000;max-width:600px">
+            </div>
+            <!--{/}-->
+        </div>
+        <div class="bottom-container">
+            <!--{ ? plusReviewConfig.memoFl == 'y'}-->
+            <a href="javascript:void(0)" class="js-pr-btn-comment">
+                <span class="reply-count"><span class="js-pr-comment-cnt">{=.memoCnt}</span>개</span><span class="reply-info">의 댓글이 있습니다.</span>
+            </a>
+            <!--{/}-->
+            <!--{ ? plusReviewConfig.recommendFl == 'y'}-->
+            <span class="like">추천: <span class="js-pr-recommend-cnt">{=.recommend}</span></span>
+            <span><button type="button" class="like-button js-pr-btn-recommend">{=__('추천하기')}</button></span>
+            <!--{/}-->
+            <!--{ ? .auth.report != 'n'}-->
+            <span class="report">
+                <a href="javascript:void(0)"; class="js_btn_report" data-bdsno="{=.sno}" data-bdid="plusReview" data-goodsno="{=.goodsNo}">{=__('신고')}</a>
+            </span>
+            <!--{/}-->
+        </div>
+        <div class="clear-both"></div>
+        <div class="memo-area js-pr-comment" style="display:none">
+            <div class="js-pr-comment-list"></div>
+            <!--{ ? .auth.canWriteMemo == 'y'}-->
+            <form>
+                <input type="hidden" name="mode" value="addMemo">
+                <input type="hidden" name="goodsNo" value="{=.goodsNo}">
+                <div class="reply">
+                    <!--{ ? gd_is_login() }-->
+                    <div class="memo-text-login"><textarea name="memo"></textarea></div>
+                    <!--{:}-->
+                    <div class="memo-name-logout"><input type="text" name="writerNm" placeholder="{=__('이름')}" value=""/></div>
+                    <div class="memo-password-logout"><input type="password" name="writerPw" placeholder="{=__('비밀번호')}"></div>
+                    <div class="memo-text-logout"><textarea name="memo"></textarea></div>
+                    <!--{/}-->
+                    <div class="memo-button">
+                        <button type="button" class="reply-btn js-pr-btn-comment-save">{=__('확인')}</button>
+                    </div>
+                    <div class="clear-both"></div>
+                </div>
+                <!--{ ? gd_is_login() === false }-->
+                <div class="reply-agree">
+                    <input type="checkbox" name="agreeFl" value="y" name="checkCollectAgree require" class="checkbox" id="info-collection-agree-write_{.sno}">
+                    <label for="info-collection-agree-write_{.sno}">{=__('(비회원) 개인정보 수집항목 동의')}</label>
+                    <div class="agreement">
+							<textarea cols="30" rows="5" class="w100">{=__('- 수집항목: 이름, 전화번호, 이메일주소')}
+{=__('- 수집/이용목적: 게시글 접수 및 결과 회신')}
+{=__('- 이용기간: 원칙적으로 개인정보 수집 및 이용목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다.
+               단, 관계법령의 규정에 의하여 보전할 필요가 있는 경우 일정기간 동안 개인정보를 보관할 수 있습니다.
+그 밖의 사항은 (주) 000 개인정보처리방침을 준수합니다.')}</textarea>
+                    </div>
+                </div>
+                <!--{/}-->
+            </form>
+            <!--{:}-->
+            <div class="reply">
+                {=__('댓글작성 권한이 없습니다.')}
+            </div>
+            <!--{/}-->
+        </div>
+    </div>
+    <div class="clear-both"></div>
+</div>
+<!--{/}-->
+
+<!--{:}-->
+<div class="no_data">
+    작성된 리뷰가 없습니다.
+</div>
+<!--{/}-->

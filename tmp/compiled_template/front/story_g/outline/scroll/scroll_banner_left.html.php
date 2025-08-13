@@ -1,0 +1,3 @@
+<?php /* Template_ 2.2.7 2025/07/30 05:47:24 /www/newmanjoo14_godomall_com/data/skin/front/story_g/outline/scroll/scroll_banner_left.html 000000481 */  $this->include_("dataBanner");?>
+<strong class="dn"><?php echo __('광고')?></strong>
+<?php if((is_array($TPL_R1=databanner('1767393022'))&&!empty($TPL_R1)) || (is_object($TPL_R1) && in_array("Countable", class_implements($TPL_R1)) && $TPL_R1->count() > 0)) {foreach($TPL_R1 as $TPL_V1){?><?php echo $TPL_V1["tag"]?><?php }}?>

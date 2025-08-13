@@ -1,0 +1,37 @@
+{*** 측면 기본타입 | main/index.php ***}
+
+<div class="h1_logo"><a href="/"><!--{ @dataBanner('2342210654') }-->{.tag}<!--{ / }--></a></div>
+
+<div class="header_gnb">
+    <div class="gnb">
+
+        <!-- 전체 카테고리 출력 레이어 시작 -->
+        {=includeWidget("proc/category_all.html")}
+        <!-- 전체 카테고리 출력 레이어 끝 -->
+
+        <!-- 사이드 카테고리 출력 시작 -->
+        {=includeWidget('proc/category_side', 'type', 'layer','cateType','cate','menuType','all')}
+        <!-- 사이드 카테고리 출력 끝 -->
+
+    </div>
+    <!-- //gnb -->
+
+
+	<!-- 스크롤 게시글 시작 -->
+	{=includeWidget('board/board_article_scrolling', 'bdId', noticeBdId, 'listCount', 10, 'strCut', 15)}
+	<!-- 스크롤 게시글 끝 -->
+
+
+</div>
+<!-- //header_gnb -->
+<div class="header_search">
+    <div class="header_search_cont">
+
+        <!-- 검색 폼 -->
+        {=includeWidget('proc/_header_search.html')}
+        <!-- 검색 폼 -->
+
+    </div>
+    <!-- //header_search_cont -->
+</div>
+<!-- //header_search -->

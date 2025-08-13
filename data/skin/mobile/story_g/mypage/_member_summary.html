@@ -1,0 +1,52 @@
+{*** [위젯] 마이페이지 요약정보 | mypage/_member_summary.php ***}
+<!--{ ? checkLogin != 'guest' }-->
+<!-- gd5 마이페이지 20151029 -->
+<!-- 등급 혜택 -->
+<div class="section mypage-summary clear">
+    <!--{ ? gMemberInfo.groupImageGb != 'none' }-->
+    <div class="grade-icon">
+        <!-- 이미지 교체로 등급 이미지 변경 width, height 75px로 고정.-->
+        <img src="{=gd_get_group_image_http_path(gMember.groupSno)}" alt="">
+    </div>
+    <!--{ / }-->
+    <div class="benefit-summary">
+        <p class="text">{=__('%s님의 회원등급은 %s입니다.', gMember.memNm, '<br><span class="grade-font">' + gMemberInfo.groupNmWithLabel + '</span>')}</p>
+    </div>
+</div>
+<!-- 정보 요약 -->
+<div class="section mypage-point-summary">
+    <div class="inner">
+        <!--{? gd_use_coupon()}-->
+        <a href="../mypage/coupon.php" class="point-item">
+            <img src="../img/icon/icon-coupon-red.png" alt="" class="icon-coupon-red">
+            <!-- <span class="sprite-icon icon-coupon2"></span> -->
+
+            <p class="point-name">{=__('보유쿠폰')}</p>
+            <div class="point-val">
+                <span class="point num">{=gd_money_format(myCouponCount)}</span> 장
+            </div>
+        </a>
+        <!--{/}-->
+        <!--{? gd_use_deposit()}-->
+        <a href="../mypage/deposit.php" class="point-item">
+            <img src="../img/icon/icon-wallet-red.png" alt="" class="icon-wallet-red">
+            <!-- <span class="sprite-icon icon-wallet2"></span> -->
+            <p class="point-name">{=gd_display_deposit('name')}</p>
+            <div class="point-val">
+                <span class="point num">{=gd_money_format(gMemberInfo.deposit)}</span> {=gd_display_deposit('unit')}
+            </div>
+        </a>
+        <!--{/}-->
+        <!--{? gd_use_mileage()}-->
+        <a href="../mypage/mileage.php" class="point-item">
+            <img src="../img/icon/icon-coin-red.png" alt="" class="icon-coin-red">
+            <!-- <span class="sprite-icon icon-coin2"></span> -->
+            <p class="point-name">{=gd_display_mileage_name()}</p>
+            <div class="point-val">
+                <span class="point num">{=gd_money_format(gMemberInfo.mileage)}</span> {=gd_display_mileage_unit()}
+            </div>
+        </a>
+        <!--{/}-->
+    </div>
+</div>
+<!--{ / }-->

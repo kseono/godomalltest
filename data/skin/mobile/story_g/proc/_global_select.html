@@ -1,0 +1,145 @@
+{*** [위젯] 해외몰 상점 설정 | proc/_global_select.html ***}
+
+<!--{ ? mallCnt > 1}-->
+<li class="mall-nav">{=__('상점 설정')}</li>
+<li class="mall-select">
+    <!--{ ? iconType == 'check' }-->
+    <!--{ @ mallList }-->
+    <img class="mall hand" data-domain-fl="{.value_.domainFl}" data-domain="{.value_.domain}" src="{=uriCommon}/{=mallIcon[.key_]}" />
+    <!--{ / }-->
+    <!--{ : iconType == 'select_flag' }-->
+    <button type="button" class="bn_opt js-mall-select select_flag"><img src="{=uriCommon}/{=mallIcon[nowMall]}"></button>
+    <div class="optbx" style="display:block;display:none">
+        <div class="scroll select_flag" style="overflow-y:auto;overflow-x:hidden;">
+            <ul>
+                <!--{ @ mallList }-->
+                <li data-domain-fl="{.value_.domainFl}" data-domain="{.value_.domain}">
+                    <img src="{=uriCommon}/{=mallIcon[.key_]}" >
+                </li>
+                <!--{ / }-->
+            </ul>
+        </div>
+    </div>
+    <!--{ : iconType == 'select_language' }-->
+    <button type="button" class="bn_opt js-mall-select"><img src="{=uriCommon}/{=mallIcon[nowMall]}"> {=mallList[nowMall].languageFl}</button>
+    <div class="optbx" style="display:block;display:none">
+        <div class="scroll" style="overflow-y:auto;overflow-x:hidden;">
+            <ul>
+                <!--{ @ mallList }-->
+                <li data-domain-fl="{.value_.domainFl}" data-domain="{.value_.domain}">
+                    <img src="{=uriCommon}/{=mallIcon[.key_]}" > {=.value_.languageFl}
+                </li>
+                <!--{ / }-->
+            </ul>
+        </div>
+    </div>
+    <!--{ / }-->
+</li>
+<style>
+    .global-mall-select>li {
+        position: relative;
+        z-index: 5;
+        display: block;
+        background: #3e3e3e;
+        color: #d4d4d4;
+        border-bottom: 1px solid #252525;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 12px 40px 12px 10px;
+        word-break: break-all;
+    }
+    .global-mall-select .mall-select {
+        background-color: #2a2a2a;
+    }
+    .mall-select .scroll {
+        width:170px;
+        font-size:12px;
+    }
+    button.js-mall-select, .mall-select .scroll li {
+        font-weight:normal;
+        width:170px;
+        text-align:left;
+        padding:5px 3px;
+        color:#121212;
+        background:#fff;
+    }
+    button.select_flag,
+    .mall-select .select_flag,
+    .mall-select .select_flag li {
+        width: 60px;
+    }
+    button.js-mall-select {
+        background:#fff url(../img/etc/select-arrow-down-11x7.png) no-repeat 95% 50%;
+    }
+    button.js-mall-select.selected {
+        background-image: url(../img/etc/select-arrow-up-11x7.png);
+    }
+    .mall-select img {margin-left:10px; border:none;}
+</style>
+<script type="text/javascript">
+    $(function(){
+        $('.mall').click(function(){
+            var url = $(this).data('domain');
+            var lastStr = url.substr(url.length - 1);
+            if (lastStr != '/') {
+                url = url+'/';
+            }
+            switch($(this).data('domain-fl')) {
+                case 'kr':
+                    window.open(url+'main/index.php', "_blank");
+                    break;
+                default:
+                    window.open(url, "_blank");
+                    break;
+            }
+        });
+        $('.mall-select .scroll li').click(function(){
+            var url = $(this).data('domain');
+            var lastStr = url.substr(url.length - 1);
+            if (lastStr != '/') {
+                url = url+'/';
+            }
+            switch($(this).data('domain-fl')) {
+                case 'kr':
+                    window.open(url+'main/index.php', "_blank");
+                    break;
+                default:
+                    window.open(url, "_blank");
+                    break;
+            }
+        });
+        $(".js-mall-select").on('click', function(e){
+            if($(this).next('div').is(':hidden')) {
+
+                $(this).addClass("selected");
+
+                var optbx =  $(this).next('div.optbx');
+                $(optbx).show();
+
+                <!--{ ? type == 'goods' }-->
+                $(".js-option-scroll").height(($(window).height()/2)-140);
+
+                var wrap =  $(this).parent('li.js-singel-option');
+
+                $(wrap).css("position","absolute");
+                $(wrap).css("width","100%");
+                $(wrap).css("top","0");
+                $(wrap).css("z-index","103");
+
+
+                $(optbx).addClass("optbx-select");
+                $(optbx).height($(".js-layer-option").height() -100);
+                $(optbx).find('div.scroll').css("max-height",$(".js-layer-option").height() -120);
+                <!--{ / }-->
+            } else {
+                $(this).removeClass("selected");
+                $(this).next('div.optbx').hide();
+
+                var wrap = $(this).closest("li.js-singel-option");
+                $(wrap).css("position","static");
+
+            }
+        });
+    })
+</script>
+<!--{ / }-->

@@ -1,0 +1,111 @@
+{*** 출석체크 > 댓글 | event/attend_reply.php ***}
+{ # header }
+<div class="attendance-check {? attendData['designBodyFl'] == 'reply2'}black-skin{/}"> <!-- 어두운 배경용 black-skin 클래스 추가  -->
+    <form id="formReply" name="formReply" method="post" action="../event/attendance_ps.php">
+        <input type="hidden" id="sno" name="sno" value="{attendData['sno']}"/>
+        <input type="hidden" id="checkSno" name="checkSno" value="{checkSno}"/>
+        <input type="hidden" id="currentDate" name="currentDate" value="{currentDate}"/>
+        <input type="hidden" id="mode" name="mode" value="{mode}"/>
+        <input type="hidden" id="startDt" name="startDt" value="{attendData['startDt']}"/>
+        <input type="hidden" id="endDt" name="endDt" value="{attendData['endDt']}"/>
+        <div class="top-banner">
+            <!--{? attendData['designHeadFl'] == 'default'}-->
+            <img src="../../../../attendance/etc/banner-attendance-check.png" alt=""/>
+            <!--{:}-->{=gd_htmlspecialchars_stripslashes(attendData['designHead'])}
+            <!--{/}-->
+        </div>
+        <div class="view">
+            <div class="states">
+                <p>{=gd_get_login_name()}{=__('회원님께서는 총')} {?attendData['conditionFl'] == 'sum'}
+                    <strong>{=gd_isset(checkData['attendanceCount'],0)}/{=gd_isset(attendData['conditionCount'],0)}</strong>
+                    {:attendData['conditionFl'] == 'continue'}
+                    <strong>{=gd_isset(attendData['conditionCount'],0)} {=__('회 중 연속')} {=gd_isset(checkData['attendanceCount'],0)}</strong>
+                    {:}
+                    <strong>{=gd_isset(checkData['attendanceCount'],0)}</strong>
+                    {/} {=__('회 출석하셨습니다.')}
+                </p>
+                <span>{attendData['startDt']}~{attendData['endDt']}</span>
+            </div>
+            <div class="table1">
+                <table class="board-list">
+                    <colgroup>
+                        <col width="8%"/>
+                        <col width="12%"/>
+                        <col/>
+                        <col width="18%"/>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>{=__('번호')}</th>
+                        <th>{=__('참여하신 분')}</th>
+                        <th>{=__('내용')}</th>
+                        <th>{=__('등록일')}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--{@commentLists}-->
+                    <tr>
+                        <td class="ta-c">
+                            {.index_ + 1}
+                        </td>
+                        <td class="ta-c">
+                            {.memNm}
+                        </td>
+                        <td class="tit">
+                            {.reply}
+                        </td>
+                        <td class="ta-c">
+                            {.regDt}
+                        </td>
+                    </tr>
+                    <!--{:}-->
+                    <tr>
+                        <td colspan="4">{=__('출석체크 내역이 없습니다.')}</td>
+                    </tr>
+                    <!--{/}-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {=page->getPage()}
+        <div class="comment">
+            <textarea id="reply" name="reply"></textarea>
+            <button type="button" class="skinbtn point2 btn-attendance-check2" id="attendanceCheck">
+                <img src="../img/btn/btn-point2-check2.png" alt=""/> <em>{=__('출석체크')}</em>
+            </button>
+        </div>
+        <div class="admin-msg">
+            {=gd_htmlspecialchars_stripslashes(attendData['designFooter'])}
+        </div>
+    </form>
+</div>
+<hr/>
+<script type="text/javascript">
+    (function ($, window, document, undefined) {
+        var $btnCheck;
+
+        var attendance_check = function () {
+            var params = $('#formReply').serializeArray();
+            $.post('./attendance_ps.php', params, function (data) {
+                console.log(data);
+                if (data.code === undefined && data.message === undefined) {
+                    alert(data);
+                    window.location.href = window.location.pathname + '?sno=' + $('#sno').val();
+                } else {
+                    alert(data.message);
+                    window.location.href = data.url;
+                }
+            });
+        };
+
+        var init = function () {
+            $btnCheck = $('#attendanceCheck');
+
+            $btnCheck.click(attendance_check);
+        };
+        $(document).ready(function () {
+            init();
+        });
+    })($, window, document);
+</script>
+{ # footer }

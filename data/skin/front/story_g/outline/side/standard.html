@@ -1,0 +1,17 @@
+{*** 측면 기본타입 | main/index.php ***}
+<!--
+    == 스킨수정 안내 ==
+    아래 includeFile 함수내 파일경로에 따라 카테고리 출력 메뉴 방식을 변경하실 수 있습니다.
+
+    ==== 카테고리 트리형으로 변경 ====
+    {***=includeWidget("proc/category_side.html", 'type', 'tree')***}
+
+    ==== 카테고리 레이어형으로 변경 ====
+    {***=includeWidget("proc/category_side.html", 'type', 'layer')***}
+-->
+<div class="lnb">
+    <!-- 사이드 카테고리 시작 -->
+    <h2 class="dn">{=__('사이드 카테고리')}</h2>
+    {=includeWidget('proc/category_side', 'type', 'layer','cateType','cate','menuType','all')}
+    <!-- 사이드 카테고리 끝 -->
+</div>

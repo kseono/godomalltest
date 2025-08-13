@@ -1,0 +1,179 @@
+{*** 상세보기 | view.php ***}
+<!--{?bdView.cfg.bdHeader}-->
+<div class="admin-wrap">
+    <p>{=bdView.cfg.bdHeader}</p>
+</div>
+<!--{/}-->
+<div class="section">
+    <div class="section-header">
+        <h2 class="h2">{=bdView.cfg.bdNm}</h2>
+
+        <div class="option type1">
+            <!--{? bdView.cfg.auth.write == 'y'}-->
+            <a class="skinbtn base2 contactus-write" href="javascript:btnWrite('{req.bdId}')"><em>1:1 {=__('문의하기')}</em></a>
+            <!--{/}-->
+        </div>
+    </div>
+</div>
+<div class="section top-date top-qa">
+    <div class="section-body">
+        <div class="board-view">
+            <div class="board-view-head">
+                <div class="board-view-title">
+                    <h3>
+                        <!--{ ? bdView.cfg.bdCategoryFl == 'y' && bdView.data.category}-->
+                        [{bdView.data.category}]
+                        <!--{/}-->
+                        {bdView.data.subject}
+                    </h3>
+                    <strong class="c-red">[{bdView.data.replyStatusText}]</strong>
+                </div>
+                <div class="board-view-info">
+                    <div class="author">
+                            <span class="text1"><strong>{bdView.data.writer}</strong>
+                                <!--{? bdView.cfg.bdIpFl == 'y'}--><span class="fz11 c-gray">(IP: {bdView.data.writerIp})</span> <!--{ / }-->
+                            </span>
+                        <span class="divide-bar">&nbsp;</span>
+                        <span class="text2">{bdView.data.regDate}</span>
+                    </div>
+                </div>
+                <!--{? bdView.data.isFile == 'y'}-->
+                <div class="board-view-info">
+                    <img src="img/etc/icon-clip.png" alt="" class="va-m"/>
+                    <strong>{=__('첨부파일')}</strong>
+                    <!--{ @ bdView.data.uploadedFile}-->
+                    <a href="./download.php?bdId={=bdView.cfg.bdId}&sno={req.sno}&fid={=.fid}" class="filename fz11">{.name}</a>&nbsp;&nbsp;
+                    <!--{/}-->
+                </div>
+                <!--{/}-->
+            </div>
+            <!--{? bdView.cfg.bdLinkFl == 'y' && bdView.data.urlLink}-->
+            <div class="board-view-head">
+                <div class="board-view-info">
+                    Link&nbsp;:&nbsp;<a href="{=gd_isset(bdView.data.urlLink)}" target="_blank">{=bdView.data.urlLink}</a>
+                </div>
+            </div>
+            <!--{/}-->
+            <div class="board-view-body">
+                <!--상품.주문연동-->
+                <!--{? bdView.data.isViewGoodsInfo == 'y' }-->
+                <div class="itemorder-wrap select-goods">
+                    <div class="itemorder-head">
+                        <a href="../goods/goods_view.php?goodsNo={bdView.data.goodsNo}" target="_blank">
+                            <img src="{bdView.data.goodsData.goodsImageSrc}" >
+                        </a>
+                    </div>
+                    <div class="itemorder-body">
+                        <div class="itemorder-name">
+                            {bdView.data.goodsData.goodsNm}
+                        </div>
+                        <div class="itemorder-info-wrap">
+                            <div class="itemorder-result">
+                                <div class="result-wrap">
+                                    <b class="result-title">{=__('판매금액')}</b>
+                                    <b class="result-val"><!--{? bdView.data.goodsData.goodsPriceString}-->
+                                        {=bdView.data.goodsData.goodsPriceString}
+                                        <!--{:}-->
+                                        {=gd_global_currency_symbol()}{=gd_global_money_format(bdView.data.goodsData.goodsPrice)}{=gd_global_currency_string()}
+                                        <!--{/}--></b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--{/}-->
+
+                <!--{? bdView.data.isViewOrderInfo == 'y'}-->
+                <!--{@ bdView.data.extraData.arrOrderGoodsData}-->
+                <div class="itemorder-wrap select-order">
+                    <div class="itemorder-head">
+                        <a href="../goods/goods_view.php?goodsNo={.goodsNo}" target="_blank">
+                            <img src="{.goodsImageSrc}" >
+                        </a>
+                    </div>
+                    <div class="itemorder-body">
+                        <div class="itemorder-name">
+                            {.goodsNm}
+                        </div>
+                        <div class="itemorder-info-wrap">
+                            <div class="itemorder-options">
+                                {.optionName}
+                            </div>
+                        </div>
+                        <div class="itemorder-result">
+                            <div class="result-wrap">
+                                <b class="result-title">{=__('판매금액')}</b>
+                                <b class="result-val">{=gd_currency_display(.totalGoodsPrice)}</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--{/}-->
+                <!--{/}-->
+                <!--상품.주문연동-->
+                <div class="question">
+                    <div class="q">
+                        <strong class="item">Q.</strong>
+
+                        <div>
+                            {bdView.data.workedContents}
+                        </div>
+                    </div>
+                    <!--{ ? bdView.cfg.bdReplyStatusFl == 'y' && bdView.data.replyStatus>1 && bdView.data.workedAnswerContents}-->
+                    <div class="a">
+                        <strong class="item">A.</strong>
+
+                        <div>
+                            <div class="info">
+                                <strong>{bdView.data.answerSubject}</strong>
+
+                                <div>
+                                    <strong>{bdView.data.answerManagerNm}</strong>
+                                    <span>{bdView.data.answerModDt}</span>
+                                </div>
+                            </div>
+                            {bdView.data.workedAnswerContents}
+                        </div>
+                    </div>
+                    <!--{/}-->
+                </div>
+            </div>
+        </div>
+        <div class="ta-r m2 board-ctrl-btn">
+            <!--{? bdView.data.auth.delete : 'y' : 'c'}--><a class="skinbtn default boardview-del" href="javascript:btnDelete('{req.bdId}',{req.sno},'{bdView.data.auth.modify}')"><em>{=__('삭제')}</em></a>
+            <!--{/}-->
+            <!--{? bdView.data.auth.modify : 'y' : 'c'}--><a class="skinbtn default boardview-modify" href="javascript:btnModifyWrite('{req.bdId}',{req.sno},'{bdView.data.auth.modify}')"><em>{=__('수정')}</em></a>
+            <!--{/}-->
+            <!--{? bdView.cfg.auth.list == 'y'}--><a class="skinbtn default boadview-reply" href="javascript:btnList('{req.bdId}')"><em>{=__('목록')}</em></a>!--{/}-->
+        </div>
+    </div>
+</div>
+
+<!--{? bdView.cfg.bdListInView == 'y'}-->
+<div style="margin-top:30px">
+    {#list}
+</div>
+<!--{/}-->
+
+<!--{? bdView.cfg.bdFooter}-->
+<div class="admin-wrap">
+    <p>{bdView.cfg.bdFooter}</p>
+</div>
+<!--{/}-->
+
+<!-- 레이어 호출시 딤처리 -->
+<div id="layerDim" class="dn">&nbsp;</div>
+<!-- //레이어 호출시 딤처리 -->
+<!-- 비밀글 클릭시 인증 레이어 -->
+<div class="cite-layer dn js-password-layer">
+    <div class="wrap">
+        <h4>{=__('비밀번호 인증')}</h4>
+        <div>
+            <p>{=__('글 작성시 설정한 비밀번호를 입력해 주세요.')}</p>
+            <input type="password" name="writerPw" class="text">
+            <a href="javascript:void(0)" class="skinbtn base2 citelayer-confirm js-submit"><em>{=__('확인')}</em></a>
+        </div>
+        <button type="button" class="close" title="{=__('닫기')}">{=__('닫기')}</button>
+    </div>
+</div>
+<script type="text/javascript" src="\{=c.PATH_SKIN}js/gd_board_view.js" charset="utf-8"></script>

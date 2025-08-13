@@ -1,0 +1,107 @@
+{*** 현금영수증 신청 레이어 | mypage/layer_cash_receipt_request.php ***}
+<div class="ly_head">
+    <h1 class="h_tit elp">{=__('현금영수증 발행')}</h1>
+</div>
+<div class="pay">
+    <div class="join_bx2">
+        <div class="tbl">
+            <form id="frmCashReceipt" name="frmCashReceipt" action="./order_ps.php" method="post" target="ifrmProcess">
+                <input type="hidden" name="mode" value="cashReceiptRequest"/>
+                <input type="hidden" name="orderNo" value="{orderInfo.orderNo}"/>
+                <table>
+                    <caption>
+                        <span>{=__('현금영수증 발급 입력 영역')}</span>
+                    </caption>
+                    <colgroup>
+                        <col>
+                        <col>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th scope="row">
+                            <label for="cashCert_d" class="tit">{=__('발행용도')}</label>
+                        </th>
+                        <td>
+                            <div class="inp_rdo">
+                                <input type="radio" class="sp" id="cashCert_d" name="cashUseFl" value="d" onclick="cash_receipt_toggle();" checked="checked"/>
+                                <label for="cashCert_d">{=__('소득공제용')}</label>
+                                <input type="radio" class="sp" id="cashCert_e" name="cashUseFl" value="e" onclick="cash_receipt_toggle();"/>
+                                <label for="cashCert_e">{=__('지출증빙용')}</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="certNo_hp" class="cert-no-title tit">{=__('휴대폰번호')}</label>
+                        </th>
+                        <td class="user-info inp_tx" id="certNo_hp">
+                            <input type="text" class="text number-only" name="cashCertNo[c]" value="{=gd_isset(memberInvoiceInfo['cash']['cellPhone'])}" placeholder="{=__('- 없이 입력하세요')}" maxlength="11"/>
+                        </td>
+                        <td class="user-info inp_tx dn" id="certNo_bno">
+                            <input type="text" class="text number-only" name="cashCertNo[b]" value="{=str_replace('-', '', gd_isset(memberInvoiceInfo['cash']['cashBusiNo']))}" placeholder="{=__('- 없이 입력하세요')}" maxlength="10"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="btn_center">
+                    <button type="button" class="btn cash-receipt-request"><em>{=__('발행 요청')}</em></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<button type="button" class="bn_cls v2 ly_btn_close"><span class="sp">{=__('닫기')}</span></button>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input.number-only').on('keyup', function () {
+            var value = $(this).val().replace(/[^0-9]/g, '');
+            $(this).val(value);
+        });
+        $('.cash-receipt-request').click(function (e) {
+            var certCode = $('input[name=\'cashUseFl\']:checked').val();
+            var pass = true;
+            if (certCode == 'd') {
+                if ($('input[name=\'cashCertNo[c]\']').val() == '') {
+                    pass = false;
+                    alert("{=__('휴대폰 번호를 입력해주세요.')}");
+                }
+            } else if (certCode == 'e') {
+                if ($('input[name=\'cashCertNo[b]\']').val() == '') {
+                    pass = false;
+                    alert("{=__('사업자 번호를 입력해주세요.')}");
+                }
+            } else {
+                pass = false;
+                alert("{=__('발행용도를 선택해주세요.')}");
+            }
+
+            if (pass == true) {
+                $('#frmCashReceipt').target = 'ifrmProcess'
+                $('#frmCashReceipt').submit();
+            }
+        });
+    });
+
+    <!--{ ? (receipt['cashFl'] == 'y' && orderInfo.receiptFl == 'n' && receipt['periodFl'] == 'y') }-->
+    /**
+     * 현금영수증 인증방법 선택
+     * (소득공제용 - 휴대폰 번호(c), 지출증빙용 - 사업자번호(b))
+     */
+    function cash_receipt_toggle() {
+        var certCode = $('input[name=\'cashUseFl\']:checked').val();
+
+        if (certCode == 'd') {
+            $('input[name=\'cashCertFl\']').val('c');
+            $('.cert-no-title').text("{=__('휴대폰번호')}");
+            $('#certNo_hp').show();
+            $('#certNo_bno').hide();
+        } else {
+            $('input[name=\'cashCertFl\']').val('b');
+            $('.cert-no-title').text("{=__('사업자번호')}");
+            $('#certNo_hp').hide();
+            $('#certNo_bno').show();
+        }
+    }
+    <!--{ / }-->
+</script>

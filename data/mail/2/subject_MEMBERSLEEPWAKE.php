@@ -1,0 +1,1 @@
+[{rc_mallNm}] General membership conversion information

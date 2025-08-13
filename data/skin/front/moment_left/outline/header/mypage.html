@@ -1,0 +1,124 @@
+{*** 상단 마이페이지 | mypage/index.php ***}
+<div id="header">
+
+    <div class="header_top">
+        <div class="header_top_cont">
+
+            <!-- 멀티상점 선택 -->
+            {=includeWidget('proc/_global_select.html')}
+            <!-- 멀티상점 선택 -->
+
+            <ul class="top_member_box">
+                <!--{ ? gd_is_login() === false }-->
+                <li><a href="../member/login.php">LOGIN</a><span class="txt_bar"></span></li>
+                <li><a href="../member/join_method.php">JOIN</a><span class="txt_bar"></span>
+                    <!--<span class="accent">
+                        <span><strong>2,000 P</strong></span>
+                    </span>-->
+                </li>
+                <!--{ : }-->
+                <li><a href="../member/logout.php?returnUrl={=logoutReturnUrl}">LOGOUT</a><span class="txt_bar"></span></li>
+                <!--{ / }-->
+                <li>
+                    <div class="top_mypage_cont">
+                        <span class="top_mypage_tit"><a href="../mypage/index.php">MYPAGE</a></span>
+                        <ul style="display:none;">
+                            <li><a href="../mypage/order_list.php">{=__('주문조회')}</a></li>
+                            <li><a href="../mypage/my_page_password.php">{=__('내정보수정')}</a></li>
+                            <li><a href="../mypage/wish_list.php">{=__('찜 리스트')}</a></li>
+                            <li><a href="../mypage/mypage_qa.php">1:1 {=__('문의')}</a></li>
+                        </ul>
+                    </div>
+                    <span class="txt_bar"></span>
+                </li>
+                <li><a href="../order/cart.php">{=__('장바구니')}( <strong>{=dataCartGoodsCnt()}</strong> )</a><span class="txt_bar"></span></li>
+                <li><a href="../service/index.php">{=__('고객센터')}</a></li>
+            </ul>
+
+        </div>
+        <!-- //header_top_cont -->
+    </div>
+    <!-- //header_top -->
+	<!--{ ? layout.current_page == 'y' && layout.page_name }-->
+    <div class="location_wrap">
+        <div class="location_cont">
+            <em><a href="#" class="local_home">HOME</a> > {=layout.page_name}</em>
+        </div>
+    </div>
+    <!--{ / }-->
+	<!-- //location_wrap -->
+
+    <div class="header_side_cont">
+        <div class="sub_menu_cont">
+            <div class="mypage_menu_box">
+                <dl>
+                    <dt>{=__('쇼핑정보')}</dt>
+                    <dd>
+                        <ul>
+                            <li><a href="../mypage/order_list.php">· {=__('주문목록')}/{=__('배송조회')}</a></li>
+                            <li><a href="../mypage/cancel_list.php">· {=__('취소')}/{=__('반품')}/{=__('교환 내역')}</a></li>
+                            <li><a href="../mypage/refund_list.php">· {=__('환불')}/{=__('입금 내역')}</a></li>
+                            <li><a href="../mypage/wish_list.php">· {=__('찜리스트')}</a></li>
+                        </ul>
+                    </dd>
+                </dl>
+                <!--{? gd_use_coupon() || gd_use_couponzone() || gd_use_deposit() || gd_use_mileage()}-->
+                <dl>
+                    <dt>{=__('혜택관리')}</dt>
+                    <dd>
+                        <ul>
+                            <!--{? gd_use_coupon()}-->
+                            <li><a href="../mypage/coupon.php">· {=__('쿠폰')}</a></li>
+                            <!--{/}-->
+                            <!--{? gd_use_couponzone()}-->
+                            <li><a href="../event/couponzone.php">- {=__('쿠폰존')}</a></li>
+                            <!--{/}-->
+                            <!--{? gd_use_deposit()}-->
+                            <li><a href="../mypage/deposit.php">· {=gd_display_deposit('name')}</a></li>
+                            <!--{/}-->
+                            <!--{? gd_use_mileage()}-->
+                            <li><a href="../mypage/mileage.php">· {=gd_display_mileage_name()}</a></li>
+                            <!--{/}-->
+                        </ul>
+                    </dd>
+                </dl>
+                <!--{/}-->
+                <!--{ ? canQa }-->
+                <dl>
+                    <dt>{=__('고객센터')}</dt>
+                    <dd>
+                        <ul>
+                            <li><a href="../mypage/mypage_qa.php">· 1:1{=__('문의')}</a></li>
+                        </ul>
+                    </dd>
+                </dl>
+                <!--{/}-->
+                <dl>
+                    <dt>{=__('회원정보')}</dt>
+                    <dd>
+                        <ul>
+                            <li><a href="../mypage/my_page_password.php">· {=__('회원정보 변경')}</a></li>
+                            <li><a href="../mypage/hack_out.php">· {=__('회원 탈퇴')}</a></li>
+                            <li><a href="../mypage/shipping.php">· {=__('배송지 관리')}</a></li>
+                        </ul>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>{=__('내가 쓴 글')}</dt>
+                    <dd>
+                        <ul>
+                            <!--{ ? canGoodsQa }--><li><a href="../mypage/mypage_goods_qa.php">· {=__('나의 상품문의')}</a></li><!--{/}-->
+                            <!--{ ? canGoodsReview }--><li><a href="../mypage/mypage_goods_review.php">· {=__('나의 상품후기')}</a></li><!--{/}-->
+                            <!--{ ? plusReviewConfig.useFl == 'y' }--><li><a href="../mypage/mypage_plus_review_article.php">· {=__('나의 플러스리뷰')}</a></li><!--{/}-->
+                        </ul>
+                    </dd>
+                </dl>
+            </div>
+            <!-- //mypage_menu_box -->
+        </div>
+        <!-- //sub_menu_cont -->
+    </div>
+
+</div>
+<!-- //header -->
+

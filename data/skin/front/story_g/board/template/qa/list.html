@@ -1,0 +1,292 @@
+{*** 목록 | list.php ***}
+<!--{ ? bdList.cfg.bdHeader && !inList}-->
+<div class="admin-wrap">
+    <p>{=bdList.cfg.bdHeader}</p>
+</div>
+<!--{/}-->
+<div class="section">
+    <!--{ ? !inList}-->
+    <div class="section-header">
+        <h2 class="h2">{=__(bdList.cfg.bdNm)}</h2>
+
+        <div class="option type1">
+            <!--{? bdList.cfg.auth.write == 'y'}-->
+            <a class="skinbtn base2 contactus-write" href="javascript:btnWrite('{req.bdId}')"><em>1:1 {=__('문의하기')}</em></a>
+            <!--{/}-->
+        </div>
+    </div>
+
+    <form name="frmSearch" method="get" action="list.php">
+        <input type="hidden" name="bdId" value="{req.bdId}"/>
+        <input type="hidden" name="memNo" value="{req.memNo}"/>
+        <input type="hidden" name="noheader" value="{req.noheader}"/>
+
+        <div class="section-body">
+            <div class="date-check">
+                <h3 class="h3">
+                    {=__('조회기간')}
+                </h3>
+
+                <div class="check-option clear">
+                    <div class="check-option-inner" data-target-name="rangDate[]">
+                        <div class="btn">
+                            <button class="inner" type="button" data-value="0">{=__('오늘')}</button>
+                        </div>
+                        <div class="btn">
+                            <button class="inner" type="button" data-value="7">7{=__('일')}</button>
+                        </div>
+                        <div class="btn">
+                            <button class="inner" type="button" data-value="15">15{=__('일')}</button>
+                        </div>
+                        <div class="btn">
+                            <button class="inner" type="button" data-value="30">1{=__('개월')}</button>
+                        </div>
+                        <div class="btn">
+                            <button class="inner" type="button" data-value="90">3{=__('개월')}</button>
+                        </div>
+                        <div class="btn">
+                            <button class="inner" type="button" data-value="365">1{=__('년')}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="check-cal">
+                    <div class="cal-from">
+                        <input type="text" name="rangDate[]" value="{req.rangDate[0]}" id="picker2" class="js-datepicker"/>
+                        <img class="icon-cal" src="img/etc/icon-cal.png" alt="{=__('달력 아이콘')}"/>
+                    </div>
+                    <div class="divide">~</div>
+                    <div class="cal-to">
+                        <input type="text" name="rangDate[]" value="{req.rangDate[1]}" class="js-datepicker"/>
+                        <img class="icon-cal" src="img/etc/icon-cal.png" alt="{=__('달력 아이콘')}"/>
+                    </div>
+                </div>
+                <div class="submit-block">
+                    <button class="skinbtn point2 qa-find" type="submit"><em>{=__('조회')} <img alt="" src="img/etc/search.png"/></em></button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!--{/}-->
+</div>
+<div class="section top-date">
+    <div class="section-body">
+        <div class="table1 type1 m2" align="{bdList.cfg.bdAlign}">
+            <table class="board-list" {bdList.cfg.bdWidthStyle}>
+                <colgroup>
+                    <col style="width:116px"/>
+                    <!--{ ? bdList.cfg.bdListImageFl == 'y'}-->
+                    <col style="">
+                    <!--{/}-->
+                    <!--{?bdList.cfg.bdCategoryFl == 'y'}-->
+                    <col style="width:86px"/>
+                    <!--{/}-->
+                    <col/>
+                    <!--{?!isMemNo}-->
+                    <col style="width:86px"/>
+                    <!--{/}-->
+                    <col style="width:121px"/>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>{=__('문의날짜')}</th>
+                    <!--{ ? bdList.cfg.bdListImageFl == 'y'}-->
+                    <th>{=__('이미지')}</th>
+                    <!--{/}-->
+                    <!--{?bdList.cfg.bdCategoryFl == 'y'}-->
+                    <th>{=__('카테고리')}</th>
+                    <!--{/}-->
+                    <th>{=__('제목')}</th>
+                    <!--{?!isMemNo}-->
+                    <th>{=__('작성자')}</th>
+                    <!--{/}-->
+                    <th>{=__('문의상태')}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--{ @ bdList.noticeList }-->
+                <tr class="notice-item" {bdList.cfg.bdHeightStyle}>
+                    <td class="ta-c">
+                        <img src="{bdList.cfg.iconImage.notice.url}" alt="{=__('공지')}"/>
+                    </td>
+                    <!--{ ? bdList.cfg.bdListImageFl == 'y' }-->
+                    <td class="ta-c">
+                        <!--{ ? bdList.cfg.bdListNoticeImageDisplayPc == 'y'}-->
+                        <div class="thumbnail">
+                            <a href="javascript:btnView('{req.bdId}',{.sno} , '{.auth.view}')">
+                                <img src="{=gd_isset(.viewListImage, 'img/etc/noimg.png')}" width="{bdList.cfg.bdListImgWidth}" height="{bdList.cfg.bdListImgHeight}" class="js-image-load"/>
+                            </a>
+                        </div>
+                        <!--{/}-->
+                    </td>
+                    <!--{/}-->
+                    <!--{?bdList.cfg.bdCategoryFl == 'y'}-->
+                    <td class="ta-c category">
+                        {.category}
+                    </td>
+                    <!--{/}-->
+                    <td class="tit">
+                        {.gapReply}
+                        <!--{ ? .groupThread }--><img src="{bdList.cfg.iconImage.re.url}"alt="{=__('답변')}" style="padding:0 5px" /><!--{/}-->
+                        <!--{ ? .isSecret == 'y' }-->
+                        <img src="{bdList.cfg.iconImage.secret.url}" align=absmiddle>
+                        <!--{ / }-->
+                        <a href="javascript:btnView('{req.bdId}',{.sno} ,'{.auth.view}')" >{.subject}</a>
+                        <!--{? bdList.cfg.bdMemoFl == 'y' && .memoCnt>0}-->
+                        <span class="c-red">({.memoCnt})</span>
+                        <!--{/}-->
+                        <!--{ ? .isFile == 'y' }-->
+                        <img src="{bdList.cfg.iconImage.attach_file.url}" alt="{=__('파일첨부 있음')}"/>
+                        <!--{/}-->
+                        <!--{ ? .isImage == 'y' }-->
+                        <img src="{bdList.cfg.iconImage.attach_img.url}" alt="{=__('이미지첨부 있음')}"/>
+                        <!--{/}-->
+                        <!--{ ? .isNew == 'y' }--><!--<img alt="신규 등록글" src="img/icon/new.png"/>-->
+                        <img src="{bdList.cfg.iconImage.new.url}" alt="{=__('신규 등록글')}"/>
+                        <!--{/}-->
+                        <!--{ ? .isHot == 'y' }-->
+                        <img src="{bdList.cfg.iconImage.hot.url}" alt="{=__('인기글')}"/>
+                        <!--{/}-->
+                    </td>
+                    <!--{?!isMemNo}-->
+                    <td class="ta-c">
+                        {.writer}
+                    </td>
+                    <!--{/}-->
+                    <td class="ta-c">-</td>
+                </tr>
+                <!--{/}-->
+
+                <!--{? bdList.list}-->
+                <!--{ @ bdList.list }-->
+                <tr {bdList.cfg.bdHeightStyle}>
+                    <td class="ta-c">
+                        {.regDate}
+                    </td>
+                    <!--{ ? bdList.cfg.bdListImageFl == 'y'}-->
+                    <td class="ta-c">
+                        <div class="thumbnail">
+                            <a href="javascript:btnView('{req.bdId}',{.sno} , '{.auth.view}')">
+                                <img src="{=gd_isset(.viewListImage, 'img/etc/noimg.png')}" width="{bdList.cfg.bdListImgWidth}" height="{bdList.cfg.bdListImgHeight}" class="js-image-load"/>
+                            </a>
+                        </div>
+                    </td>
+                    <!--{/}-->
+                    <!--{?bdList.cfg.bdCategoryFl == 'y'}-->
+                    <td class="ta-c category">
+                        {.category}
+                    </td>
+                    <!--{/}-->
+                    <td class="tit">
+                        {.gapReply}
+                        <!--{ ? .groupThread }--><img src="{bdList.cfg.iconImage.re.url}"alt="{=__('답변')}" style="padding:0 5px" /><!--{/}-->
+                        <!--{ ? .isSecret == 'y' }-->
+                        <img src="{bdList.cfg.iconImage.secret.url}" align=absmiddle>
+                        <!--{ / }-->
+                        <a href="javascript:btnView('{req.bdId}',{.sno} ,'{.auth.view}')" >{.subject}</a>
+                        <!--{? bdList.cfg.bdMemoFl == 'y' && .memoCnt>0}-->
+                        <span class="c-red">({.memoCnt})</span>
+                        <!--{/}-->
+                        <!--{ ? .isFile == 'y' }-->
+                        <img src="{bdList.cfg.iconImage.attach_file.url}" alt="{=__('파일첨부 있음')}"/>
+                        <!--{/}-->
+                        <!--{ ? .isImage == 'y' }-->
+                        <img src="{bdList.cfg.iconImage.attach_img.url}" alt="{=__('이미지첨부 있음')}"/>
+                        <!--{/}-->
+                        <!--{ ? .isNew == 'y' }--><!--<img alt="신규 등록글" src="img/icon/new.png"/>-->
+                        <img src="{bdList.cfg.iconImage.new.url}" alt="{=__('신규 등록글')}"/>
+                        <!--{/}-->
+                        <!--{ ? .isHot == 'y' }-->
+                        <img src="{bdList.cfg.iconImage.hot.url}" alt="{=__('인기글')}"/>
+                        <!--{/}-->
+                    </td>
+                    <!--{?!isMemNo}-->
+                    <td class="ta-c">
+                        {.writer}
+                    </td>
+                    <!--{/}-->
+                    <td class="ta-c">
+                        <span <!--{? .replyComplete}-->class="c-red" <!--{/}-->>
+                        {.replyStatusText}
+                        </span>
+                    </td>
+                </tr>
+                <!--{/}-->
+                <!--{:}-->
+                <tr>
+                    <td colspan="4" align="center">{=__('게시글이 존재하지않습니다.')}</td>
+                </tr>
+                <!--{/}-->
+                </tbody>
+            </table>
+        </div>
+        {bdList.pagination}
+    </div>
+    <!--{?bdList.cfg.bdFooter && !inList}-->
+    <div class="admin-wrap">
+        <p>{=bdList.cfg.bdFooter}</p>
+    </div>
+    <!--{/}-->
+</div>
+
+<form id="frmWritePassword">
+    <div class="cite-layer dn js-list-password-layer">
+        <div class="wrap">
+            <h4>{=__('비밀번호 인증')}</h4>
+            <div>
+                <p>{=__('비밀번호를 입력해 주세요.')}</p>
+                <input type="password" name="writerPw" class="text"/>
+                <a href="javascript:void(0)" class="skinbtn base2 boardlist-submit js-submit"><em>{=__('확인')}</em></a>
+            </div>
+            <button type="button" class="close" title="{=__('닫기')}">{=__('닫기')}</button>
+        </div>
+    </div>
+</form>
+<div id="layerDim" class="dn">&nbsp;</div>
+
+<script type="text/javascript">
+    $(function(){
+        // 인풋박스 선택 이벤트
+        if ($('.js-datepicker').length) {
+            $('.js-datepicker').datetimepicker({
+                locale: '{=gGlobal.locale}',
+                format: 'YYYY-MM-DD',
+                dayViewHeaderFormat: 'YYYY MM',
+                viewMode: 'days',
+                ignoreReadonly: true,
+                debug: false,
+                keepOpen: false
+            });
+            $('.check-cal img').click(function(e){
+                $(this).prev('.js-datepicker').data('DateTimePicker').show();
+            });
+        }
+
+        // 기간버튼 선택 이벤트
+        if ($('.check-option-inner').length) {
+            $('.check-option-inner button.inner').click(function (e) {
+                $startDate = $endDate = '';
+                $period = $(this).data('value');
+                $elements = $('input[name="' + $(this).closest('.check-option-inner').data('target-name') + '"]');
+                $format = $($elements[0]).data('DateTimePicker').format();
+                if ($period >= 0) {
+                    $startDate = moment().hours(0).minutes(0).seconds(0).subtract($period, 'days').format($format);
+                    $endDate = moment().hours(0).minutes(0).seconds(0).format($format);
+                }
+                $($elements[0]).val($startDate);
+                $($elements[1]).val($endDate);
+                $('.check-option-inner .btn').removeClass('active');
+                $(this).parents('.btn').addClass('active');
+            });
+
+            // 선택된 버튼에 따른 값 초기화
+            $elements = $('input[name*=\'' + $('.check-option-inner').data('target-name') + '\']');
+            if ($elements.length && $elements.val() != '') {
+                $interval = moment($($elements[1]).val()).diff(moment($($elements[0]).val()), 'days');
+                $('.check-option-inner').find('button[data-value="' + $interval + '"]').trigger('click');
+            } else {
+                $('.check-option-inner').find('button[data-value="-1"]').trigger('click');
+            }
+        }
+    });
+</script>
+<script type="text/javascript" src="\{=c.PATH_SKIN}js/gd_board_list.js" charset="utf-8"></script>

@@ -1,0 +1,85 @@
+{*** [위젯] 회원가입/정보 사업자 | member/_join_view_business.html ***}
+<!--{? joinField.businessinfo.use == 'y'}-->
+<div class="tit {? !isMyPage}businessinfo dn{/}">
+    <h3>{=__('사업자 정보')}</h3>
+
+    <p>{=__('표시는 반드시 입력하셔야 하는 항목입니다.')}</p>
+</div>
+<div class="table1 {? !isMyPage}businessinfo dn{/}">
+    <table>
+        <colgroup>
+            <col style="width:163px;">
+            <col>
+        </colgroup>
+        <tbody>
+        <!--{? joinField.company.use == 'y'}-->
+        <tr>
+            <th class="ta-l">{=__('상호')}</th>
+            <td>
+                <div class="txt-field">
+                    <input type="text" class="text" name="company" value="{data.company}" maxlength="50" data-pattern="gdMemberNmGlobal">
+                </div>
+            </td>
+        </tr>
+        <!--{/}--><!--{? joinField.busiNo.use == 'y'}-->
+        <tr>
+            <th class="ta-l">{=__('사업자번호')}</th>
+            <td>
+                <div class="txt-field">
+                    <input type="text" name="busiNo" id="busiNo" class="text" data-pattern="gdNum" maxlength="10" placeholder="{=__('-없이 입력하세요.')}" value="{data.busiNo}" data-overlap-businofl="{joinField.busiNo.overlapBusiNoFl}" data-charlen="{joinField.busiNo.charlen}" data-oldbusino="{data.busiNo}">
+                </div>
+            </td>
+        </tr>
+        <!--{/}--><!--{? joinField.ceo.use == 'y'}-->
+        <tr>
+            <th class="ta-l">{=__('대표자명')}</th>
+            <td>
+                <div class="txt-field">
+                    <input type="text" class="text" name="ceo" value="{data.ceo}" maxlength="20" data-pattern="gdEngKor">
+                </div>
+            </td>
+        </tr>
+        <!--{/}--><!--{? joinField.service.use == 'y'}-->
+        <tr>
+            <th class="ta-l">{=__('업태')}</th>
+            <td>
+                <div class="txt-field">
+                    <input type="text" class="text" name="service" value="{data.service}" maxlength="30" data-pattern="gdServiceId">
+                </div>
+            </td>
+        </tr>
+        <!--{/}--><!--{? joinField.item.use == 'y'}-->
+        <tr>
+            <th class="ta-l">{=__('종목')}</th>
+            <td>
+                <div class="txt-field">
+                    <input type="text" class="text" name="item" value="{data.item}" maxlength="30" data-pattern="gdServiceId">
+                </div>
+            </td>
+        </tr>
+        <!--{/}--><!--{? joinField.comAddress.use == 'y'}-->
+        <tr>
+            <th class="ta-l">{=__('주소')}</th>
+            <td>
+                <div class="post">
+                    <div class="txt-field" style="width:133px;">
+                        <input type="hidden" class="text" name="comZipcode" value="{data.comZipcode}">
+                        <input type="text" class="text" name="comZonecode" readonly="readonly" value="{data.comZonecode}">
+                    </div>
+                    <button class="normal-btn small3 post-search" id="btnCompanyPostcode">
+                        <em>{=__('우편번호검색')}</em>
+                    </button>
+                </div>
+                <div class="txt-field address">
+                    <input type="text" class="text" name="comAddress" readonly="readonly" value="{data.comAddress}">
+                </div>
+                <div class="txt-field">
+                    <input type="text" class="text" name="comAddressSub" value="{data.comAddressSub}">
+                </div>
+            </td>
+        </tr>
+        <!--{/}-->
+        </tbody>
+    </table>
+</div>
+<!--{/}-->

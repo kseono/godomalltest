@@ -1,0 +1,66 @@
+{*** [위젯] 해외몰 상점 설정 | proc/_global_select.html ***}
+
+<!--{ ? mallCnt > 1}-->
+    <!--{ ? addChosenScript == true }-->
+        <script type="text/javascript" src="{=setBrowserCache('../js/jquery/chosen-imageselect/src/ImageSelect.jquery.js')}"></script>
+    <!--{ / }-->
+    <link type="text/css" rel="stylesheet" href="{=setBrowserCache('../js/jquery/chosen-imageselect/src/ImageSelect.css')}" />
+    <div class="mall-select">
+        <!--{ ? iconType == 'check' }-->
+            <!--{ @ mallList }-->
+                <img class="mall hand" data-domain-fl="{.value_.domainFl}" data-domain="{.value_.domain}" src="{=uriCommon}/{=mallIcon[.key_]}" />
+            <!--{ / }-->
+        <!--{ : iconType == 'select_flag' }-->
+            <select name="mallSelect" class="tune" style="width:60px;">
+            <!--{ @ mallList }-->
+                <option data-img-src="{=uriCommon}/{=mallIcon[.key_]}" data-domain="{.value_.domain}" data-domain-fl="{=.value_.domainFl}" <!--{ ? nowMall == .key_}-->selected="selected"<!--{ / }-->>&nbsp;</option>
+            <!--{ / }-->
+            </select>
+        <!--{ : iconType == 'select_language' }-->
+            <select name="mallSelect" class="tune" style="width:180px;">
+                <!--{ @ mallList }-->
+                <option data-img-src="{=uriCommon}/{=mallIcon[.key_]}" data-domain="{.value_.domain}" data-domain-fl="{=.value_.domainFl}" <!--{ ? nowMall == .key_}-->selected="selected"<!--{ / }-->>{=.value_.languageFl}</option>
+                <!--{ / }-->
+            </select>
+        <!--{ / }-->
+    </div>
+    <style>
+        .mall-select {position:absolute; top:0; left:0; margin-top:2px;}
+        .mall-select img {margin-top:5px; border:none;}
+    </style>
+    <script type="text/javascript">
+        $(function(){
+            $('.mall').click(function(){
+                var url = $(this).data('domain');
+                var lastStr = url.substr(url.length - 1);
+                if (lastStr != '/') {
+                    url = url+'/';
+                }
+                switch($(this).data('domain-fl')) {
+                    case 'kr':
+                        window.open(url+'main/index.php', "_blank");
+                        break;
+                    default:
+                        window.open(url, "_blank");
+                        break;
+                }
+            });
+            $('select[name="mallSelect"]').change(function(){
+                var selected = $(this).find('option:selected');
+                var url = selected.data('domain');
+                var lastStr = url.substr(url.length - 1);
+                if (lastStr != '/') {
+                    url = url+'/';
+                }
+                switch(selected.data('domain-fl')) {
+                    case 'kr':
+                        window.open(url+'main/index.php', "_blank");
+                        break;
+                    default:
+                        window.open(url, "_blank");
+                        break;
+                }
+            });
+        })
+    </script>
+<!--{ / }-->

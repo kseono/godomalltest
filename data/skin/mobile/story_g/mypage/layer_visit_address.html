@@ -1,0 +1,60 @@
+{*** 방문수령 주소 레이어 | mypage/layer_visit_address.php ***}
+<div class="ly_head">
+    <h1 class="h_tit elp">
+        {=__('상품별 방문 수령지 주소')}
+    </h1>
+</div>
+
+<div id="visitAddressLayer">
+    <!--{ ? data }-->
+    <!--{ @ data }-->
+    <!--{ @ .value_ }-->
+    <div class="item-info">
+        <div class="image">{..goodsImage}</div>
+        <div class="option">
+            {..goodsNmStandard}
+            <!--{ ? ..optionInfo }-->
+            <div style="color:#999999; font-size:11px;">
+            <!--{ @ ..optionInfo }-->
+            <!--{  ? ...key_ > 0}--> / <!--{ / }-->{...optionName } : {...optionValue}
+            <!--{ / }-->
+            </div>
+            <!--{ / }-->
+        </div>
+    </div>
+    <div class="my_tit">방문 수령지 주소 : {..visitAddress}</div>
+    <!--{ / }-->
+    <!--{ / }-->
+    <!--{ ? count(value.goodsSno) > (page->page['now'] * page->page['list']) }-->
+    <div class="block-pd more-btn">
+        <button type="button" class="more-btn btn-gray btn-w btn" data-page="{page->page['now']}">{=__('더보기')}</button>
+    </div>
+    <!--{ / }-->
+    <!--{ : }-->
+    <div class="item-info no-data" style="text-align:center;">검색된 페이지가 없습니다.</div>
+    <!--{ / }-->
+</div>
+<style>
+    .item-info {padding:10px;}
+    .item-info > div {display:inline-block;}
+    .item-info .option {vertical-align:bottom;}
+    .my_tit {clear:both;}
+</style>
+
+<button type="button" class="bn_cls v2 ly_btn_close"><span class="sp">{=__('닫기')}</span></button>
+<script type="text/javascript">
+    $(function() {
+        $(document).on('click', '.more-btn button', function (e) {
+            e.preventDefault();
+            var page = $(this).data('page') + 1;
+            var params = {orderNo:'{value.orderNo}', goodsSno:'{=json_encode(value.goodsSno)}', page: page};
+
+            $.get('layer_visit_address.php', params, function (data) {
+                var html = $(data).filter("#visitAddressLayer").html();
+                $('#visitAddressLayer').find('.block-pd').remove();
+                $('#visitAddressLayer').append(html);
+                return false;
+            });
+        });
+    });
+</script>

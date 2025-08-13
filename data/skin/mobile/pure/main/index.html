@@ -1,0 +1,88 @@
+{*** 쇼핑몰 메인본문 | main/index.php ***}
+{ # header }
+<div class="main">
+	<!-- 상단메뉴 -->
+	<ul class="main_top_menu">
+		<li><a href="../board/list.php?bdId={goodsQaBdId}">{=__('상품문의')}</a></li>
+		<li><a href="../board/list.php?bdId={goodsReviewBdId}">{=__('상품후기')}</a></li>
+		<li><a href="../goods/goods_today.php">{=__('최근본상품')}</a></li>
+		<li><a href="../mypage/wish_list.php">{=__('찜리스트')}</a></li>
+	</ul>
+	<!-- 슬라이더 -->
+	<div class="main_slide">
+		 {=includeWidget('proc/_slider_banner.html', 'bannerCode', '3606671697')}
+		 <!-- 최근게시물 -->
+		 <div class="main_notice">
+			<div class="main_notice_box">
+				<div class="tit">{=__('공지사항')}<span class="btn_more"><a href="../board/list.php?bdId=notice">+MORE</a></span></div>
+				<ul>
+					<!--{ @getArticles( 'notice' , 4 , 25 ) }-->
+					<li><a href="../board/view.php?bdId={.bdId}&sno={.sno}">{.subject}</a></li>
+					<!--{ / }-->
+				</ul>
+			</div>
+		 </div>
+	</div>
+
+	<!-- 메인배너 -->
+	<div class="main_banner_box">
+		<!--{ @dataBanner('2505697183') }-->{.tag}<!--{ / }-->
+	</div>
+	<ul class="main_banner_box1">
+		<!--{ @dataBanner('81393231', true) }-->
+		<li><a href="{.bannerLink}" target="{.bannerTarget}"><img src="{.bannerImageUrl}" alt="{.bannerImageAlt}" /></a></li>
+		<!--{ / }-->
+	</ul>
+	
+	<div class="best_prd">
+		<!-- 메인 상품 노출 -->{=includeWidget('goods/_goods_display_main.html','sno','4')}<!-- 메인 상품 노출 -->
+	</div>
+	<div class="main_banner_box2">
+		<!--{ @dataBanner('1772932566') }-->{.tag}<!--{ / }-->
+	</div>
+	<div class="best_prd">
+		<!-- 메인 상품 노출 -->{=includeWidget('goods/_goods_display_main.html','sno','5')}<!-- 메인 상품 노출 -->
+	</div>
+
+	<div class="main_slide2">
+		{=includeWidget('proc/_slider_banner.html', 'bannerCode', '3587287394')}
+	</div>
+
+	<ul class="ft_menu">
+		<li><a href="../service/company.php">{=__('회사소개')}</a></li>
+		<li><a href="../service/agreement.php">{=__('이용약관')}</a></li>
+		<li><a href="../service/private.php" class="privacy">{=__('개인정보처리방침')}</a></li>
+		<li><a href="../service/guide.php">{=__('이용안내')}</a></li>
+	</ul>
+	<!-- //ft_menu -->
+
+	<div class="main_info_box">
+		
+		<div class="main_info">
+			<dl>
+				<dt><span>{=__('고객센터')}</span></dt>
+				<dd>
+					<p class="phone"><a href="tel:{=gMall.centerPhone}">{gMall.centerPhone}</a></p>
+					<p class="business_hours">
+						{=nl2br(gMall.centerHours)}
+					</p>
+				</dd>
+			</dl>
+			<!--{ ? !gGlobal.isFront }-->
+			<dl>
+				<dt><span>{=__('입금 계좌정보')}</span></dt>
+				<dd>
+					<p class="bank_num">{gBank.accountNumber}</p>
+					<p class="account_holder"><span>{gBank.bankName}</span> / <strong>{gBank.depositor}</strong></p>
+					<!-- //main_bank -->
+				</dd>
+			</dl>
+			<!--{/}-->
+		</div>
+		<!-- //main_info -->
+	</div>
+	<!-- //main_info_box -->
+</div>
+<!-- //main -->
+{ # footer }
+

@@ -1,0 +1,42 @@
+{***  플러스 리뷰 리스트 | board/plus_review_list.php ***}
+<!--{ ? data.list}-->
+<!--{ @ data.list}-->
+<li class="list">
+    <div>
+        <span class="rating"><span style="width:{=.goodsPtPer}%">{=__('평가')}</span></span>
+        <span class="total-count">
+               <!--{ ? plusReviewConfig.memoFl == 'y'}-->
+                    <span class="title">{=__('댓글')}</span><span class="count">{=.memoCnt}</span>
+            <!--{/}-->
+            <!--{ ? plusReviewConfig.recommendFl == 'y'}-->
+                    <span class="title recomm">{=__('추천')}</span><span class="count">{=.recommend}</span>
+            <!--{/}-->
+                </span>
+    </div>
+    <div class="contents" id="plus_reivew_focus_{=.sno}">
+        <div class="text " data-sno="{=.sno}" >
+            <!--{ ? .blockFl =='y'}-->
+                차단 한 회원이 작성한 게시물입니다.
+            <!--{ : }-->
+                {=.listContents}
+                <!--{ ? .isNew == 'y'}-->
+                <span class="new"></span>
+                <!--{/}-->
+                <a href="../board/plus_review_view.php?sno={=.sno}" data-cache="false"  data-toggle="modal" data-target="#popup-board-view" data-focus="{=.sno}" class="more">{=__('더보기')}</a>
+            <!--{ / }-->
+        </div>
+        <!--{ ? .uploadHeadImage.thumSquareSrc }-->
+        <div class="image"><img src="<!--{?.blockFl =='y'}-->{=c.PATH_MOBILE_SKIN}/img/etc/blockimg.png<!--{:}-->{=.uploadHeadImage.thumSquareSrc}<!--{/}-->"/></div>
+        <!--{/}-->
+    </div>
+    <div class="info">
+        <span class="writer">{=.writer}</span><span class="date">{=.regDate}</span>
+    </div>
+</li>
+<!--{/}-->
+<!--{:}-->
+<div class="no-data">
+    {=__('게시글이 존재하지 않습니다.')}
+</div>
+<!--{/}-->
+<div class="dn"><li id="totalPage">{=data['cnt']['totalPage']}</li></div>

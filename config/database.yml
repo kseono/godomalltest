@@ -1,0 +1,12 @@
+master:
+  host: 10.1.0.137
+  port: 3306
+  username: newman5274
+  password: dil083qs96@
+  database: newmanjoo14_godomall_com
+slave1:
+  host: 10.1.0.137
+  port: 3306
+  username: newman5274
+  password: dil083qs96@
+  database: newmanjoo14_godomall_com

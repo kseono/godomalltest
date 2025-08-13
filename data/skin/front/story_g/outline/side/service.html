@@ -1,0 +1,27 @@
+{*** 측면 고객센터 | mypage/index.php ***}
+<div class="lnb cs-lnb">
+    <h2>{=__('고객센터')}</h2>
+    <!--{?canNotice}-->
+    <h3><a href="../service/notice.php">{=__('공지사항')}</a></h3>
+    <!--{/}-->
+    <!--{?canQa}-->
+    <h3><a href="../service/qa.php">1:1{=__('문의하기')}</a></h3>
+    <!--{/}-->
+    <h3><a href="../service/faq.php">FAQ</a></h3>
+    <div class="contect-us">
+        <h3>{=__('고객상담센터')}</h3>
+        <strong>{gMall.centerPhone}</strong>
+        <a href="mailto:{gMall.centerEmail}">{gMall.centerEmail}</a>
+        <ul>
+            <li>{=nl2br(gMall.centerHours)}</li>
+        </ul>
+    </div>
+    <!--{ ? !gGlobal.isFront }-->
+    <div class="bank">
+        <h3>{=__('은행계좌 안내')}</h3>
+        <p><strong>{gBank.bankName}</strong> ({=__('예금주')} : {gBank.depositor})</p>
+        <strong>{gBank.accountNumber}</strong>
+    </div>
+    <!--{ / }-->
+    <hr />
+</div>

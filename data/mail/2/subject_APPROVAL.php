@@ -1,0 +1,1 @@
+[{rc_mallNm}] Dear {rc_orderNm}, Your registration has been accepted.

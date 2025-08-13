@@ -1,0 +1,130 @@
+{***  플러스 리뷰 상품상세 | board/plus_review_container.php ***}
+<!--{ ? plusReviewConfig.goodsPageReviewFl == 'y'}-->
+<div id="plusReviewList" style="display:none">
+    <link type="text/css" rel="stylesheet" href="\{=c.PATH_MOBILE_SKIN}css/gd_plus_review.css?ts={=time()}">
+    <div class="plus-review-title">
+        <div class="plus-review-title-area">
+            <span class="eval-title title">{=__('평가')}</span>
+            <span class="eval-point point">{=plusReview.info.goodsPt.avg}</span>
+            <span class="review-title title">{=__('리뷰수')}</span>
+            <span class="review-point point">{=plusReview.info.reviewCount}</span>
+        </div>
+        <span class="review-write-btn"><a href="javascript:void(0)" class="btn js-pr-btn-write" >{=__('리뷰등록')}</a></span>
+    </div>
+    <!--{ ? plusReviewConfig.addFormSearchFl == 'y' }-->
+    <div class="plus_review_add_search">
+        <a href="javascript:void(0);" onclick="gd_search_layer()"><span>{= plusReviewConfig.addFormSearchTitle}</span><span class="arrow"></span></a>
+    </div>
+    <!--{ / }-->
+    <div class="plus-review-list">
+        <ul class="js-pr-list">
+        </ul>
+        <div class="block-pd more-btn">
+            <button type="button" class="more-btn btn-gray btn js-pr-btn-page-more">{=__('더보기')}</button>
+        </div>
+    </div>
+</div>
+<script>
+    var parseQuery = function (qstr) {
+        var query = {};
+        var a = (qstr[0] === '?' ? qstr.substr(1) : qstr).split('&');
+        for (var i = 0; i < a.length; i++) {
+            var b = a[i].split('=');
+            query[decodeURIComponent(b[0])] = decodeURIComponent(b[1] || '');
+        }
+        return query;
+    }
+
+    var getHashValue = function(key) {
+        var matches = location.hash.match(new RegExp(key+'=([^|]*)'));
+        return matches ? matches[1] : null;
+    }
+
+    var totalPage = {=plusReview.cnt.totalPage};
+    var goodsNo = '{=goodsNo}';
+    var mode = '{=req.mode}';
+    var naverReviewCnt = '{=plusReview.info.naverReviewCnt}';
+    var plusReviewCnt = '{=plusReview.info.plusReviewCnt}';
+
+    $(document).ready(function () {
+        var page = 1;
+        loadPlusReviewList(1);
+        if(mode=='plusreview'){
+            $('[data-target="js-board-goodsreview-view"]').trigger('click');
+            $("html,body").animate({scrollTop: $('.js-pr-list').offset().top - 100})
+        }
+
+        $('.js-pr-btn-write').bind('click',function () {
+            <!--{ ? plusReview.writeErrorMsg}-->
+            alert('{=plusReview.writeErrorMsg}');
+            return false;
+            <!--{:}-->
+            $.ajax({
+                method: "get",
+                url: "../board/plus_review_popup_write.php",
+                data: {mode : 'add',goodsNo : goodsNo, naverReviewCnt : naverReviewCnt, plusReviewCnt : plusReviewCnt},
+                async: false,
+                dataType: 'text'
+            }).success(function (data) {
+                $('#popup-board-write').css('background-color','#ffffff').css('overflow','scroll').css('z-index','9999').empty().append(data).show();
+            }).error(function (e) {
+                alert(e.responseText);
+            });
+            <!--{/}-->
+        })
+
+
+        $('.js-pr-btn-page-more').bind('click',function () {
+            page=Number(page)+1;
+            console.log(page);
+            loadPlusReviewList(page,$labelValueArry);
+        })
+
+    });
+
+    var loadPlusReviewList = function (page,addForm,reload) {
+        $.ajax({
+            url: '../board/plus_review_list.php',
+            data: {goodsNo: goodsNo, page: page,addForm:addForm},
+            method: 'get',
+            type: 'text',
+            cache: false,
+        }).success(function (result) {
+            if(reload) {
+                $('.js-pr-list').html(result);
+            }else{
+                $('.js-pr-list').append(result);
+            }
+            totalPage = $(result).find('#totalPage').text();
+            if(page >= totalPage){
+                $('.js-pr-btn-page-more').hide();
+            }else{
+                $('.js-pr-btn-page-more').show();
+            }
+        }).error(function (e) {
+//            console.log(e);
+        });
+
+
+    }
+
+    var $labelValueArry = [];
+    var gd_search_layer = function(){
+        var params = {
+            addForm : $labelValueArry,
+        };
+        $('#popupAlikeSearch').modal({
+            remote: '../board/plus_review_search.php',
+            cache: false,
+            params: params,
+            type : 'GET',
+            show: true
+        });
+    }
+    var gd_search_add_form = function(){
+        page=1;
+        loadPlusReviewList(page,$labelValueArry,true);
+    }
+</script>
+
+<!--{/}-->

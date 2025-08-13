@@ -1,0 +1,60 @@
+.weather{width: 258px;color: #444444;border: 1px solid #e4e4e4;line-height:normal;background-color: #ffffff;}
+.weather .wt_top .wt_title{position: relative;height: 41px;}
+.weather .wt_top .wt_title .meteo{float: left;display: inline-block;padding: 6px 0 0 6px}
+.weather .wt_top .wt_title .meteo img{width: 35px;}
+.weather .wt_top .wt_title .locate{display: inline-block;position: absolute;left: 66px;top: 17px;font-size: 14px;color: #444444;font-weight: bold;background: url('../../img/m/wt_arrow_down.png') no-repeat right center/8px 5px;padding: 0 12px 0 0;line-height: 18px; border: none;}
+.weather .wt_top .wt_title select.locate { -webkit-appearance: none; -moz-appearance: none;appearance: none;}
+.weather .wt_top .wt_title select.locate::-ms-expand { display:none; }
+.weather .wt_top .wt_title .week_wrap{position: absolute;left: 137px;top: 17px;}
+.weather .wt_top .wt_title .week{font-size: 14px;margin: 0 5px 0 0;font-weight: bold;}
+.weather .wt_top .wt_title .refresh{display: inline-block;position: relative;top: 0;vertical-align:text-bottom;width: 15px;height: 15px;line-height: 13px;border: 1px solid #e4e4e4;text-align: center;background-color: #ffffff;}
+.weather .wt_top .wt_title .refresh img{width: 8px;margin: 3px 0 0 0;}
+.weather .wt_top .wt_cont{padding:2px 50px 10px 50px;}
+.weather .wt_top .wt_cont .wt_img{float: left;}
+.weather .wt_top .wt_cont .wt_img img{width: 70px;}
+.weather .wt_top .wt_cont .wt_box{display: table-cell;width: 112px;height: 73px;vertical-align: middle;}
+.weather .wt_top .wt_cont .wt_box .temp_wrap{text-align: center;}
+.weather .wt_top .wt_cont .wt_box .temp{font-size: 30px;font-weight: bold;line-height: 28px;}
+.weather .wt_top .wt_cont .wt_box .dc{position: relative;top: -10px;font-size: 15px;font-weight: bold;text-align: center;}
+.weather .wt_top .wt_cont .wt_box .tempthan{font-size: 13px;text-align: center;margin: 2px 0 0 0;}
+.weather .wt_top .wt_cont .wt_box .wet{font-size: 11px;text-align: center;}
+.weather .wt_top .wt_cont .wt_box .wet .ico_wet{width: 7px;margin: 1px 2px 0 0;}
+.weather .wt_top .wt_cont .wt_box .meteo{display: none;}
+.weather .wt_week{border-top: 1px solid #e4e4e4;padding: 15px 9px 15px 9px;}
+.weather .wt_week ul{overflow: hidden;}
+.weather .wt_week ul li{width: 60px;float: left;}
+.weather .wt_week ul li span{display: block;text-align: center;}
+.weather .wt_week ul li .week{font-size: 13px;font-weight: bold;}
+.weather .wt_week ul li .wt_img{padding: 2px 0 2px 0;}
+.weather .wt_week ul li .wt_img img{width: 30px;}
+.weather .wt_week ul li .tempthan{font-size: 13px;}
+
+/* 리스트형 */
+.weather.list{width: 148px;}
+.weather.list .wt_top .wt_title{height: 35px;}
+.weather.list .wt_top .wt_title .meteo{padding: 10px 0 0 10px;}
+.weather.list .wt_top .wt_title .locate{position: absolute;left: 58px;top: 9px;}
+.weather.list .wt_top .wt_title .week_wrap{left: 121px;top: 9px;}
+.weather.list .wt_top .wt_title .week{display: none;}
+.weather.list .wt_top .wt_cont{display: none;}
+.weather.list .wt_week{padding: 3px 0 12px 20px;}
+.weather.list .wt_week ul li{float:none;width: 100%;margin: 7px 0 0 0;}
+.weather.list .wt_week ul li span{display: table-cell;vertical-align: middle;font-size: 12px;}
+.weather.list .wt_week ul li .week{font-weight: normal;}
+.weather.list .wt_week ul li.on .week{font-weight: bold;}
+.weather.list .wt_week ul li .wt_img{padding: 0 10px 0 10px;}
+.weather.list .wt_week ul li.on .tempthan{font-weight: bold;}
+
+/* 심플형 */
+.weather.sim{width: 208px;}
+.weather.sim .wt_top .wt_title{height: 46px;}
+.weather.sim .wt_top .wt_title .meteo{display: none;}
+.weather.sim .wt_top .wt_title .locate{position: absolute;left: 31px; top: 11px;}
+.weather.sim .wt_top .wt_title .week_wrap{position: absolute;left: 112px;top:11px;}
+.weather.sim .wt_top .wt_title .pop_location{left: -5px;top: 39px;}
+.weather.sim .wt_top .wt_cont{border-top: 1px solid #e4e4e4;padding: 16px 0 0 8px;}
+.weather.sim .wt_top .wt_cont .wt_box{position: relative;top:-10px;}
+.weather.sim .wt_top .wt_cont .wt_box .temp{padding: 0 0 0 0;}
+.weather.sim .wt_top .wt_cont .wt_box .wet{display: none;}
+.weather.sim .wt_top .wt_cont .wt_box .meteo{display: block;text-align: center;padding: 5px 0 0 0;}
+.weather.sim .wt_week{display: none;}

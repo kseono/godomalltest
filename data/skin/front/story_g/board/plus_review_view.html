@@ -1,0 +1,295 @@
+{*** 상품상세 - 플러스 리뷰 게시글 보기 | board/plus_review_lview.php ***}
+<script src="../js/slider/slick/slick.js" type="text/javascript" charset="utf-8"></script>
+<style>
+    .js-pr-slider div img, .js-pr-slider .slick-slide img {
+        width: 100%;
+    }
+
+    .slick-slide {
+        background-color: #dddddd;
+        opacity: 0.9;
+    }
+
+    .js-pr-slider .slick-prev, .js-pr-slider .slick-next {
+        font-size: 0;
+        line-height: 0;
+        position: absolute;
+        top: 45%;
+        display: block;
+        width: 27px;
+        height: 44px;
+        padding: 0;
+        -webkit-transform: translate(0, -45%);
+        -ms-transform: translate(0, -45%);
+        transform: translate(0, -45%);
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    .js-pr-slider .slick-prev {
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23ffffff'%2F%3E%3C%2Fsvg%3E");
+        background-repeat: no-repeat;
+        left: 10px;
+        right: auto;
+    }
+
+    .js-pr-slider .slick-next {
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23ffffff'%2F%3E%3C%2Fsvg%3E");
+        background-repeat: no-repeat;
+        right: 10px;
+        left: auto;
+    }
+
+    .js-pr-slider .slick-dots {
+        position: absolute;
+        bottom: 10px;
+        display: block;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+    }
+
+    .js-pr-slider .slick-dots li {
+        position: relative;
+        display: inline-block;
+        margin: 0 5px;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .js-pr-slider .slick-dots li button {
+        font-size: 0;
+        line-height: 0;
+        display: block;
+        width: 10px;
+        height: 10px;
+        padding: 5px;
+        cursor: pointer;
+        border: 0;
+        outline: none;
+        border-radius: 50%;
+        background: #454d51;
+        opacity: 0.75;
+    }
+
+    .js-pr-slider .slick-dots li.slick-active button {
+        background: #fa2828;
+        opacity: 1;
+    }
+</style>
+
+<!-- 레이어 호출시 딤처리 -->
+
+<!-- //레이어 호출시 딤처리 -->
+<!-- 수정 레이어 -->
+<style>
+    .slider-wrap {
+        position: relative;
+        display: block;
+        box-sizing: border-box;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+        -khtml-user-select: none;
+        -ms-touch-action: pan-y;
+        touch-action: pan-y;
+        -webkit-tap-highlight-color: transparent;
+    }
+</style>
+<div class="plusreview-view-layer js-pr-row" data-sno="{=data.sno}">
+    <div class="wrap">
+        <div class="close-container">
+            <button class="close">닫기</button>
+        </div>
+        <div class="image-viewer slider-wrap js-pr-slider">
+            <!--{@ data.uploadedFile}-->
+            <div>
+                <img src="{.src}">
+            </div>
+            <!--{/}-->
+        </div>
+        <div class="summary">
+            <div class="goods-image"><img src="{=data.goodsImageSrc}"></div>
+            <div class="rating"><span class="title">평가 </span><span class="score">{=data.goodsInfo.goodsPt.avg}</span><span class="title">리뷰 </span><span class="score">{=data.goodsInfo.reviewCount}</span>
+            </div>
+            <div class="star">
+                <!--{  ? data.goodsPt > 0}-->
+                <!--{ @range(1,data.goodsPt)}-->★<!--{/}-->
+                <!--{/}-->
+            </div>
+        </div>
+        <div class="content-container">
+            <div class="title">{=data.goodsNm}</div>
+            <!--{ ? plusReviewConfig.addFormFl == 'y' || data.option}-->
+            <div class="goods-info-container">
+                <!--{ @ data.addFormData}-->
+                <div class="item">
+                    <div class="title">{.key_}</div>
+                    <div class="value">{.value_}</div>
+                </div>
+                <!--{/}-->
+                <!--{ @ data.option}-->
+                <div class="item">
+                    <div class="title">{.name}</div>
+                    <div class="value">{.value}</div>
+                </div>
+                <!--{/}-->
+            </div>
+            <!--{/}-->
+            <div class="content"><span class="text new">{=data.viewContents}</span></div>
+            <div class="bottom-info">
+                <!--{ ? plusReviewConfig.recommendFl == 'y'}-->
+                <span class="like">추천:<span class="js-pr-recommend-cnt">{=data.recommend}</span></span>
+                <span class="like"><button type="button" class="like-button js-pr-btn-recommend">추천하기</button></span>
+                <!--{/}-->
+            </div>
+        </div>
+        <div class="clear-both"></div>
+    </div>
+</div>
+<!--</div>-->
+<script>
+    $(document).ready(function () {
+        var goodsNo = '{=data.goodsNo}';
+        $(document).mousedown(function(e){
+            $('.plusreview-view-layer').each(function(){
+                if( $(this).css('display') == 'block' )
+                {
+                    var l_position = $(this).offset();
+                    l_position.right = parseInt(l_position.left) + ($(this).width());
+                    l_position.bottom = parseInt(l_position.top) + parseInt($(this).height());
+
+                    if( ( l_position.left <= e.pageX && e.pageX <= l_position.right )
+                        && ( l_position.top <= e.pageY && e.pageY <= l_position.bottom ) )
+                    {
+                    }
+                    else
+                    {
+                        $(this).find('.close').trigger('click');
+                    }
+                }
+            });
+        });
+
+        $('.plusreview-view-layer .goods-image img').bind('click', function () {
+            window.open('../goods/goods_view.php?goodsNo=' + goodsNo);
+        }).css('cursor', 'pointer');
+
+        $('.plusreview-view-layer .js-pr-btn-recommend').unbind('click').bind('click', function () {
+            var row = $(this).closest('.js-pr-row');
+            var sno = row.data('sno');
+            $.ajax({
+                method: "POST",
+                data: {mode: 'recommend', sno: sno},
+                cache: false,
+                url: "../board/plus_review_ps.php",
+                success: function (data) {
+                    alert(data.msg);
+                    if (data.result == 'ok') {
+                        row.find('.js-pr-recommend-cnt').text(data.cnt);
+                    }
+                },
+                error: function (data) {
+                    alert(data.message);
+                }
+            })
+        })
+
+        $('.js-pr-slider').slick({
+            autoplay: false,
+            dots: true,
+            arrows: true,
+            infinite: true,
+//                autoplaySpeed : {=bannerSliderTime},
+//                centerMode: true,
+            speed: 10,
+//            slidesToShow: 1,
+            fade: true,
+            adaptiveHeight: false
+        });
+
+        $('.plusreview-view-layer .slick-slide img').load(function () {
+            sliderResize(0);
+        })
+
+        $('.js-pr-slider').on('beforeChange', function (event, slick, currentSlide, nextSlide) {
+            $('.plusreview-view-layer').hide();
+            sliderResize(nextSlide)
+            $('.plusreview-view-layer').show();
+        })
+    });
+
+    function sliderResize(nextSlide) {
+        var activeSlide = $('.plusreview-view-layer .slick-slide[data-slick-index="' + nextSlide + '"]');
+
+        var activeImg = activeSlide.find('img');
+        var naturalWidth = activeImg.get(0).naturalWidth;
+        var naturalHeight = activeImg.get(0).naturalHeight;
+//        var minWidth = 500;
+        var minWidth = 700;
+        var maxWidth = 1000;
+//        var maxHeight = 750;
+        var maxHeight = 700;
+        var defaultWidth = 700; //css 초기화 사이즈
+        var defaultHeight = 470; //css 초기화 사이즈
+
+        var viewImageWidth = defaultWidth;
+        var viewImageHeight = defaultHeight;
+        var radio = 1;
+        if (naturalHeight < naturalWidth) {  //가로가 더 길면
+            if (naturalWidth > maxWidth) {   //가로가 최대가로보다 크면
+                viewImageWidth = maxWidth; //가로는 최대가로
+            }
+            else {
+                viewImageWidth = naturalWidth;
+            }
+
+            if (viewImageWidth != naturalWidth) {
+                radio = (naturalHeight / naturalWidth).toFixed(2);
+                viewImageHeight = viewImageWidth * radio;
+            }
+            else {
+                viewImageHeight = naturalHeight;
+            }
+        }
+        else {
+            if (naturalHeight > maxHeight) {   //가로가 최대가로보다 크면
+                viewImageHeight = maxHeight; //가로는 최대가로
+            }
+            else {
+                viewImageHeight = naturalHeight;
+            }
+
+            if (viewImageHeight != naturalHeight) {
+                var radio = (naturalWidth / naturalHeight).toFixed(2);
+                viewImageWidth = viewImageHeight * radio;
+            }
+            else {
+                viewImageWidth = naturalWidth;
+            }
+        }
+        activeImg.width(viewImageWidth).height(viewImageHeight); //이미지 사이즈 변경
+        var layerWidth = 0;
+        if (viewImageWidth > minWidth) {  //이미지가로가 최소 가로 보다 크고
+            if (viewImageWidth < maxWidth) {    //최대가로보다 작으면
+                layerWidth = viewImageWidth;
+            }
+            else {  //최대가로보다 크면
+                layerWidth = maxWidth;
+            }
+        }
+        else {  //이미지가로가 최소가로보다 작으면
+            layerWidth = minWidth;
+        }
+        $('.plusreview-view-layer .image-viewer').css('width', layerWidth).css('height', viewImageHeight);
+        $('.plusreview-view-layer').width(layerWidth);
+        $('.plusreview-view-layer .content-container').width(layerWidth - 181);
+        activeSlide.css('width', layerWidth + 'px');
+
+        $('.plusreview-view-layer').center();
+        $('.plusreview-view-layer').css('top', '5%')
+    }
+</script>

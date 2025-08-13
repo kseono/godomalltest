@@ -1,0 +1,95 @@
+{*** 휴면회원 해제 인증 | member/wake_certification.php ***}
+{ # header }
+<div class="member dormancy"><h2>{=__('휴면 회원')}</h2>
+    <div class="box">
+        <p class="msg">{=__('장기 미 접속으로 인해
+            %s휴면회원%s
+            전환 상태입니다.', '<span>', '</span>')}
+        </p>
+        <ul class="date">
+            <li>{=__('최초가입일')} :
+                <strong>{memberInfo['entryDt']}</strong>
+            </li>
+            <li>{=__('휴면처리일')} :
+                <strong class="dormancy-start">{memberInfo['sleepDt']}</strong>
+            </li>
+        </ul>
+        <p class="guide">{=__('정보통신망법 이용촉진 및 정보보호 등에 관한 법률에 의거하여, 장기간 접속하지 않으신 <br/>회원님들의 개인정보가 휴면처리 상태입니다.')}
+            <strong>{=__('휴면 처리 해제를 원하실 경우 아래 방법에 따라 휴면상태를 해제하시기 바랍니다.')}</strong>
+        </p>
+        <div class="find-pw" id="boxAuth">
+            <p>{=__('수신된')} {? authType == 'authEmail'}{=__('이메일의')}{:}SMS{/} {=__('인증번호를 입력해 주세요.')}</p>
+            <div class="input-id input-certify">
+                <div style="width:288px;" class="txt-field">
+                    <input type="text" class="text" id="inputCertify" placeholder="인증번호 입력">
+                </div>
+                <p>{? authType == 'authEmail'} {=__('인증메일이 도착하지 않았나요?')} {: authType == 'authSms'} {=__('인증번호가 도착하지 않았나요?')} {/}<a href="#" name="btnAgain">{=__('인증번호 다시받기')}</a></p>
+                <p class="dn" id="msgAuthError">
+                    <strong>{=__('잘못된 인증번호 입니다. 다시 입력해 주세요.')}</strong>
+                    <a href="#" name="btnAgain">{=__('인증번호 다시받기')}</a></p>
+            </div>
+        </div>
+        <div class="btn">
+            <button class="skinbtn point1 ja-prev" type="button" id="btnPrevStep"><em>{=__('이전')}</em></button>
+            <button class="skinbtn point2 ja-next" type="button" id="btnNextStep"><em>{=__('휴면 해제하기')}</em></button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    (function ($, window, document, undefined) {
+        var url = '../member/wake_ps.php';
+
+        function cancel() {
+            window.location.href = '../member/wake.php';
+        }
+
+        function again() {
+            var $ajax = $.ajax(url, {
+                method: "POST",
+                data: {
+                    mode: "{memberInfo['authType']}"
+                }
+            });
+            $ajax.done(function (data, textStatus, jqXHR) {
+                console.log('gd_member ajax', data, textStatus, jqXHR);
+                var code = data.code;
+                var message = data.message;
+                if (_.isUndefined(code) && _.isUndefined(message)) {
+                    alert("{=__('인증번호가 재발송 되었습니다.')}");
+                } else {
+                    alert(message);
+                }
+            });
+        }
+
+        function auth() {
+            var $ajax = $.ajax(url, {
+                method: "POST",
+                data: {
+                    mode: "certificationAuthNumber",
+                    number: $('#inputCertify').val()
+                }
+            });
+            $ajax.done(function (data, textStatus, jqXHR) {
+                console.log('gd_member ajax', data, textStatus, jqXHR);
+                var code = data.code;
+                var message = data.message;
+                if (_.isUndefined(code) && _.isUndefined(message)) {
+                    window.location.href = data;
+                } else {
+                    alert(message);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $('#btnPrevStep').click(cancel);
+            $('a[name="btnAgain"]').click(function (e) {
+                e.preventDefault();
+                again();
+            });
+            $('#btnNextStep').click(auth);
+        });
+    })($, window, document);
+</script>
+{ # footer }

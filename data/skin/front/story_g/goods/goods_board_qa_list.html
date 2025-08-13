@@ -1,0 +1,60 @@
+{*** 상품상세 - 상품 문의 리스트 | goods/goods_board_qa_list.php ***}
+<table id="js-qa-board-table" class="review-board" cellspacing="0" border="1">
+    <colgroup>
+        <col width="6%">
+        <col>
+        <col width="10%">
+        <col width="10%">
+        <col width="10%">
+    </colgroup>
+    <thead>
+    <tr>
+        <th>{=__('번호')}</th>
+        <th>{=__('제목')}</th>
+        <th>{=__('작성자')}</th>
+        <th>{=__('작성일')}</th>
+        <th>{=__('진행상황')}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--{? bdList.list }-->
+    <!--{ @ bdList.list }-->
+    <tr class="preview js-data-row" data-bdid="{req.bdId}" data-sno="{.sno}" data-auth="{.auth.view}">
+        <td>{=.articleListNo}</td>
+        <td class="txt-la">
+            {.gapReply}
+            <span <!--{ ? .groupThread }-->class="reply" style="padding-left:15px;"  <!--{/}-->>
+            <!--{ ? .isSecret == 'y' }-->
+            <img src="{bdList.cfg.iconImage.secret.url}" align=absmiddle>
+            <!--{ / }-->
+            <a href="javascript:void(0)" class="js-btn-view">{.subject}</a>
+            <!--{? bdList.cfg.bdMemoFl == 'y' && .memoCnt>0}-->
+            <span class="c-red">({.memoCnt})</span>
+            <!--{/}-->
+            <!--{ ? .isFile == 'y' }-->
+            <img src="{bdList.cfg.iconImage.attach_file.url}" alt="{=__('파일첨부 있음')}"/>
+            <!--{/}-->
+            <!--{ ? .isImage == 'y' }-->
+            <img src="{bdList.cfg.iconImage.attach_img.url}" alt="{=__('이미지첨부 있음')}"/>
+            <!--{/}-->
+            <!--{ ? .isNew == 'y' }--><!--<img alt="신규 등록글" src="img/icon/new.png"/>-->
+            <img src="{bdList.cfg.iconImage.new.url}" alt="{=__('신규 등록글')}"/>
+            <!--{/}-->
+            </span>
+        </td>
+        <td class="txt-la">{.writer}</td>
+        <td>{.regDate}</td>
+        <td <!--{ ? .replyComplete}-->class="complete"<!--{:}-->class="wait"<!--{/}-->>{.replyStatusText}</td>
+    </tr>
+    <tr class="detail js-detail" data-bdid="{req.bdId}" data-sno="{.sno}" data-auth="{.auth.view}">
+        <td colspan="5"></td>
+    </tr>
+    <!--{/}-->
+    <!--{:}-->
+    <tr class="not-record">
+        <td class="no-data" colspan="5">{=__('등록된 상품문의가 없습니다.')}</td>
+    </tr>
+    <!--{/}-->
+    </tbody>
+</table>
+{pagienation}

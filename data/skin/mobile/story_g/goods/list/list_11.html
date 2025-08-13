@@ -1,0 +1,242 @@
+{*** 장바구니형 | goods/list/list_11.html ***}
+
+<!--{ ? goodsList }-->
+<!--{ @ goodsList }-->
+<!--{ @ .value_}-->
+<div class="goods-list-item">
+    <div class="goods-list-img">
+        <a href="{=gd_goods_url(..goodsUrl, ..goodsNo, 1)}" target="<!--{ ? themeInfo.relationLinkFl == 'blank' }-->_blank<!--{ : }-->_self<!--{ / }-->"> <!--{ ? in_array('img',themeInfo.displayField) && gd_isset(..goodsImage) }-->{..goodsImage}<!--{ / }-->
+            <!--{ ? themeInfo.soldOutIconFl == 'y'  && ..soldOut =='y' &&  soldoutDisplay.soldout_overlay != '0' }--><span class="soldout-img" title="{=__('품절상품입니다.')}" style="background-image:url('{soldoutDisplay.soldout_overlay_img}');">{=__('품절')}</span><!--{ / }-->
+            <!--{ ? ..timeSaleFl }-->
+            <span class="timesale-mask">
+                <img src="../../img/common/icon-timesale.png" alt="" class="icon-timesale">
+                {=__('타임세일')}
+            </span>
+            <!--{ / }-->
+            <!--{ ? in_array('coupon',themeInfo.displayField) && ..couponPrice != '' }--> <div class="goods-list-coupon" <!--{ ? !in_array('img',themeInfo.displayField) && gd_isset(..goodsImage) }-->style="right:initial;" <!--{ / }-->><img src="../../img/common/icon-coupon-img.png" alt="" style="width:32px;height:32px;"></div><!--{ / }-->
+    </a>
+</div>
+<!--{ ? in_array('goodsColor',themeInfo.displayField) }-->
+{..goodsColor}
+<!--{ / }-->
+<div class="goods-list-content">
+    <div class="goods-list-info">
+        <a href="{=gd_goods_url(..goodsUrl, ..goodsNo, 1)}" target="<!--{ ? themeInfo.relationLinkFl == 'blank' }-->_blank<!--{ : }-->_self<!--{ / }-->">
+            <!--{ ? themeInfo.iconFl == 'y' }-->
+            <div class="tags">
+                {..goodsIcon}
+            </div>
+            <!--{ / }-->
+            <!-- 솔드아웃 -->
+            <!--{ ? themeInfo.soldOutIconFl == 'y'  && ..soldOut =='y' && soldoutDisplay.soldout_icon != 'disable' }-->
+            <div class="soldout-icon display-soldout"><img src="{soldoutDisplay.soldout_icon_img}"></div>
+            <!--{ / }-->
+            <!-- //솔드아웃 -->
+            <!--{ ? in_array('brandCd',themeInfo.displayField) && gd_isset(..brandNm) }--><div class="goods-br">{..brandNm}</div>    <!--{ / }-->
+            <!--{ ? in_array('makerNm',themeInfo.displayField) && gd_isset(..makerNm) }--><div class="goods-br">{..makerNm}</div><!--{ / }-->
+            <!--{ ? in_array('goodsNm',themeInfo.displayField) && gd_isset(..goodsNm) }--><div class="goods-nm">{..goodsNm}</div><!--{ / }-->
+            <!--{ ? in_array('shortDescription',themeInfo.displayField) && gd_isset(..shortDescription) }--> <div class="goods-br">{..shortDescription}</div><!--{ / }-->
+            <!--{ ? in_array('fixedPrice',themeInfo.displayField) && gd_isset(..fixedPrice) && ..fixedPrice > 0 && ..goodsPriceDisplayFl =='y'}--> <div class="goods-br" style="<!--{ ? in_array('fixedPrice', themeInfo.priceStrike)}-->text-decoration:line-through;<!--{ / }-->">{=gd_global_currency_symbol()}{=gd_global_money_format(..fixedPrice)}{=gd_global_currency_string()} <span class='add_currency'>{=gd_global_add_currency_display(..fixedPrice)}</span></div><!--{ / }-->
+            <!--{ ? in_array('goodsPrice',themeInfo.displayField) && gd_isset(..goodsPrice) }-->
+            <div class="goods-price" style="<!--{ ? !..timeSaleFl }--><!--{ ? in_array('goodsPrice', themeInfo.priceStrike) && ((in_array('coupon', themeInfo.displayField) && ..couponPrice != '' && ..goodsPriceDisplayFl =='y') || (in_array('goodsDiscount', themeInfo.displayField) && ..dcPrice > 0)) }-->text-decoration:line-through;<!--{ / }--><!--{ / }-->"><span <!--{ ? !(in_array('coupon',themeInfo.displayField) && ..couponPrice != '') }-->class="red" style="font-weight:bold"<!--{ / }-->>
+                <!--{ ? themeInfo.soldOutIconFl == 'y'  && ..soldOut =='y' && soldoutDisplay.soldout_price == 'text'}-->
+                {=soldoutDisplay.soldout_price_text}
+                <!--{ : themeInfo.soldOutIconFl == 'y'  && ..soldOut =='y' && soldoutDisplay.soldout_price == 'custom'}-->
+                <img src="{soldoutDisplay.soldout_price_img}">
+                <!--{ : }-->
+                <!--{ ? ..goodsPriceString !='' }-->
+                {..goodsPriceString}
+                <!--{ : }-->
+                <!--{ ? ..goodsPriceDisplayFl =='y'}-->
+                <!--{ ? ..timeSaleFl }-->
+                <!--{ ? ..timeSaleGoodsPriceViewFl =='y'}-->
+                <em class=""> {=gd_global_currency_symbol()}{=gd_global_money_format(..oriGoodsPrice)}{=gd_global_currency_string()} <span class='add_currency'>{=gd_global_add_currency_display(..oriGoodsPrice)}</span></em><br/>
+                <!--{ / }-->
+                <span class='add_currency'>{=gd_global_add_currency_display(..goodsPrice)}</span>
+                {=gd_global_currency_symbol()}{=gd_global_money_format(..goodsPrice)}</em>{=gd_global_currency_string()} <i class="i-time-icon"></i><!--{ ? gd_isset(..timeSaleLeftTimeTxt) }--><span class='time_sale_text'> {..timeSaleLeftTimeTxt}</span><!--{ / }-->
+                <!--{ : }-->
+                {=gd_global_currency_symbol()}{=gd_global_money_format(..goodsPrice)}</em>{=gd_global_currency_string()}
+                <span class='add_currency'>{=gd_global_add_currency_display(..goodsPrice)}</span>
+                <!--{ / }-->
+                <!--{ / }-->
+                <!--{ / }-->
+                <!--{ / }-->
+            </div><!--{ / }-->
+            <!--{ ? in_array('goodsDiscount', themeInfo.displayField) && ..dcPrice > 0 && ..goodsPriceDisplayFl =='y' }-->
+            <div class="goods-price">
+                {=__('할인가')} : {=gd_global_currency_symbol()}{=gd_global_money_format(..goodsPrice - ..dcPrice)}{=gd_global_currency_string()} {=gd_global_add_currency_display(..goodsPrice - ..dcPrice)}<!--{ ? in_array('dcRate', themeInfo.displayAddField) && gd_isset(..goodsDcRate) }--> <span class='add_currency'>({=..goodsDcRate}%)</span><!--{ / }-->
+            </div>
+            <!--{ / }-->
+            <!-- 쿠폰할인 -->
+            <!--{ ? in_array('coupon',themeInfo.displayField) && ..couponPrice != '' && ..goodsPriceDisplayFl =='y'}--><div class="goods-coupon-price display-coupon"><span class="red">{=__('쿠폰가')} : <b>{=gd_global_currency_symbol()}{=gd_global_money_format(..couponPrice)}{=gd_global_currency_string()} <span class='add_currency'>{=gd_global_add_currency_display(..couponPrice)}</span></span><!--{ ? in_array('dcRate', themeInfo.displayAddField) && gd_isset(..couponDcRate) }--> <span class='add_currency'>({=..couponDcRate}%)</span><!--{ / }--></b> <div class="goods-coupon-icon"></div></div><!--{ / }-->
+            <!-- //쿠폰할인 -->
+            <!--{ ? in_array('goodsDcPrice',themeInfo.displayField) && gd_isset(..goodsDcPrice) && ..goodsPriceDisplayFl =='y'}-->
+            <div class="goods-br">{=__('상품할인')} : {=gd_global_money_format(..goodsDcPrice)} {=gd_global_currency_string()}</div><!--{ / }-->
+            <!--{ ? in_array('mileage',themeInfo.displayField) && gd_isset(..mileageBasic) && ..goodsPriceDisplayFl =='y'}-->
+            <div class="goods-br">{=mileageData['name']} :  {..mileageBasic} {=mileageData['unit']}</div><!--{ / }-->
+            <!--{ ? in_array('goodsModelNo',themeInfo.displayField) && gd_isset(..goodsModelNo)  && ..goodsPriceDisplayFl =='y'}-->
+            <div class="goods-br">{=__('모델번호')} : {..goodsModelNo}</div>
+            <!--{ / }-->
+            <!--{ ? in_array('goodsNo',themeInfo.displayField) && gd_isset(..goodsNo) }-->
+            <div class="goods-br">{=__('상품코드')} : {..goodsNo}</div>
+            <!--{ / }-->
+        </a>
+        <!--{ ?..soldOut != 'y' }-->
+        <div class="btn-area">
+            <input type="button" value="{=__('찜하기')}" class="wish btn-add-wish{mainData.sno}{mainData.groupSno} btn-wish" data-goods-no="{..goodsNo}" data-optionfl="{..optionFl}" data-min-order-cnt="{..minOrderCnt}" data-goods-nm="{=gd_remove_only_tag(..goodsNm)}" data-goods-price="{..goodsPrice}" data-goods-image-src="{..goodsImageSrc}" data-sales-unit="{=..salesUnit}" data-fixed-sales="{=..fixedSales}" data-fixed-order-cnt="{=..fixedOrderCnt}">
+            <input type="button" value="{=__('장바구니')}" data-key="optionViewLayer" data-type="directCart" class="js-option-layer btn-cart" data-goodsno="{..goodsNo}">
+            <input type="button" value="{=__('바로구매')}" data-key="optionViewLayer" data-type="directOrder" class="js-option-layer btn-buy" data-goodsno="{..goodsNo}">
+        </div>
+        <!--{ / }-->
+    </div>
+</div>
+</div>
+<!--{ / }-->
+<!--{ / }-->
+<!--{ : }-->
+<div class="no_bx">
+    <p><strong>{=__('상품이 존재하지 않습니다.')}</strong></p>
+</div>
+<!--{ / }-->
+<!-- 타임세일 더보기 -->
+<!--{ ? totalPage > 1 && timeSaleInfo.moreBottomFl == 'y' && themeInfo.displayType != '04' && themeInfo.displayType != '05' && themeInfo.displayType != '06' && themeInfo.displayType != '07' }-->
+<div class="btn_goods_down_more">
+    <input type="hidden" name="totalPage" value="{totalPage}" >
+    <button class="btn_goods_view_down_more" data-page="2">{=__('더보기')}</button>
+</div>
+<!--{ / }-->
+<!-- 장바구니 담기 레이어 -->
+<!--{ ? cartInfo.moveCartPageFl == 'n' && cartInfo.moveCartPageDeviceFl != 'pc' }-->
+<div id="addCartLayer" class="add-cart-layer dn">
+    <div class="wrap">
+        <div>
+            <p><strong>{=__('상품이 장바구니에 담겼습니다.')}</strong><br />{=__('바로 확인하시겠습니까?')}</p>
+        </div>
+        <div class="btn-box">
+            <button class="btn layer-cartaddcancel btn-close"><em>{=__('취소')}</em></button>
+            <button class="btn layer-cartaddconfirm btn-cart"><em>{=__('확인')}</em></button>
+        </div>
+    </div>
+</div>
+<!--{ / }-->
+<!--{ ? cartInfo.wishPageMoveDirectFl == 'n' && cartInfo.moveWishPageDeviceFl != 'pc' }-->
+<div id="addWishLayer" class="add-wish-layer dn">
+    <div class="wrap">
+        <div>
+            <p><strong>{=__('상품이 찜 리스트에 담겼습니다.')}</strong><br />{=__('바로 확인하시겠습니까?')}</p>
+        </div>
+        <div class="btn-box">
+            <button class="btn layer-wishaddcancel btn-close">{=__('취소')}</button>
+            <button class="btn layer-wishaddconfirm btn-wish">{=__('확인')}</button>
+        </div>
+    </div>
+</div>
+<!--{ / }-->
+<div id="optionViewLayer" class="layer_wrap dn"></div>
+<form id="frmWishTemplateView" method="post">
+    <input type="hidden" name="mode" value="wishIn">
+    <input type="hidden" name="cartMode" value="">
+    <input type="hidden" name="optionFl" value="">
+</form>
+<script type="text/javascript">
+    <!--
+
+    // DOM 로드
+    $(document).ready(function() {
+
+        if ($('body #layerDim').length < 1) {
+            var addHtml = '<div id="layerDim" class="dn zidx110"></div>';
+            $('body').append(addHtml);
+        }
+
+        //찜하기
+        $('.btn-area').on('click', '.btn-add-wish{mainData.sno}{mainData.groupSno}', function(e){
+            e.stopImmediatePropagation();
+            <!--{ ? gd_is_login() === false }-->
+            alert("{=__('로그인하셔야 본 서비스를 이용하실 수 있습니다.')}");
+            document.location.href = "../member/login.php";
+            return false;
+            <!--{ : }-->
+
+            {wishScript}
+            var minOrderCnt = 1;
+            if ($(this).data('min-order-cnt')) {
+                minOrderCnt = parseInt($(this).data('min-order-cnt'));
+                if (minOrderCnt > 1) {
+                    alert(__('최소 %s개 이상 구매가능합니다', minOrderCnt));
+                }
+            }
+            $('#frmWishTemplateView input[name=\'cartMode\']').val($(this).data('goods-no'));
+            $('#frmWishTemplateView input[name=\'optionFl\']').val($(this).data('optionfl'));
+
+            var params = $('#frmWishTemplateView').serialize();
+
+            $.ajax({
+                method: "POST",
+                cache: false,
+                url: '../mypage/wish_list_ps.php',
+                data: params,
+                success: function (data) {
+                    // error 메시지 예외 처리용
+                    if (!_.isUndefined(data.error) && data.error == 1) {
+                        alert(data.message);
+                        return false;
+                    }
+
+                    <!--{ ? cartInfo.wishPageMoveDirectFl == 'y' || (cartInfo.wishPageMoveDirectFl == 'n' && cartInfo.moveWishPageDeviceFl == 'pc') }-->
+                    location.href = "../mypage/wish_list.php";
+                    return false;
+                    <!--{ / }-->
+
+                    $("#addWishLayer").removeClass('dn');
+                    $('#layerDim').removeClass('dn');
+                    return false;
+                },
+                error: function (data) {
+                    alert(data.message);
+                }
+            });
+
+            return false;
+            <!--{ / }-->
+        });
+
+        // 장바구니 이동 레이어
+        <!--{ ? cartInfo.moveCartPageFl == 'n' && cartInfo.moveCartPageDeviceFl != 'pc' }-->
+        $('.layer-cartaddconfirm').click(function(){
+            location.href = '../order/cart.php';
+        });
+        <!--{ / }-->
+
+        // 찜리스트 레이어
+        <!--{ ? cartInfo.wishPageMoveDirectFl == 'n' && cartInfo.moveWishPageDeviceFl != 'pc' }-->
+        $('.layer-wishaddconfirm').click(function(){
+            $('#addWishLayer').addClass('dn');
+            $('#layerDim').addClass('dn');
+            location.href = '../mypage/wish_list.php';
+        });
+        <!--{ / }-->
+
+        // 타임세일 더보기
+        $('.btn_goods_view_down_more').on('click', function(e){
+            gd_get_list($(this).data('page'));
+        });
+    });
+
+    // 타임세일 더보기
+    function gd_get_list(page) {
+        var displayType = $('input[name="displayType"]').val();
+        var sort = $('select[name="goods_sort"]').val();
+        var totalPage = $('input[name="totalPage"]').val();
+
+        $.post('./time_sale_ps.php', {'mode' : 'get_more', 'more' : page, 'displayType' : displayType, 'sno' : '{timeSaleInfo.sno}','sort' : sort}, function (data) {
+            $(".goods-content").html(data);
+            if (parseInt(page) + 1 > totalPage) {
+                $('.btn_goods_view_down_more').hide();
+            } else {
+                $('.btn_goods_view_down_more').data('page', parseInt(page) + 1);
+            }
+        });
+    }
+    //-->
+</script>

@@ -1,0 +1,36 @@
+{*** 발송지연 사유 레이어 | mypage/layer_order_naverpay_reason.php ***}
+
+<div class="box reason-layer">
+    <div class="view">
+        <h2>
+            {=__('발송지연정보')}
+        </h2>
+        <div class="table1">
+            <table style="table-layout:fixed;">
+                <colgroup>
+                    <col style="width:133px;">
+                    <col>
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th class="ta-l">{=__('발송지연사유')}</th>
+                    <td>{data.reason}</td>
+                </tr>
+                <tr>
+                    <th class="ta-l">{=__('발송기한')}</th>
+                    <td>{=data.date}</td>
+                </tr>
+                <tr>
+                    <th class="ta-l">{=__('발송지연<br>상세 사유')}</th>
+                    <td style="word-wrap:break-word"><div class="">{=nl2br(data.contents)}</div></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="btn">
+            <a href="#" class="skinbtn point2 layerboard-save btn-close"><em>{=__('확인')}</em></a>
+        </div>
+        <button title="{=__('닫기')}" class="close" type="button">{=__('닫기')}</button>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+# ------------- === 경고 === -------------
+#  해당 파일은 절대 수정하지 마십시요.
+#  수정시 사이트 오작동 및 오류로 인해 운영이 불가능 할 수 있으며,
+#  자동패치로 인해 통보없이 변경될 수 있습니다.
+
+DirectoryIndex route.php
+RewriteEngine on
+
+RequestHeader set X-Cache-Key "%{ORIGINAL_URI}e" env=ORIGINAL_URI
+
+RewriteCond %{REQUEST_URI} ^/$ [OR]
+RewriteCond %{REQUEST_URI} ^/index\.php$ [OR]
+RewriteCond %{REQUEST_URI} ^/main/index\.php$ [OR]
+RewriteCond %{REQUEST_URI} ^/goods/goods_view\.php$ [OR]
+RewriteCond %{REQUEST_URI} ^/goods/goods_list\.php$
+RewriteRule .* - [E=ORIGINAL_URI:%{REQUEST_URI}]
+
+RewriteCond %{REQUEST_URI} !^/route\.php$
+
+RewriteCond %{ENV:ORIGINAL_URI} (.+)
+RewriteCond %{HTTP_COOKIE} (^|;\s*)GMCS=([^;]+)
+RewriteRule ^ route.php?original_uri=%{ENV:ORIGINAL_URI} [L,QSA]
+
+RewriteCond %{REQUEST_URI} ^/\.well-known/pki-validation/(.*).txt$
+RewriteRule ^ /data/sslauth/%1.txt [L]
+
+RewriteCond %{REQUEST_URI} \.(gif|jpe?g|png|js|html|css|swf|ico|eot|woff|ttf)$ [NC,OR]
+RewriteCond %{REQUEST_URI} ^/?blank\.php$
+RewriteRule ^ - [L]
+
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.+[^\/])$ $1/
+
+RewriteRule ^ route.php [L]
+
+#bugfix: https://code.google.com/p/chromium/issues/detail?id=114977
+RewriteRule ^favicon.ico$ favicon.ico [L]

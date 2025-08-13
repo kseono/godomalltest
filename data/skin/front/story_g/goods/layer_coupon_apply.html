@@ -1,0 +1,266 @@
+{*** 쿠폰 적용 레이어 | goods/layer_coupon_apply.php ***}
+<div class="box coupon-down-layer apply-layer">
+    <div class="view">
+        <h2>{=__('쿠폰 적용하기')}</h2>
+        <!--{ ? gd_is_login() === false }-->
+        <p>{=__('로그인하셔야 본 서비스를 이용하실 수 있습니다.')}</p>
+        <div class="btn">
+            <button class="skinbtn point1 layer-close btn-close"><em>{=__('취소')}</em></button>
+        </div>
+        <!--{ : }-->
+        <p>{=__('선택한 상품에 적용가능한 총')} <strong><!--{ memberCouponArrData.size_ }-->{=__('개%s의 보유쿠폰이 있습니다.', '</strong>')}</p>
+        <div class="scroll-box">
+            <form name="frmCouponApply" method="post">
+                <div class="table1">
+                    <table>
+                        <colgroup>
+                            <col style="width:60px"/>
+                            <col/>
+                            <col/>
+                            <col/>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>{=__('쿠폰')}</th>
+                            <th>{=__('사용조건')}</th>
+                            <th>{=__('사용기한')}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--{ @ memberCouponArrData }-->
+                        <tr>
+                            <td class="ta-c">
+                            <span class="form-element">
+                                <!--{ ? convertMemberCouponPriceArrData.memberCouponAlertMsg[.memberCouponNo] == 'LIMIT_MIN_PRICE' }-->
+                                <input type="checkbox" id="check{ .index_ }" class="checkbox" disabled="disabled">
+                                <label class="check-s single disabled" for="check{ .index_ }">{=__('선택')}</label>
+                                <!--{ : }-->
+                                <!--{ ? .couponKindType == 'sale' }-->
+                                <input type="checkbox" id="check{ .index_ }" name="memberCouponNo[]" class="checkbox" data-paytype="{ .couponUseAblePaymentType }" data-price="{ convertMemberCouponPriceArrData.memberCouponSalePrice[.memberCouponNo] }" data-useprice="{ cartUseMemberCouponPriceArrData.memberCouponSalePrice[.memberCouponNo] }" data-type="{ .couponKindType }" data-duplicate="{ .couponApplyDuplicateType }" data-couponstate="{.memberCouponState}" data-couponno="{.couponNo}" value="{ .memberCouponNo }">
+                                <!--{ : .couponKindType == 'add' }-->
+                                <input type="checkbox" id="check{ .index_ }" name="memberCouponNo[]" class="checkbox" data-paytype="{ .couponUseAblePaymentType }" data-price="{ convertMemberCouponPriceArrData.memberCouponAddMileage[.memberCouponNo] }" data-useprice="{ cartUseMemberCouponPriceArrData.memberCouponSalePrice[.memberCouponNo] }" data-type="{ .couponKindType }" data-duplicate="{ .couponApplyDuplicateType }" data-couponstate="{.memberCouponState}" data-couponno="{.couponNo}" value="{ .memberCouponNo }">
+                                <!--{ : .couponKindType == 'delivery' }-->
+                                <input type="checkbox" id="check{ .index_ }" name="memberCouponNo[]" class="checkbox" data-paytype="{ .couponUseAblePaymentType }" data-price="{ convertMemberCouponPriceArrData.memberCouponDeliveryPrice[.memberCouponNo] }" data-useprice="{ cartUseMemberCouponPriceArrData.memberCouponSalePrice[.memberCouponNo] }" data-type="{ .couponKindType }" data-duplicate="{ .couponApplyDuplicateType }" data-couponstate="{.memberCouponState}" data-couponno="{.couponNo}" value="{ .memberCouponNo }">
+                                <!--{ / }-->
+                                <label class="check-s single" for="check{ .index_ }">{=__('선택')}</label>
+                                <!--{ / }-->
+                            </span>
+                            </td>
+                            <td class="guide2">
+                                <label for="check{ .index_ }">
+                                    <b>{=gd_currency_symbol()}</b>
+                                    <!--{ ? .couponKindType == 'sale' }-->
+                                    <strong>{=gd_money_format(convertMemberCouponPriceArrData.memberCouponSalePrice[.memberCouponNo])}</strong>
+                                    <!--{ : .couponKindType == 'add' }-->
+                                    <strong>{=gd_money_format(convertMemberCouponPriceArrData.memberCouponAddMileage[.memberCouponNo])}</strong>
+                                    <!--{ : .couponKindType == 'delivery' }-->
+                                    <strong>{=gd_money_format(convertMemberCouponPriceArrData.memberCouponDeliveryPrice[.memberCouponNo])}</strong>
+                                    <!--{ / }-->
+                                    <b>{=gd_currency_string()}</b>
+                                    <span>{ convertMemberCouponArrData[.key_].couponKindType }</span>
+                                    <em>{ .couponNm }</em>
+                                </label>
+                            </td>
+                            <td>
+                                <div class="msg">
+                                    <!--{ ? convertMemberCouponArrData[.key_].couponMaxBenefit }-->
+                                    <span>- { convertMemberCouponArrData[.key_].couponMaxBenefit }</span>
+                                    <!--{ / }-->
+                                    <!--{ ? convertMemberCouponArrData[.key_].couponMinOrderPrice }-->
+                                    <span>- { convertMemberCouponArrData[.key_].couponMinOrderPrice }</span>
+                                    <!--{ / }-->
+                                    <span>- <!--{ convertMemberCouponArrData[.key_].couponApplyDuplicateType }--></span>
+                                </div>
+                            </td>
+                            <td class="ta-c date">
+                                { .memberCouponEndDate }
+                            </td>
+                        </tr>
+                        <!--{ / }-->
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+        <div class="benefits">
+            <div class="detail">
+                <div>
+                    <span>{=__('총 할인금액')}</span> <strong>{=gd_currency_symbol()}<b id="couponSalePrice">0</b>{=gd_currency_string()}</strong>
+                </div>
+                <div>
+                    <span>{=__('총 적립금액')}</span> <strong>{=gd_currency_symbol()}<b id="couponAddPrice">0</b>{=gd_currency_string()}</strong>
+                </div>
+            </div>
+        </div>
+        <div class="btn">
+            <button class="skinbtn point1 layer-close btn-close"><em>{=__('취소')}</em></button>
+            <button class="skinbtn point2 lca-couponapply" id="btnCouponApply"><em>{=__('쿠폰 적용')}</em></button>
+        </div>
+        <!--{ / }-->
+        <button title="{=__('닫기')}" class="close" type="button">{=__('닫기')}</button>
+    </div>
+</div>
+<!--{ ? gd_is_login() !== false }-->
+<script type="text/javascript">
+    <!--
+    $(document).ready(function () {
+        // @todo 적용한 쿠폰이 중복불가 시 쿠폰 변경시 disable 처리 부분 필요
+        $('input:checkbox[name="memberCouponNo[]"]').click(function (e) {
+            if (($(this).prop('checked') == true) && ($(this).data('duplicate') == 'n')) {
+                $('input:checkbox[name="memberCouponNo[]"]').not($(this)).each(function (index) {
+                    $(this).attr("checked", false);
+                    $(this).next('label').removeClass('on');
+                    $(this).attr('disabled', 'disabled');
+                });
+            } else if (($(this).prop('checked') == false) && ($(this).data('duplicate') == 'n')) {
+                $('input:checkbox[name="memberCouponNo[]"]').not($(this)).each(function (index) {
+                    $(this).removeAttr('disabled', 'disabled');
+                });
+            }
+
+            // 장바구니 사용 상태의 쿠폰 선택시 사용여부 레이어
+            if (($(this).prop('checked') == true) && ($(this).data('couponstate') == 'cart')) {
+                var memberCouponNo = $(this).val();
+                var couponPrice = numeral($(this).data('useprice')).format();
+                var couponKindType = $(this).data('type');
+                var couponKindTypeName = '';
+
+                switch (couponKindType) {
+                    case 'sale':
+                        couponKindTypeName = '할인';
+                        break;
+                    case 'add':
+                        couponKindTypeName = '적립';
+                        break;
+                    case 'delivery':
+                        couponKindTypeName = '배송비할인';
+                        break;
+                    case 'deposit':
+                        couponKindTypeName = '예치금지급';
+                        break;
+                }
+
+                if (!confirm(__('장바구니에 담긴 상품에 ' + couponPrice + '원 ' + couponKindTypeName + '으로 이미 적용되어있는 쿠폰입니다.\n 취소 후 이 상품에 적용하시겠습니까?'))) {
+                    return false;
+                }
+
+                $.ajax({
+                    method: "POST",
+                    cache: false,
+                    url: "../goods/goods_ps.php",
+                    data: {
+                        'mode': 'UserCartCouponDel',
+                        'memberCouponNo': memberCouponNo,
+                        'memNo': $("#frmCouponApply>input[name='memNo']").val(),
+                    },
+                    success: function (data) {
+                    },
+                    error: function (data) {
+                    }
+                });
+            }
+
+            var objCouponPrice = couponPriceSum();
+            $('#couponSalePrice').text(numeral(objCouponPrice.sale).format());
+            $('#couponAddPrice').text(numeral(objCouponPrice.add).format());
+        });
+        $('#btnCouponApply').click(function (e) {
+            var couponPaymentTypeCheck = 'n';
+            var couponMileageGiveCheck = false;
+            var couponApplyNoArr = [];
+            var couponNoArr = [];
+            $('input:checkbox[name="memberCouponNo[]"]:checked').each(function (index) {
+                couponApplyNoArr[index] = $(this).val();
+                couponNoArr[index] = $(this).data('couponno');
+                // 결제방식제한쿠폰체크
+                if ($(this).attr('data-paytype') == 'bank') {
+                    couponPaymentTypeCheck = 'y';
+                }
+                if($(this).attr('data-type') == 'add') {
+                    couponMileageGiveCheck = true;
+                }
+            });
+            if (couponApplyNoArr.length > 0){
+                // 쿠폰 사용기간 체크
+                var couponNoString = couponNoArr.join('{c.INT_DIVISION}');
+                var checkCouponType = true;
+                $.ajax({
+                    method: "POST",
+                    cache: false,
+                    async: false,
+                    url: "../goods/goods_ps.php",
+                    data: {mode: 'checkCouponType', couponNo : couponNoString, mileageGiveFl: couponMileageGiveCheck },
+                    success: function (data) {
+                        checkCouponType = data.isSuccess;
+                    },
+                    error: function (e) {
+                    }
+                });
+
+                if(!checkCouponType) {
+                    alert('사용할 수 없는 쿠폰입니다.');
+                    closeLayer();
+                    return false;
+                }
+
+                var couponApplyNoString = couponApplyNoArr.join('{c.INT_DIVISION}');
+                $('#option_display_item_{optionKey} input:hidden[name="couponApplyNo[]"]').val(couponApplyNoString);
+                var objCouponPrice = couponPriceSum();
+                $('#option_display_item_{optionKey} input:hidden[name="couponSalePriceSum[]"]').val(objCouponPrice.sale);
+                $('#option_display_item_{optionKey} input:hidden[name="couponAddPriceSum[]"]').val(objCouponPrice.add);
+                var couponApplyHtml = "<img class=\"btn-coupon-cancel\" src=\"../img/btn/coupon-cancel.png\" data-key=\"{optionKey}\" alt=\"{=__('쿠폰취소')}\" style=\"cursor:pointer\" /> <a href=\"#couponApplyLayer\" class=\"btn-open-layer\" data-key=\"{optionKey}\"><img src=\"../img/btn/coupon-change.png\" alt=\"{=__('쿠폰변경')}\" />";
+                $('#coupon_apply_{optionKey}').html(couponApplyHtml);
+                if($('#cart_tab_coupon_apply_{optionKey}').length) $('#cart_tab_coupon_apply_{optionKey}').html(couponApplyHtml);
+                benefit_calculation();
+            } else {
+                couponCancel('{optionKey}');
+            }
+            if (couponPaymentTypeCheck == 'y') {
+                $('#div-payco').addClass('dn');
+                $('#div-naverpay').addClass('dn');
+            } else {
+                $('#div-payco').removeClass('dn');
+                $('#div-naverpay').removeClass('dn');
+            }
+
+            bindBtnOpenLayer();
+            bindBtnCouponCancel();
+            closeLayer();
+        });
+        couponApplySetting();
+    });
+    // 쿠폰 적용 내용 초기화 (설정)
+    function couponApplySetting() {
+        var couponApplyNoString = '{couponApplyNo}';
+        var couponApplyNoArr = new Array();
+        if (couponApplyNoString) {
+            var couponApplyNoArr = couponApplyNoString.split('{c.INT_DIVISION}');
+        }
+        $.each(couponApplyNoArr, function (index){
+            $('input:checkbox[name="memberCouponNo[]"][value="'+couponApplyNoArr[index]+'"]').trigger('click');
+        });
+        var objCouponPrice = couponPriceSum();
+        $('#couponSalePrice').text(numeral(objCouponPrice.sale).format());
+        $('#couponAddPrice').text(numeral(objCouponPrice.add).format());
+    }
+    // 선택 쿠폰 금액 계산
+    function couponPriceSum() {
+        var salePrice = 0;
+        var addPrice = 0;
+        $('input:checkbox[name="memberCouponNo[]"]:checked').each(function (index) {
+            if ($(this).data('type') == 'sale') {
+                salePrice += parseFloat($(this).data('price'));
+            } else if ($(this).data('type') == 'add') {
+                addPrice += parseFloat($(this).data('price'));
+            }
+        });
+        var couponPrice = {
+            'sale': salePrice,
+            'add': addPrice
+        };
+        return couponPrice;
+    }
+    //-->
+</script>
+<!--{ / }-->

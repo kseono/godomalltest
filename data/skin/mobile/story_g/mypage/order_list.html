@@ -1,0 +1,56 @@
+{*** 마이페이지 > 주문목록 / 배송조회 | mypage/order_list.php ***}
+{ # header }
+<div class="my_tit">
+    <form method="get" name="frmDateSearch" id="frmDateSearch" autocomplete="off">
+        <input type="hidden" name="mode" value="{mode}">
+        <fieldset>
+            <legend>{=__('주문목록/배송조회 날짜 검색')}</legend>
+            <div>
+                <span class="select-cal">
+                    <div class="select-small-outer inp_sel">
+                        {=gd_select_box(null, 'searchPeriod', searchDate, null, selectDate, null, null, 'check-option-inner')}
+                    </div>
+                    <div id="layer" class="layer"></div>
+                </span>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<div id="mypage-orderlist">
+    <!-- 주문상품 리스트 -->
+    {=includeFile('mypage/_order_goods_list.html')}
+    <!--// 주문상품 리스트 -->
+    <div id="mypage-orderlist-more"></div>
+</div>
+
+<div class="block-pd more-btn">
+    <button type="button" class="more-btn btn-gray btn-w btn" data-page="1" data-mode="{mode}">{=__('더보기')}</button>
+</div>
+
+<script type="text/javascript">
+    <!--
+    $(document).ready(function(){
+        $('.more-btn button').click(function(){
+            var page = parseInt($(this).data('page')) + 1;
+            var mode = $(this).data("mode");
+            var searchPeriod = parseInt($('.check-option-inner').val());
+            $.get('./order_list.php', {'listMode' : 'data', 'page' : page, 'mode' : mode, 'searchPeriod' : searchPeriod}, function (data) {
+                if ($(data).filter("div.my_goods.no").length) {
+                    alert("{=__('더이상 주문내역이 없습니다.')}");
+                } else {
+                    $('#mypage-orderlist-more').append(data);
+                    $('.more-btn button').data('page', page);
+                }
+            });
+        })
+
+        // 검색기간 선택
+        if ($('.check-option-inner').length) {
+            $('.check-option-inner').change(function (e) {
+                $('#frmDateSearch').submit();
+            });
+        }
+    });
+    //-->
+</script>
+{ # footer}

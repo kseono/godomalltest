@@ -1,0 +1,43 @@
+{*** [위젯] 상단 검색 | proc/_header_search.html ***}
+
+<div class="search">
+    <form name="frmSearchTop" id="frmSearchTop" action="../goods/goods_search.php" method="get">
+
+        <!--{ ? adUrl }-->
+        <input type="hidden" name="adUrl" value="{adUrl}">
+        <!--{ / }-->
+
+        <fieldset>
+            <legend>{=__('검색폼')}</legend>
+            <div>
+                <input type="text" id="search-form" name="keyword" class="text" title="{adKeyword}" placeholder="{adKeyword}" autocomplete="off" />
+                <input type="image" class="image" id="btnSearchTop" title="{=__('검색')}" value="{=__('검색')}" src="../img/header/btn-search.png" alt="{=__('검색')}"/>
+                <div class="search-area dn">
+                    <input type="hidden" name="recentCount" value="{recentCount}" />
+                    <!--{ ? recentCount > 0 }-->
+                    <div class="recent-area">
+                        <ul class="recent-list">
+                            <li class="li-tit">{=__('최근검색어')}</li>
+                            <!--{ ? recentKeyword }-->
+                            <!--{ @ recentKeyword }-->
+                            <li>
+                                <div>
+                                    <span><a href="../goods/goods_search.php?keyword={=urlencode(.value_[0])}">{=.value_[0]}</a></span>
+                                    <small>{=.value_[1]}</small>
+                                    <button type="button" class="dlt_bn js-recent-keyword-delete" data-recent-keyword="{=.value_[0]}">X</button>
+                                </div>
+                            </li>
+                            <!--{ / }-->
+                            <li class="li-tit hand js-recent-all-delete">{=__('전체삭제')}</li>
+                            <!--{ : }-->
+                            <li class="no-data">{=__('최근 검색어가 없습니다.')}</li>
+                            <!--{ / }-->
+                        </ul>
+                    </div>
+                    <!--{ / }-->
+                    {=includeWidget('proc/_recom_goods.html')}
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

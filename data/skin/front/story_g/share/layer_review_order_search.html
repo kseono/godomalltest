@@ -1,0 +1,66 @@
+{*** 주문 선택 레이어 | share/layer_order_search.php ***}
+<div class="section">
+    <form id="frmSelect">
+    <div class="section-body">
+        <!-- 주문상품 리스트 -->
+        <div class="table1 type1 type3">
+            <table class="goods-board">
+                <colgroup>
+                    <col style="width:50px">
+                    <col style="width:93px">
+                    <col>
+                    <col style="width:150px">
+                    <col style="width:100px">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>{=__('선택')}</th>
+                    <th>{=__('날짜/주문번호')}</th>
+                    <th>{=__('상품명/옵션')}</th>
+                    <th>{=__('상품금액/수량')}</th>
+                    <th>{=__('주문상태')}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--{ @ data}-->
+                <tr>
+                    <td class="ta-c">
+                        <span class="form-element">
+                            <input type="radio" name="orderGoodsNo[]" value="{.sno}" id="orderGoodsNo{.sno}" class="radio">
+                            <label class="choice-s" for="orderGoodsNo{.sno}"></label>
+                        </span>
+                    </td>
+                    <td rowspan="1" class="ta-c ordernum">{=gd_date_format('Y-m-d', .orderDt)}
+                        <div class="c-blue item-orderNo">
+                            {.orderNo}
+                        </div>
+                    </td>
+                    <td class="order-title ">
+                        <div class="img">
+                            <img src="{.goodsImageSrc}" class="img-size-m" >
+                            <input type="hidden" name="goodsNo" value="{.goodsNo}">
+                        </div>
+                        <div class="goods-info">
+                            <div class="goods-name">{.goodsNm}</div>
+                            <div class="goods-option">
+                                <!--{@ .option}-->
+                                {..name} : {..value}<br>
+                                <!--{/}-->
+                            </div>
+                        </div>
+                    </td>
+                    <td class="ta-c"><b><span class='goods-price'>{=.totalGoodsPriceText}</span></b> / {.goodsCnt}{=__('개')}</td>
+                    <td class="ta-c">
+                        <div class="">
+                            {.orderStatusText}
+                        </div>
+                    </td>
+                </tr>
+                <!--{/}-->
+                </tbody>
+            </table>
+        </div>
+        {pagination}
+    </div>
+    </form>
+</div>

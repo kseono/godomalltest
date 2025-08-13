@@ -1,0 +1,238 @@
+{*** 장바구니 > 견적서 출력 | order/cart_estimate.php ***}
+{ # share_header }
+
+<div class="cart-estimate">
+    <div class="page-header">
+        <h3>{=__('견적서')}</h3>
+        <div class="btn-group">
+            <button class="skinbtn default fi-login js-print hidden-print">{=__('인쇄하기')}</button>
+        </div>
+    </div>
+
+    <div class="hidden-print">
+        <div class="panel panel-default">
+            <div class="panel-heading">{=__('견적서')}</div>
+            <div class="panel-body">
+                <p>※ {=__('견적서에 기재된 판매가는 쿠폰, 타임세일 판매가, 배송비가 제외된 금액입니다.')}</p>
+                <p>&nbsp;&nbsp;&nbsp;{=__('실제 주문 시, 거래명세서에 기재된 금액과 차이가 날 수 있습니다.')}</p>
+            </div>
+        </div>
+    </div>
+
+    <hr style="border:1px dashed #d9d9d9; width:500px;" />
+
+    <div class="contents">
+        <table width="100%" style="background: url({sealPath}) no-repeat; background-position: 380px 30px;">
+            <col width="10%" />
+            <col width="60%" />
+            <col width="30%" />
+            <tr>
+                <td style="line-height: 36px; background-color: #F6F6F6;">{=__('공%s급%s자', '<br>', '<br>')}</td>
+                <td>
+                    <table width="100%">
+                        <tr>
+                            <td>{=__('등록번호')}</td>
+                            <td colspan="3">{gMall.businessNo}</td>
+                        </tr>
+                        <tr>
+                            <td style="line-height: 12px;">{=__('상%s호', '&nbsp;&nbsp;&nbsp;&nbsp;')}<br>({=__('법인명')})</td>
+                            <td style="width: 40%">{gMall.companyNm}</td>
+                            <td>{=__('성%s명', '&nbsp;&nbsp;&nbsp;&nbsp;')}</td>
+                            <td>{gMall.ceoNm}</td>
+                        </tr>
+                        <tr>
+                            <td style="line-height: 12px;">{=__('사 업 장%s소 재 지', '<br>')}</td>
+                            <td colspan="3">{gMall.address} {gMall.addressSub}</td>
+                        </tr>
+                        <tr>
+                            <td>{=__('업%s태', '&nbsp;&nbsp;&nbsp;&nbsp;')}</td>
+                            <td style="width: 40%">{gMall.service}</td>
+                            <td>{=__('종%s목', '&nbsp;&nbsp;&nbsp;&nbsp;')}</td>
+                            <td>{gMall.item}</td>
+                        </tr>
+                        <tr>
+                            <td>{=__('연%s락%s처', '&nbsp;', '&nbsp;')}</td>
+                            <td colspan="3">{gMall.phone}</td>
+                        </tr>
+                        <tr>
+                            <td>{=__('팩스번호')}</td>
+                            <td colspan="3">{gMall.fax}</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <p><div style="text-decoration:underline; line-height: 36px;"><b>{=__('견적일')}: {=date(__('Y년 m월 d일'))}</b></div></p>
+                    <p><div><input type="text" name="memNm" size="20" value="{memNm}" style="border: 0; border-bottom: 1px solid; color: #000000;" onkeyup="check_memNm(this, 18, true)"><input type="text" readonly="readonly" size="3" value="{=__('귀하')}" style="border: 0; border-bottom: 1px solid; color: #000000;"></div></p>
+                    <p><div style="line-height: 36px;">{=__('아래와 같이 견적합니다.')}</div></p>
+                </td>
+            </tr>
+        </table>
+
+        <table width="100%">
+            <col width="10%" />
+            <col width="50%" />
+            <col width="15%" />
+            <col width="10%" />
+            <col width="15%" />
+            <thead>
+            <tr style="background-color: #F6F6F6; height: 24px;">
+                <td>{=__('번호')}</td>
+                <td>{=__('상품명')}</td>
+                <td>{=__('판매가')}</td>
+                <td>{=__('수량')}</td>
+                <td>{=__('상품구매금액')}</td>
+            </tr>
+            </thead>
+
+            <!-- 상품리스트 -->
+            <tbody>
+            <!--{ @ cartInfo }-->
+            <!--{ @ .value_ }-->
+            <!--{ @ ..value_ }-->
+            <tr>
+                <td>{...estimateNo}</td>
+                <td style="text-align: left;">{...goodsNm}
+                    <!--{ @ ...option }-->
+                    <!--{ ? ....optionName }-->
+                    <dl>
+                        <dt class="name">{....optionName} :</dt>
+                        <dd>{....optionValue}
+                            <!--{ ? ....optionPrice != 0 }-->
+                            (<!--{ ? ....optionPrice > 0 }-->+<!--{ / }-->{=gd_currency_display(....optionPrice)})
+                            <!--{ / }-->
+                        </dd>
+                    </dl>
+                    <!--{ / }-->
+                    <!--{ / }-->
+
+                    <!--{ @ ...optionText }-->
+                    <!--{ ? ....optionValue }-->
+                    <dl>
+                        <dt class="name">{....optionName} :</dt>
+                        <dd>{....optionValue}
+                            <!--{ ? ....optionTextPrice != 0 }-->
+                            (<!--{ ? ....optionTextPrice > 0 }-->+<!--{ / }-->{=gd_currency_display(....optionTextPrice)})
+                            <!--{ / }-->
+                        </dd>
+                    </dl>
+                    <!--{ / }-->
+                    <!--{ / }-->
+                </td>
+                <td>{=gd_currency_display(...price.goodsPrice + ...price.optionPrice + ...price.optionTextPrice)}</td>
+                <td>{...goodsCnt}</td>
+                <td>{=gd_currency_display((...price.goodsPrice + ...price.optionPrice + ...price.optionTextPrice) * ...goodsCnt)}</td>
+            </tr>
+
+            <!--{ ? ...addGoods }-->
+            <!--{ @ ...addGoods }-->
+            <tr>
+                <td></td>
+                <td style="text-align: left;">{....addGoodsNm}
+                    <!--{ ? ....optionNm }-->
+                    <dl>
+                        <dt class="name">{=__('옵션')} :</dt>
+                        <dd>{....optionNm}</dd>
+                    </dl>
+                    <!--{ / }-->
+                </td>
+                <td>{=gd_currency_display(....addGoodsPrice)}</td>
+                <td>{....addGoodsCnt}</td>
+                <td>{=gd_currency_display(....addGoodsPrice * ....addGoodsCnt)}</td>
+            </tr>
+            <!--{ / }-->
+            <!--{ / }-->
+            <!--{ / }-->
+            <!--{ / }-->
+            <!--{ / }-->
+            <tr height="22">
+                <td colspan="5" style="text-align: center;">*** {=__('이 하 여 백')} ***</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+
+            </tbody>
+        </table>
+
+        <!-- 추가 정보 -->
+        <table width="100%" style="background-color: #F6F6F6;">
+            <tr>
+                <td>{=__('합%s계', '&nbsp;&nbsp;&nbsp;&nbsp;')}</td>
+                <td>{=gd_currency_display(totalPrice)}</td>
+            </tr>
+            <tr>
+                <td>{=__('입금계좌')}</td>
+                <td>{bankAccount.bankName}&nbsp;{bankAccount.accountNumber}&nbsp;{bankAccount.depositor}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.js-print').on('click', function() {
+            window.print();
+        });
+    });
+
+    // 사용자이름 입력 제한에 따른 추가라인 생성 및 삭제
+    function check_memNm(obj, maxByte, addInputFl) {
+        var memNm = obj.value;
+        var memNmLength = memNm.length;
+        var totalByte = 0;
+        var limit = 0;
+
+        if (memNmLength == 0) {
+            // 입력한 값이 없으면 라인 삭제
+            if ($('input[name="subMemNm"]').length && (event.which === 8 || event.which === 46)) {
+                $('input[name="' + obj.name + '"]').remove();
+
+                if (obj.name == 'memNm') {
+                    $('input[name="subMemNm"]').attr('name', 'memNm');
+                } else if (obj.name == 'subMemNm') {
+                    $('input[name="memNm"]').attr('size', 20);
+                }
+
+                $('input[name="memNm"]').attr('onkeyup', 'check_memNm(this, 18, true)');
+                $('input[name="memNm"]').focus();
+            }
+        } else {
+            // 한글(2), 그 외 문자(1), 제한영역 계산
+            for (var i = 0; i < memNmLength; i++) {
+                if (encodeURIComponent(memNm.charAt(i)).length > 3) {
+                    totalByte += 2;
+                } else {
+                    totalByte++;
+                }
+
+                if (totalByte <= maxByte) {
+                    limit = i + 1;
+                }
+            }
+        }
+
+        // 제한영역을 넘었을시 추가라인 생성
+        if (totalByte > maxByte) {
+            obj.value = memNm.substr(0, limit);
+            if (addInputFl == true) {
+                $('input[name="memNm"]').attr('onkeyup', 'check_memNm(this, 18)');
+                $('input[name="memNm"]').after($('input[name="memNm"]').clone().attr('name', 'subMemNm'));
+                $('input[name="memNm"]').attr('size', 25);
+                $('input[name="subMemNm"]').val('');
+            }
+        }
+    }
+</script>
+
+{ # share_footer }

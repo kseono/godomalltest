@@ -1,0 +1,85 @@
+{*** [위젯] 레이어형 전체 브랜드 | proc/_brand_all_banner.html ***}
+<div class="all-category brand">
+    <a href="#allBrandLayer" title="{=__('전체브랜드 보기')}">{=__('전체브랜드 보기')}</a>
+    <div id="allBrandLayer" class="all-category-layer brand">
+        <div class="box">
+            <div class="category-wrap brand">
+
+            </div>
+            <div class="banner-wrap">
+                <!--{ @dataBanner('3510096238') }--><div>{.tag}</div><!--{ / }-->
+            </div>
+            <button title="{=__('닫기')}" type="button"><span>{=__('닫기')}</span></button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    <!--
+    $(document).ready(function(){
+
+        $('.all-category.brand > a').on('click', function(){
+            var params = {'mode' : 'get_brand', 'imageFl' : 'n'};
+            $.ajax({
+                method: "POST",
+                cache: false,
+                url: "../goods/goods_ps.php",
+                data: params,
+                success: function(data) {
+                    var getData = $.parseJSON(data);
+
+                    if(data =='false') {
+                        $(".category-wrap.brand").html('');
+                    } else {
+                        var addHtml = "";
+                        $.each(getData, function (brandKey, brandVal) {
+                            addHtml += "<ul>";
+                            $.each(brandVal, function (key, val) {
+
+                                addHtml += '<li><strong><a href="../goods/goods_list.php?brandCd='+val.cateCd+'">'+val.cateNm+'</strong></a>';
+                                if(val.children) {
+                                    addHtml += '<ul>';
+                                    $.each(val.children, function (key1, val1) {
+                                        addHtml += '<li><a href="../goods/goods_list.php?brandCd='+val1.cateCd+'">'+val1.cateNm+'</a>';
+                                        if(val1.children) {
+                                            addHtml += '<ul>';
+                                            $.each(val1.children, function (key2, val2) {
+                                                addHtml += '<li><a href="../goods/goods_list.php?brandCd='+val2.cateCd+'">'+val2.cateNm+'</a></li>';
+                                                if(val2.children) {
+                                                    addHtml += '<ul>';
+                                                    $.each(val2.children, function (key3, val3) {
+                                                        addHtml += '<li><a href="../goods/goods_list.php?brandCd='+val3.cateCd+'">'+val3.cateNm+'</a></li>';
+                                                    });
+                                                    addHtml += '</ul>';
+                                                }
+                                            });
+                                            addHtml += '</ul>';
+                                        }
+                                        addHtml += '</li>';
+
+                                    });
+                                    addHtml += '</ul>';
+                                }
+
+                                addHtml += '</li>';
+                            });
+                            addHtml += "</ul>";
+                        });
+
+
+                        $(".category-wrap.brand").html(addHtml);
+                        $(".all-category-layer.brand").addClass('db');
+                    }
+
+                },
+                error: function (data) {
+                    alert(data.message);
+                }
+            });
+
+        });
+
+    });
+
+    //-->
+</script>

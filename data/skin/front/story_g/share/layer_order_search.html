@@ -1,0 +1,70 @@
+{*** 주문 선택 레이어 | share/layer_order_search.php ***}
+<div class="section">
+    <div class="section-header">
+        <h3 class="h3">
+            {=__('주문목록 %s 배송조회 내역 총 %s 건', '/', '<b class="c-red">' + total + '</b>')}
+        </h3>
+    </div>
+    <form id="frmSelect">
+    <div class="section-body">
+        <!-- 주문상품 리스트 -->
+        <div class="table1 type1 type3">
+            <table class="goods-board">
+                <colgroup>
+                    <col style="width:50px">
+                    <col style="width:93px">
+                    <col>
+                    <col style="width:150px">
+                    <col style="width:100px">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>{=__('선택')}</th>
+                    <th>{=__('날짜/주문번호')}</th>
+                    <th>{=__('상품명/옵션')}</th>
+                    <th>{=__('상품금액/수량')}</th>
+                    <th>{=__('주문상태')}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--{ @ data}-->
+                <tr id="tbl_add_{.sno}">
+                    <td class="ta-c">
+                        <span class="form-element">
+                            <input type="radio" name="orderGoodsNo[]" value="{.sno}" id="orderGoodsNo{.sno}" class="radio">
+                            <label class="choice-s" for="orderGoodsNo{.sno}"></label>
+                        </span>
+                    </td>
+                    <td rowspan="1" class="ta-c ordernum">{=gd_date_format('Y-m-d', .regDt)}
+                        <div class="c-blue item-orderNo">
+                            {.orderNo}
+                        </div>
+                    </td>
+                    <td class="order-title ">
+                        <!--{ ? .goodsType == 'addGoods'}-->
+                        <img src="\{=c.PATH_SKIN}img/etc/icon-add.png"  alt="{=__('추가')}" class="add-item-icon va-m">
+                        <!--{/}-->
+                        <div class="img">
+                            <img src="{.goodsImageSrc}" class="img-size-m" >
+                            <input type="hidden" name="goodsNo" value="{.goodsNo}">
+                        </div>
+                        <div class="goods-info">
+                            <div class="goods-name">{.goodsNm}</div>
+                            <div class="goods-option">{.optionName}</div>
+                        </div>
+                    </td>
+                    <td class="ta-c"><b><span class='goods-price'>{=gd_global_currency_symbol()}{=gd_global_money_format(.totalGoodsPrice)}</span></b>{=gd_global_currency_string()} / {.goodsCnt}{=__('개')}</td>
+                    <td class="ta-c">
+                        <div class="">
+                            {.orderStatusText}
+                        </div>
+                    </td>
+                </tr>
+                <!--{/}-->
+                </tbody>
+            </table>
+        </div>
+        {pagination}
+    </div>
+    </form>
+</div>

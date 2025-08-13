@@ -1,0 +1,7 @@
+protocol: https
+prefix: gdcdn
+domainType: etc
+definedDomain: cdn-saas-web-203-68.cdn-nhncommerce.com/newmanjoo14_godomall_com
+usedCdnDomain:
+domainList:
+    - newmanjoo14.godomall.com

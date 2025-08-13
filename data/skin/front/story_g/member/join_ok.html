@@ -1,0 +1,37 @@
+{*** 회원가입 > 가입완료 | member/join_ok.php ***}
+{ # header }
+<div class="join">
+    <div class="top">
+        <h2>{=__('회원가입')}</h2>
+
+        <div>
+            <span><strong>01</strong> {=__('약관동의')}</span>
+            <span><strong>02</strong> {=__('정보입력')}</span>
+            <span class="this end" title="현재페이지"><strong>03</strong> {=__('가입완료')}</span>
+        </div>
+    </div>
+    <div class="join-complete">
+        <p class="txt1">{=__('회원가입이 %s완료%s 되었습니다.', '<span>', '</span>')}</p>
+
+        <p class="txt2">{=__('%s님의 회원가입을 축하합니다. %s 알차고 실속있는 서비스로 찾아뵙겠습니다.', '<strong>' + memNm + '</strong>', '<br/>')}</p>
+
+        <div class="btn">
+            <a href="#" class="skinbtn default jo-home" id="btnHome"><em>{=__('홈으로')}</em></a>
+            <a href="#" class="skinbtn point2 jo-login" id="btnLogin"><em>{=__('로그인')}</em></a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnHome').click(function (e) {
+            e.preventDefault();
+            top.location.href = '../main/index.php';
+        });
+        $('#btnLogin').click(function (e) {
+            e.preventDefault();
+            top.location.href = '../member/login.php';
+        });
+    });
+</script>
+{=fbCompleteRegistrationScript}
+{ # footer }

@@ -1,0 +1,158 @@
+{*** 마이페이지 > 배송지 관리 | mypage/shipping.php ***}
+{ # header }
+
+<div class="contents-inner mypage">
+    <!-- 마이페이지 회원 요약정보 -->{=includeWidget('mypage/_member_summary.html')}<!-- 마이페이지 회원 요약정보 -->
+    <div class="section">
+        <div class="section-header">
+            <h2 class="h2 shipping-header">{=__('배송지 관리')}</h2>
+            <h3 class="h3 shipping-header">
+                {=__('배송지 관리 내역 총')} <b class="c-red">{page->recode['total']}</b>{=__('건')}
+            </h3>
+            <div class="shipping-add-layer"><a href="#deliveryAddLayer" class="btn-open-layer skinbtn base2 shipping-add"><em>+ {=__('새 배송지 추가')}</em></a></div>
+        </div>
+    </div>
+    <div class="section top-date delivery-layer">
+        <div class="section-body">
+            <div class="table1 type1 m2">
+                <table class="board-list ">
+                    <colgroup>
+                        <col style="width:79px" />
+                        <col style="width:75px" />
+                        <col />
+                        <col style="width:150px" />
+                        <col style="width:87px" />
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>{=__('배송지이름')}</th>
+                        <th>{=__('받으실 분')}</th>
+                        <th>{=__('주소')}</th>
+                        <th>{=__('연락처')}</th>
+                        <th>{=__('수정/삭제')}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--{ ? shippingList }-->
+                    <!--{@ shippingList}-->
+                    <tr data-shipping-name="{.shippingTitle}">
+                        <td class="ta-c delivery-loc">
+                            <a href="#" class="shipping-address">
+                                <!--{ ? .defaultFl == 'y' }--><span>({=__('기본배송지')})</span><br /><!--{ / }-->
+                                <b>{.shippingTitle}</b>
+                            </a>
+                        </td>
+                        <td class="ta-c delivery-name">{.shippingName}</td>
+                        <td class="delivery-address">
+                            <!--{ ? gGlobal.isFront }-->
+                            <span>({.shippingZonecode})</span>
+                            <p>{.shippingAddressSub}, {.shippingAddress}, {.shippingState}, {.shippingCity}, {.shippingCountry}</p>
+                            <!--{ : }-->
+                            <span>({.shippingZonecode})</span>
+                            <p>{.shippingAddress} {.shippingAddressSub}</p>
+                            <!--{ / }-->
+                        </td>
+                        <td class="ta-c delivery-tel">
+                            {=__('전화번호')} : <!--{ ? gGlobal.isFront }-->(+{.shippingPhonePrefix}) <!--{ / }-->{.shippingPhone} <br />
+                            {=__('휴대폰')} : <!--{ ? gGlobal.isFront }-->(+{.shippingCellPhonePrefix}) <!--{ / }-->{.shippingCellPhone}
+                        </td>
+                        <td class="ta-c delivery-btn">
+                            <button type="button" href="#deliveryAddLayer" class="normal-btn small1 btn-open-layer" data-sno="{.sno}"><em>{=__('수정')}</em></button>
+                            <button type="button" href="#" class="normal-btn small1 js-delete" data-sno="{.sno}" data-default-fl="{=.defaultFl}"><em>{=__('삭제')}</em></button>
+                        </td>
+                    </tr>
+                    <!--{ / }-->
+                    <!--{ : }-->
+                    <tr>
+                        <td colspan="7" class="no-data">{=__('배송지 목록이 없습니다.')}</td>
+                    </tr>
+                    <!--{ / }-->
+                    </tbody>
+                </table>
+            </div>
+            {page->getPage()}
+        </div>
+    </div>
+</div>
+
+<!-- 새 배송지 추가 레이어 -->
+<div id="deliveryAddLayer" class="layer-wrap dn"></div>
+<!--//새 배송지 추가 레이어 -->
+
+<script type="text/javascript">
+    // DOM 로드
+    $(function(){
+        // 등록/수정 레이어 바인딩
+        $('.shipping-add-layer .btn-open-layer, .delivery-layer .btn-open-layer').bind('click', function(e){
+            var target = $(this).attr('href');
+            if (target == '#deliveryAddLayer') {
+                // 배송지 등록/수정 모드에 따른 파라미터 설정
+                var param = !_.isUndefined($(this).data('sno')) && $(this).data('sno') > 0 ? '?sno=' + $(this).data('sno') : '';
+
+                // AJAX 호출
+                $(target).empty();
+                $.get('../order/layer_shipping_address_regist.php' + param, function(data){
+                    $(target).append(data);
+                    $(target).find('>div').center();
+                });
+            }
+        });
+
+        // 배송지 클릭
+        $('.shipping-address').click(function(e){
+            insertShippingAddress($(this).closest('tr'));
+            $('.delivery-layer .close').trigger('click');
+            return false;
+        });
+
+        // 삭제하기
+        $('.js-delete').click(function(e){
+            if ($(this).data('default-fl') == 'y') {
+                alert(__('기본 배송지는 삭제할 수 없습니다. 변경 후 삭제해주세요.'));
+            } else {
+                if (confirm("{=__('나의 배송지')} [" + $(this).closest('tr').data('shipping-name') + "]{=__('을(를) 정말로 삭제하시겠습니까?')}")) {
+                    var currentPage = $('.delivery-layer .pagination > li.active').text();
+                    var params = {
+                        sno: $(this).data('sno'),
+                        mode: 'shipping_delete'
+                    };
+                    $.post('../order/layer_shipping_ps.php', params, function(data){
+                        if(data.code == 200) {
+                            goPageOnDeliveryAddress('page=' + currentPage);
+                        } else {
+                            alert(data.message);
+                            $('.delivery-add-layer .close').trigger('click');
+                        }
+                    });
+                    return false;
+                }
+            }
+        });
+    });
+
+    // 배송지관리 이벤트
+    function goPageOnDeliveryAddress(page) {
+        top.location.reload(true);
+//        $.get('../order/layer_shipping_address.php?' + page, function(data){
+//            $('#myShippingListLayer').empty().append(data);
+//            $('#myShippingListLayer').find('>div').center();
+//        });
+    }
+
+    // 배송지 클릭
+    function insertShippingAddress(obj)
+    {
+        var params = {
+            shippingName: obj.find('input[name=shippingName]:eq(0)').val(),
+            shippingZonecode: obj.find('input[name=shippingZonecode]:eq(0)').val(),
+            shippingZipcode: obj.find('input[name=shippingZipcode]:eq(0)').val(),
+            shippingAddress: obj.find('input[name=shippingAddress]:eq(0)').val(),
+            shippingAddressSub: obj.find('input[name=shippingAddressSub]:eq(0)').val(),
+            shippingPhone: obj.find('input[name=shippingPhone]:eq(0)').val(),
+            shippingCellPhone: obj.find('input[name=shippingCellPhone]:eq(0)').val(),
+        };
+        set_delivery_shipping_address(params);
+    }
+</script>
+
+{ # footer }

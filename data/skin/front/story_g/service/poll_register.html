@@ -1,0 +1,159 @@
+{*** 설문조사 | service/poll_register.php ***}
+{ # header }
+<div class="contents-inner">
+    <div class="section-header bd">
+        <h2 class="h2">{title}</h2>
+    </div>
+
+    <!--{ ? htmlContentFl == 'Y' }-->
+    <div>{htmlContent}</div>
+    <!--{ / }-->
+
+    <form name="frmPoll" id="frmPoll" method="post" action="../service/poll_ps.php">
+        <input type="hidden" name="mode" value="regist">
+        <input type="hidden" name="code" value="{code}">
+        <!--{ @ data.itemAnswerType }-->
+        <div class="poll-section">
+            <h3 class="poll-title">
+                {.key_ + 1}. {data.itemTitle[.key_]}<!--{ ? data.itemRequired[.key_] == 'Y' }--> <span class="c-red">({=__('필수항목')})</span><!--{ / }-->
+            </h3>
+            <!--{ ? data.itemAnswerType[.key_] == 'sub' }-->
+            <div class="<!--{ ? data.itemResponseType[.key_] == 'short' }-->txt-field<!--{ : data.itemResponseType[.key_] == 'descript' }-->poll-textarea<!--{ / }-->">
+                <!--{ ? data.itemResponseType[.key_] == 'short' }-->
+                <input type="text" name="result[{.key_}]" class="text" maxlength="{shortLen}">
+                <!--{ : data.itemResponseType[.key_] == 'descript' }-->
+                <textarea name="result[{.key_}]" cols="30" rows="10" maxlength="{descriptLen}"></textarea>
+                <!--{ / }-->
+            </div>
+            <!--{ : data.itemAnswerType[.key_] == 'obj' }-->
+            <div class="poll-list">
+                <ul>
+                <!--{ @ data.itemAnswer[.key_] }-->
+                    <li>
+                        <span class="form-element">
+                            <input type="{data.itemResponseType[.key_]}" name="result[{.key_}]<!--{ ? data.itemResponseType[.key_] == 'checkbox' }-->[]<!--{ / }-->" class="{data.itemResponseType[.key_]}" id="result-{data.itemResponseType[.key_]}-{.key_}-{..key_}" value="{..key_}" data-key="{.key_}">
+                            <label for="result-{data.itemResponseType[.key_]}-{.key_}-{..key_}" class="<!--{ ? data.itemResponseType[.key_] == 'radio' }-->choice<!--{ / }--> ">{..value_}</label>
+                        </span>
+                    </li>
+                    <!--{ ? count(data.itemAnswer[.key_]) - 1 == ..key_ && data.itemLastAnswer[.key_] === true }-->
+                    <div class="txt-field disabled">
+                        <input type="text" name="resultEtc[{.key_}]" class="text" data-key="{.key_}" maxlength="{shortLen}" disabled="disabled">
+                    </div>
+                    <!--{ / }-->
+                <!--{ / }-->
+                </ul>
+            </div>
+            <!--{ / }-->
+        </div>
+        <!--{ / }-->
+        <div class="btm-btn ta-c">
+            <button type="submit" class="skinbtn point2 mp-modify btn-poll" value="{=__('설문완료')}">
+                <em>{=__('설문완료')}</em>
+            </button>
+        </div>
+    </form>
+</div>
+<hr/>
+
+<style>
+    #side {
+        border-left:1px solid #d2d2d2 !important;
+        border-right:1px solid #d2d2d2 !important;
+    }
+</style>
+<script type="text/javascript">
+    function btnPollDisabled()
+    {
+        $('form[name=frmPoll] button[type=submit]').attr('disabled', false);
+    }
+    $(document).ready(function () {
+        $('input[name^="result"][type="radio"], input[name^="result"][type="checkbox"]').click(function(e){
+            var key = $(this).data('key');
+
+            if ($('input[name="resultEtc[' + key + ']"]').length > 0) {
+                if ($('input[name="' + this.name + '"]').last().prop('checked') === true) {
+                    $('input[name="resultEtc[' + key + ']"]').prop('disabled', false);
+                    $('input[name="resultEtc[' + key + ']"]').parent().removeClass('disabled');
+                } else {
+                    $('input[name="resultEtc[' + key + ']"]').val('').prop('disabled', true);
+                    $('input[name="resultEtc[' + key + ']"]').parent().addClass('disabled');
+                }
+            }
+        });
+        $(document).on('keyup keydown keypress', 'input[name^="result"][type="text"], textarea[name^="result"]', function(e){
+            var len = $(this).val().length;
+            var type = $(this).prop('type');
+            var maxLen = type == 'text' ? {shortLen} : {descriptLen};
+            var text = "<div class='c-red'>최대 " + maxLen + "자까지 입력 가능합니다.</div>";
+
+            if (len >= maxLen) {
+                if (!$(this).closest('div').find('.c-red').length) {
+                    $(this).after(text);
+                } else {
+                    $(this).closest('div').find('.c-red').show();
+                }
+            } else {
+                $(this).closest('div').find('.c-red').hide();
+            }
+        });
+        $("#frmPoll").validate({
+            submitHandler: function (form) {
+                $('form[name=frmPoll] button[type=submit]').attr('disabled', true);
+                form.target = 'ifrmProcess';
+                form.submit();
+            },
+            rules: {
+                <!--{ @ data.itemAnswerType }-->
+                <!--{ ? data.itemResponseType[.key_] == 'checkbox' }-->
+                'result[{=.key_}][]': {
+                <!--{ : }-->
+                'result[{=.key_}]': {
+                <!--{ / }-->
+                    <!--{ ? data.itemRequired[.key_] == 'Y' }-->
+                    required: {
+                        depends:function(){
+                            $(this).val($.trim($(this).val()));
+                            return true;
+                        }
+                    },
+                    <!--{ / }-->
+                    <!--{ ? data.itemResponseType[.key_] == 'short' }-->
+                    maxlength: {shortLen},
+                    <!--{ : data.itemResponseType[.key_] == 'descript' }-->
+                    maxlength: {descriptLen},
+                    <!--{ / }-->
+                },
+                <!--{ / }-->
+                <!--{ @ data.itemLastAnswer }-->
+                'resultEtc[{=.key_}]': {
+                    maxlength: {shortLen},
+                },
+                <!--{ / }-->
+            },
+            messages: {
+                <!--{ @ data.itemAnswerType }-->
+                <!--{ ? data.itemResponseType[.key_] == 'checkbox' }-->
+                'result[{=.key_}][]': {
+                <!--{ : }-->
+                'result[{=.key_}]': {
+                 <!--{ / }-->
+                    <!--{ ? data.itemRequired[.key_] == 'Y' }-->
+                    required: "{=__('응답이 완료되지 않은 필수항목이 있습니다.%s확인 후 설문 응답을 완료해주세요.', '\n')}",
+                    <!--{ / }-->
+                    <!--{ ? data.itemResponseType[.key_] == 'short' }-->
+                    maxlength: "{=__('최대 %s자까지 입력 가능합니다.', shortLen)}",
+                    <!--{ : data.itemResponseType[.key_] == 'descript' }-->
+                    maxlength: "{=__('최대 %s자까지 입력 가능합니다.', descriptLen)}",
+                    <!--{ / }-->
+                },
+                <!--{ / }-->
+                <!--{ @ data.itemLastAnswer }-->
+                'resultEtc[{=.key_}]': {
+                    maxlength: "{=__('최대 %s자까지 입력 가능합니다.', shortLen)}",
+                },
+                <!--{ / }-->
+            }
+        });
+    });
+</script>
+{ # footer }

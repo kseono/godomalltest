@@ -1,0 +1,54 @@
+{*** 하단 레이아웃 | main/index.php ***}
+        </div>
+        <!-- 본문 끝 : end -->
+
+        <!--{ ? tpls.side_inc && layout.outline_sidefloat == 'right' }-->
+        <div id="side">
+            { # side_inc // 측면디자인 }
+        </div>
+        <!--{ / }-->
+    </div>
+
+    <!--{ ? tpls.footer_inc }-->
+    <div id="footer">
+        { # footer_inc // 하단디자인 }
+    </div>
+    <!--{ / }-->
+
+    <!-- 좌측 스크롤 배너 : start -->
+    <div id="scroll-left">
+        { # scroll_banner_left // 좌측 스크롤 배너 }
+    </div>
+    <!-- 좌측 스크롤 배너 : end -->
+
+    <!-- 우측 스크롤 배너 : start -->
+    <div id="scroll-right">
+        { # scroll_banner_right // 우측 스크롤 배너 }
+    </div>
+    <!-- 우측 스크롤 배너 : end -->
+
+    <!--{ ? is_array(gd_isset(footerScript)) }-->
+    <!-- Add footer script : start -->
+    <!--{ @ footerScript }-->
+    <script type="text/javascript" src="{=.value_}"></script>
+    <!--{ / }-->
+    <!-- Add footer script : end -->
+    <!--{ / }-->
+</div>
+
+{=plusShop('proc/_cart_tab.html')}
+
+<!-- 회원가입 유도 푸시 -->
+{=plusShop('proc/_simple_join_push.html')}
+<!-- //회원가입 유도 푸시 -->
+
+<!-- 절대! 지우지마세요 : Start -->
+<div class="dn" id="layerDim">&nbsp;</div>
+<iframe name="ifrmProcess" src='/blank.php' style="display:none<!--{ ? !isProduction }-->block<!--{ / }-->" width="100%" height="<!--{ ? !isProduction }-->50<!--{ / }-->0" bgcolor="#000"></iframe>
+<!-- 절대! 지우지마세요 : End -->
+
+<!-- 외부 스크립트 -->
+{=customFooter}
+
+</body>
+</html>

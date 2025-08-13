@@ -1,0 +1,73 @@
+{*** 설문조사 | service/poll_result.php ***}
+{ # header }
+
+<div class="contents-inner">
+    <div class="section-header bd">
+        <h2 class="h2">{title}</h2>
+    </div>
+    <div class="poll-info">
+        <table>
+            <tr>
+                <th class="ta-l">{=__('설문기간')}</th>
+                <td>{date}</td>
+            </tr>
+            <tr>
+                <th class="ta-l">
+                    {=__('전체응답자')}
+                </th>
+                <td>{=number_format(total)}{=__('명')}</td>
+            </tr>
+        </table>
+    </div>
+
+    <!--{ @ data.itemAnswerType }-->
+    <div class="poll-section">
+        <h3 class="poll-title">
+            {data.itemTitle[.key_]}<!--{ ? data.itemRequired[.key_] == 'Y' }--> <span class="c-red">({=__('필수항목')})</span><!--{ / }-->
+        </h3>
+        <!--{ ? data.itemAnswerType[.key_] == 'sub' }-->
+            <!--{ ? count(sortData[.key_]) > 0 }-->
+                <div class="poll-textarea">
+                    <!--{ ? data.itemResponseType[.key_] == 'short' }-->
+                    <div class="textarea">
+                        {=implode(', ', sortData[.key_])}
+                    </div>
+                    <!--{ : }-->
+                    <!--{ @ sortData[.key_] }-->
+                    <div class="textarea m1">
+                        {=..value_}
+                    </div>
+                    <!--{ / }-->
+                    <!--{ / }-->
+                </div>
+            <!--{ / }-->
+        <!--{ : data.itemAnswerType[.key_] == 'obj' }-->
+        <div class="poll-list">
+            <ul>
+                <!--{ @ data.itemAnswer[.key_] }-->
+                <li>
+                    <span class="poll-graph">
+                        <span class="graph-name">{..value_}</span>
+                        <span class="graph-gauge" style="width:{=gd_money_format((sortData[.key_][..key_] * 100) / graphData[.key_], false) * 3}px;"></span>
+                        <span class="graph-text">{=sortData[.key_][..key_] * 1}{=__('명')} ({=gd_money_format((sortData[.key_][..key_] * 100) / graphData[.key_], false)}%)</span>
+                    </span>
+                </li>
+                <!--{ / }-->
+            </ul>
+        </div>
+        <!--{ / }-->
+    </div>
+    <!--{ / }-->
+    <div class="btm-btn ta-c">
+        <button type="button" class="skinbtn point2 mp-modify" value="{=__('홈 바로가기')}" onclick="location.href='/';"><em>{=__('홈 바로가기')}</em>
+        </button>
+    </div>
+</div>
+
+<style>
+    #side {
+        border-left:1px solid #d2d2d2 !important;
+        border-right:1px solid #d2d2d2 !important;
+    }
+</style>
+{ # footer }

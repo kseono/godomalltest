@@ -1,0 +1,25 @@
+{*** 쇼핑몰 메인본문 | main/index.php ***}
+{ # header }
+
+<section class="main-link-wrap">
+    <span><a href="../mypage/wish_list.php">{=__('찜리스트')}</a></span>
+    <span><a href="../goods/goods_today.php">{=__('최근본상품')}</a></span>
+    <span><a href="../board/list.php?bdId={goodsReviewBdId}">{=__('상품후기')}</a></span>
+    <span><a href="../board/list.php?bdId={goodsQaBdId}">{=__('상품문의')}</a></span>
+</section>
+
+
+<section>
+    {=includeWidget('proc/_slider_banner.html', 'bannerCode', '3606671697')}
+</section>
+<!-- 설문조사 배너 -->{=pollViewBanner()}<!-- 설문조사 배너 -->
+
+<section id="main" class="content">
+    <!-- 메인 상품 노출 -->{=includeWidget('goods/_goods_display_main.html','sno','4')}<!-- 메인 상품 노출 -->
+    <!-- 메인 상품 노출 -->{=includeWidget('goods/_goods_display_main.html','sno','5')}<!-- 메인 상품 노출 -->
+    <!-- 메인 상품 노출 -->{=includeWidget('goods/_goods_display_main.html','sno','6')}<!-- 메인 상품 노출 -->
+</section>
+<section class="banner-warp-bottom">
+    <!--{ @dataBanner('1639953380') }-->{.tag}<!--{ / }-->
+</section>
+{ # footer }

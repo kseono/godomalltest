@@ -1,0 +1,195 @@
+{*** 회원가입(정보입력) | member/join.php ***}
+{ # header }
+<section class="content" id="memberjoin">
+    <form id="formJoin" name="formJoin" method="post" action="../member/member_ps.php">
+        <input type="hidden" name="rncheck" value="{data.rncheck}"/>
+        <input type="hidden" name="dupeinfo" value="{data.dupeinfo}"/>
+        <input type="hidden" name="pakey" value="{data.pakey}"/>
+        <input type="hidden" name="adultFl" value="{data.adultFl}">
+        <input type="hidden" name="foreigner" value="{data.foreigner}"/>
+        <input type="hidden" name="mode" value="join"/>
+
+        <div class="join-step2">
+            <div class="inner">
+                <div class="step-item ">
+                    <div class="inner">{=__('약관동의')}</div>
+                </div>
+                <div class="step-item active">
+                    <div class="inner">{=__('계정생성')}</div>
+                </div>
+                <div class="step-item ">
+                    <div class="inner">{=__('가입완료')}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="account">
+            <div class="account_content">
+                <div class="account_title">
+                    <b class="title">{=__('기본정보')}</b>
+                </div>
+                <!-- 회원가입/정보 기본정보 -->{=includeWidget('member/_join_view.html')}<!-- 회원가입/정보 기본정보 -->
+                <!-- 회원가입/정보 사업자정보 -->{=includeWidget('member/_join_view_business.html')}<!-- 회원가입/정보 사업자정보 -->
+                <!-- 회원가입/정보 부가정보 -->{=includeWidget('member/_join_view_other.html')}<!-- 회원가입/정보 부가정보 -->
+                <!-- 회원가입/자동등록 방지 -->{=includeWidget('member/_join_view_captcha.html')}<!-- 회원가입/회원가입/자동등록 방지 -->
+            </div>
+            <div class="block-pd">
+                <button class="btn btn-w btn-darkgray btn-join" type="button" id="btnConfirm" value="{=__('확인')}">{=__('확인')}</button>
+            </div>
+        </div>
+    </form>
+</section>
+<script type="text/javascript">
+    var paycoProfile = {paycoProfile};
+    var naverProfile = {naverProfile};
+    var thirdPartyProfile = {thirdPartyProfile};
+    var kakaoProfile = {kakaoProfile};
+    var appleProfile = {appleProfile};
+    var googleProfile = {googleProfile};
+
+    $(document).ready(function () {
+        var $formJoin = $('#formJoin');
+
+        $(':text:first', $formJoin).focus();
+
+        $('#btnCancel', $formJoin).click(function (e) {
+            top.location.href = '/';
+            e.preventDefault();
+        });
+
+        $('#btnPostcode').click(function (e) {
+            e.preventDefault();
+            $('#address-error, #addressSub-error').remove();
+            $(':text[name=address], :text[name=addressSub]').removeClass('error c-red');
+            postcode_search('zonecode', 'address', 'zipcode');
+        });
+
+        $('#btnCompanyPostcode').click(function (e) {
+            e.preventDefault();
+            $('#comAddress-error, #comAddressSub-error').remove();
+            $(':text[name=comAddress], :text[name=comAddressSub]').removeClass('error c-red');
+            postcode_search('comZonecode', 'comAddress', 'comZipcode');
+        });
+
+        <!--{?joinField.businessinfo.use == 'y'}-->
+        $(':radio[name="memberFl"]').change(function () {
+            var $businessinfo = $('.businessinfo');
+            if (this.value == 'business') {
+                $businessinfo.removeClass('dn');
+                $businessinfo.find('input, select').removeClass('ignore');
+            } else {
+                $businessinfo.addClass('dn');
+                $businessinfo.find('input, select').addClass('ignore');
+            }
+        });
+        $(':radio[name="memberFl"]:checked').trigger('change');
+        <!--{/}-->
+
+        <!--{? (joinField.marriFl.use == 'y' && joinField.marriDate.use == 'y') || joinField.birthDt.use == 'y' }-->
+        function sendDateData(year, month, type) {
+            var dayType = '';
+            var params = {
+                year: year,
+                month: month,
+            };
+            $.ajax('../share/date_select_json.php', {
+                data: params,
+                method: "POST",
+                success: function (data) {
+                    if (data !='' && data != null) {
+                        if (type == 'marry') {
+                            dayType = 'marriDay';
+                        }else {
+                            dayType = 'birthDay';
+                        }
+                        $('#'+dayType).empty();
+                        $('#'+dayType).append(data);
+                    }
+                }
+            });
+        }
+        <!--{/}-->
+
+        <!--{? joinField.marriFl.use == 'y' && joinField.marriDate.use == 'y'}-->
+        $(':radio[name="marriFl"]').change(function () {
+            var $marridateinfo = $('.marridateinfo');
+            if (this.value == 'y') {
+                $marridateinfo.removeClass('dn');
+            } else {
+                $marridateinfo.addClass('dn');
+                $('#marriYear option:eq(0)').prop('selected', true);
+                $('#marriMonth option:eq(0)').prop('selected', true);
+                $('#marriDay option:eq(0)').prop('selected', true);
+            }
+        });
+
+        $('#marriYear').change(function () {
+            var marriMonthVal = $('#marriMonth').val();
+            if (marriMonthVal != '') {
+                sendDateData($('#marriYear').val(), $('#marriMonth').val(), 'marry');
+            }
+        });
+        $('#marriMonth').change(function () {
+            var marriYearVal = $('#marriYear').val();
+            if (marriYearVal != '') {
+                sendDateData($('#marriYear').val(), $('#marriMonth').val(), 'marry');
+            }
+        });
+        <!--{/}-->
+
+        <!--{? joinField.birthDt.use == 'y'}-->
+        $('#birthYear').change(function () {
+            var birthMonthVal = $('#birthMonth').val();
+            if ( birthMonthVal != '') {
+                sendDateData($('#birthYear').val(), $('#birthMonth').val(), 'birth');
+            }
+        });
+        $('#birthMonth').change(function () {
+            var birthYearVal = $('#birthYear').val();
+            if ( birthYearVal != '') {
+                sendDateData($('#birthYear').val(), $('#birthMonth').val(), 'birth');
+            }
+        });
+        <!--{/}-->
+
+        <!--{? joinField.captcha.use == 'y'}-->
+        $('#reload_captcha').click(function (e) {
+            $('#captchaImg').removeAttr('src');
+            setTimeout(function () {
+                var someDate = new Date();
+                someDate = someDate.getTime();
+                $('#captchaImg').attr('src', '../member/captcha.php?ch=' + someDate);
+            }, 1);
+        }).trigger('click');
+        <!--{/}-->
+
+        select_email_domain('email');
+        gd_member2.init($formJoin);
+
+        setTimeout(function(){
+            $('#memId').focusout()
+            $('#email').focusout();
+        },1);
+
+        $('.btn-join').click({form: $formJoin}, gd_member2.save);
+
+        $('#birthYears').initSelectDateFormat();
+        $('#marriYears').initSelectDateFormat();
+
+        $(window).on('message', function(event) {
+            if (event.originalEvent.data === 'callback_not_disabled') {
+                callback_not_disabled();
+            }
+        });
+    });
+
+    /**
+     * 회원가입시 Exception 발생하는 경우 회원가입 버튼 복원
+     */
+    function callback_not_disabled()
+    {
+        $('.btn-join').prop("disabled", false);
+        $('.btn-join em').html("{=__('회원가입')}");
+    }
+</script>
+{ # footer }

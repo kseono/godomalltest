@@ -1,0 +1,30 @@
+<!--{ ? data.list }-->
+<div class="plus-review-goods-list">
+
+    <!--{@data.list}-->
+    <div class="row">
+        <img src="{=.goodsImageSrc}" data-goodsno="{.goodsNo}">
+        <div class="name">{=.goodsNm}</div>
+        <div class="review-info">{=__('평가')}<span class="red-bold">{.avgGoodsPt}</span> {=__('리뷰')}<span class="red-bold">{.countArticle}</span></div>
+        <ul class="article-area">
+            <!--{ @ .article}-->
+            <li><div class="icon-review"></div>
+                <div class="article"><!--{ ? ..blockFl =='y'}-->차단 한 회원이 작성한 게시물입니다.<!--{ : }-->{..contents}<!--{ / }--></div>
+                <div style="clear:both"></div>
+            </li>
+            <!--{/}-->
+        </ul>
+    </div>
+    <!--{/}-->
+</div>
+
+<div class="page-btn-box">
+    <button type="button" class="prev-btn" data-page="{=req.page - 1}">{=__('이전')}</button>
+    <span class="page-number"><strong>{=req.page}</strong> / <em>{=data.cnt.totalPage}</em></span>
+    <button type="button" class="next-btn" data-page="{=req.page + 1}">{=__('이후')}</button>
+</div>
+<!--{:}-->
+<div class="no-data">{=__('게시글이 존재하지 않습니다.')}</div>
+<script>$('.plus_review_loading').addClass('dn');</script>
+<!--{/}-->
+<div class="dn"><li id="totalPage">{=data['cnt']['totalPage']}</li></div>

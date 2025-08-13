@@ -1,0 +1,111 @@
+{*** 사유 레이어 | mypage/layer_order_refund_reason.php ***}
+<div class="ly_head">
+    <h1 class="h_tit elp">
+        <!--{ ? substr(handleInfo.orderStatus, 0, 1) == 'b'  || handleInfo.userHandleMode == 'b'}-->
+        {=__('반품사유')}
+        <!--{ : substr(handleInfo.orderStatus, 0, 1) == 'r' || handleInfo.userHandleMode == 'r'}-->
+        {=__('환불사유')}
+        <!--{ : substr(handleInfo.orderStatus, 0, 1) == 'e' || handleInfo.userHandleMode == 'e'}-->
+        {=__('교환사유')}
+        <!--{ : substr(handleInfo.orderStatus, 0, 1) == 'c' }-->
+        {=__('취소사유')}
+        <!--{ / }-->
+    </h1>
+</div>
+
+<!--{ ? handleInfo.userHandleMode != '' || handleInfo.userHandleReason != '' }-->
+<h2 class="my_tit">
+    {=__('신청정보')}
+</h2>
+<div class="all-borN">
+    <div class="input_wrap ty2">
+        <div class="input_title">{=__('신청일')}</div>
+        <div class="input_content">
+            {handleInfo.userHandleRegDt}
+        </div>
+    </div>
+    <div class="input_wrap ty2">
+        <div class="input_title">{=__('신청 사유')}</div>
+        <div class="input_content">
+            {handleInfo.userHandleReason}
+        </div>
+    </div>
+    <div class="input_wrap ty2">
+        <div class="input_title verTop">{=__('메모')}</div>
+        <div class="input_content">
+            <!--{ ? handleInfo.userHandleDetailReason }-->
+            {=nl2br(handleInfo.userHandleDetailReason)}
+            <!--{ : }-->
+            -
+            <!--{ / }-->
+        </div>
+    </div>
+    <!--{ ? handleInfo.userHandleMode == 'b' || handleInfo.userHandleMode == 'r' }-->
+    <div class="input_wrap ty2">
+        <div class="input_title verTop"><!--{ ? handleInfo.userHandleMode == 'b' }-->{=__('반품정보')}<!--{ : }-->{=__('환불정보')}<!--{ / }--></div>
+        <div class="input_content">
+            <!--{ ? handleInfo.userRefundBankName }-->
+            {=nl2br(handleInfo.userRefundBankName)} / {=nl2br(handleInfo.userRefundAccountNumber)} / {=nl2br(handleInfo.userRefundDepositor)}
+            <!--{ : }-->
+            -
+            <!--{ / }-->
+        </div>
+    </div>
+    <!--{ / }-->
+    <!--{ ? handleInfo.userHandleFl !== 'r' }-->
+    <div class="input_wrap ty2">
+        <div class="input_title">{=__('승인일')}</div>
+        <div class="input_content">
+            {handleInfo.userHandleModDt}
+        </div>
+    </div>
+    <div class="input_wrap ty2">
+        <div class="input_title verTop"><!--{ ? handleInfo.userHandleFl === 'y' }-->{=__('승인사유')}<!--{ : }-->{=__('거절사유')}<!--{ / }--></div>
+        <div class="input_content">
+            {=nl2br(handleInfo.adminHandleReason)}
+        </div>
+    </div>
+    <!--{ / }-->
+</div>
+<!--{ / }-->
+
+<!--{ ? handleInfo.handleDetailReasonShowFl == 'y' }-->
+<h2 class="my_tit">
+    <!--{ ? substr(handleInfo.orderStatus, 0, 1) == 'b' }-->
+    {=__('반품처리 정보')}
+    <!--{ : substr(handleInfo.orderStatus, 0, 1) == 'r' }-->
+    {=__('환불처리 정보')}
+    <!--{ : substr(handleInfo.orderStatus, 0, 1) == 'e' }-->
+    {=__('교환처리 정보')}
+    <!--{ : substr(handleInfo.orderStatus, 0, 1) == 'c' }-->
+    {=__('취소처리 정보')}
+    <!--{ / }-->
+</h2>
+<div class="all-borN">
+    <div class="input_wrap ty2">
+        <div class="input_title">
+            {=__('사유')}
+        </div>
+        <div class="input_content">
+            {handleInfo.handleReason}
+        </div>
+    </div>
+    <div class="input_wrap ty2">
+        <div class="input_title verTop">
+            {=__('상세사유')}
+        </div>
+        <div class="input_content">
+            {handleInfo.handleDetailReason}
+        </div>
+    </div>
+</div>
+<!--{ / }-->
+
+<div>
+    <ul class="btn_bx">
+        <li>
+            <button type="button" class="btn layerboard-close ly_btn_close"><em>{=__('확인')}</em></button>
+        </li>
+    </ul>
+</div>
+<button type="button" class="bn_cls v2 ly_btn_close"><span class="sp">{=__('닫기')}</span></button>

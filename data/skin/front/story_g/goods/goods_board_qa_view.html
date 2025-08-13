@@ -1,0 +1,50 @@
+{*** 상품상세 - 상품 문의 상세보기 | goods/goods_board_qa_view.php ***}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('img.js-smart-img').each(function () {
+            $(this).css('max-width', '100%');
+        });
+    });
+</script>
+<div class="qna">
+    <div class="question">
+        <div class="msg">
+            <strong>
+                {bdView.data.subject}
+                <!--{ ? bdView.data.auth.report == 'y' }-->
+                <a href="javascript:void(0)" class="js_btn_report" data-bdsno="{req.sno}" data-bdid="{=bdView.cfg.bdId}">{=__('신고')}</a>
+                <!--{ / }-->
+            </strong>
+            {bdView.data.workedContents}
+            <!--{? bdView.data.isFile == 'y'}-->
+            <div class="board-view-attach">
+                    <span class="text3">
+                    <img src="../img/etc/icon-clip.png" alt="" class="va-m"/>
+                    <strong style="display:inline">{=__('첨부파일')}</strong>
+                        <!--{ @ bdView.data.uploadedFile}-->
+                    <a href="../board/download.php?bdId={=bdView.cfg.bdId}&sno={req.sno}&fid={=.fid}" class="filename fz11">{.name}</a>&nbsp;&nbsp;
+                        <!--{/}-->
+                    </span>
+            </div>
+            <!--{/}-->
+        </div>
+        <div class="btn">
+            <!--{? bdView.data.auth.modify : 'y' : 'c'}-->
+            <a href="javascript:void(0)" class="skinbtn base1 gbqv-modify js-btn-modify" data-auth="{bdView.data.auth.modify}"><em>{=__('수정')}</em></a>
+            <!--{/}-->
+            <!--{? bdView.data.auth.delete : 'y' : 'c'}-->
+            <a href="javascript:void(0)" class="skinbtn base1 gbqv-delete js-btn-delete" data-auth="{bdView.data.auth.delete}"><em>{=__('삭제')}</em></a>
+            <!--{/}-->
+        </div>
+    </div>
+    <!--{ ? bdView.data.workedAnswerContents && bdView.data.replyComplete}-->
+    <div class="answer">
+        <div class="msg">
+            <strong>{bdView.data.answerSubject}</strong>
+            {bdView.data.workedAnswerContents}
+        </div>
+        <div class="btn">
+        </div>
+    </div>
+    <!--{/}-->
+</div>

@@ -1,0 +1,1382 @@
+﻿/**포토위잿**/
+.plus_review_widget {
+    display: block;
+    width: 100%;
+}
+
+.plus_review_widget_item {
+    display: block;
+    float: left;
+    padding: 4px;
+}
+/**메인 팝업**/
+#plusReviewPopup{
+    text-align:center;
+    border:1px solid #333333;
+    position: absolute;
+    top:50%;
+    left:50%;
+    z-index:3000;
+    width:250px;
+    min-height:150px;
+    background-color:#ffffff;
+    margin:-125px 0 0 -125px;
+}
+
+.plus-review-info{
+    padding:0 11px 0 11px;
+    margin-top:35px;
+    font-weight:bold;
+    font-size:17px;
+    color:#3a3a3a;
+    line-height:22px;
+}
+.plus-review-info2{
+    margin-top:20px;
+    color:#727272;
+    font-size:13px;
+    line-height:18px;
+
+}
+
+.plus-review-bold{
+    font-size:13px;
+    color:#333333;
+}
+
+.plus-review-info3{
+    margin-top:20px;
+    margin-left:16px;
+    width:215px;
+    background-color:#444444;
+    font-size:12px;
+    color:#ffffff;
+    height:36px;
+    vertical-align: middle;
+    line-height:35px;
+}
+.plus-review-info3 a{
+    color:#ffffff;
+}
+.plus-review-bottom{
+    width:100%;
+    margin-top:23px;
+    margin-bottom:0px;
+    background-color:#f8f8f8;
+    height:37px;
+    font-size:12px;
+    color:#727272;
+    border-top:1px solid #e1e1e1;
+    line-height:35px;
+    /*position:absolute;*/
+    bottom:0px;
+}
+
+.plus-review-bottom .today{
+    float:left;
+    width:124px;
+    border-right:1px solid #e1e1e1;
+    height:100%;
+}
+.plus-review-bottom .close{
+    float:left;
+    width:125px;
+    height:100%;
+}
+.plus-review-bottom .row-close{
+    float:left;
+    width:100%;
+    height:100%;
+}
+.clear-both{
+    clear:both;
+}
+
+#layerDim {
+    position:fixed;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    z-index:50;
+    background:#000;
+    opacity:0.3;
+    filter:alpha(opacity=30);
+}
+
+#addPlusReviewOrderLayer{
+    background-color:#ffffff;
+    position:absolute;
+    top:0px;
+    left:0px;
+    z-index:9900;
+    /*height:1900px;*/
+}
+
+#plusReviewWritePopup .reivew-option {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    background: #f8f8f8;
+}
+
+#plusReviewWritePopup .reivew-option .row {
+    padding-top: 5px;
+    display: block;
+}
+
+#plusReviewWritePopup .sys-pop {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+#plusReviewWritePopup button span {
+    position: inherit !important;
+}
+
+#plusReviewWritePopup .inp_tx input:not([type="radio"]):not([type="checkbox"]) {
+    width: 100%;
+    font-size: 16px;
+    background: #fff;
+    color: #333;
+    font-weight: bold
+}
+
+#plusReviewWritePopup .inp_sel {
+    border: 1px solid #c3c3c3
+}
+
+#plusReviewWritePopup .input_wrap {
+    display: table;
+    width: 100%;
+}
+
+#plusReviewWritePopup .input_title {
+    display: table-cell;
+}
+
+#plusReviewWritePopup .input_content {
+    display: table-cell;
+    vertical-align: top;
+}
+
+/* btn, input 공통 */
+#plusReviewWritePopup .pbtn {
+    overflow: hidden;
+    display: block;
+    width: 100%;
+    height: 42px;
+    background: #3e3d3c;
+    border: 1px solid #3e3d3c;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 36px
+}
+
+#plusReviewWritePopup a.pbtn {
+    line-height: 41px
+}
+
+.pbtn.btn-red {
+    background: red !important;
+    border: 1px solid red !important;
+}
+
+#plusReviewWritePopup .btn-w-auto {
+    display: inline-block;
+    padding: 0 10px;
+    width: auto;
+}
+
+
+#plusReviewWritePopup .pbtn.btn_gr {
+    height: 33px;
+    border: 1px solid #919191;
+    border-radius: 3px;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#fff), to(#f0f0f0));
+    color: #5e5e5e;
+    font-size: 13px;
+    line-height: 32px
+}
+
+#plusReviewWritePopup .btn_bx {
+    display: table;
+    table-layout: fixed;
+    width: 100%
+}
+
+#plusReviewWritePopup .btn_bx li {
+    display: table-cell;
+    padding-left: 4px;
+    vertical-align: top
+}
+
+#plusReviewWritePopup .btn_bx li:first-child {
+    padding-left: 0 !important
+}
+
+.input_wrap.ty2 {
+    border-bottom: 1px solid #e1e1e1;
+    padding: 5px 10px;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+
+#plusReviewWritePopup .input_wrap.ty2 .input_content input[type="text"],
+#plusReviewWritePopup .input_wrap.ty2 .input_content input[type="password"],
+#plusReviewWritePopup .input_wrap.ty2 .input_content input[type="number"],
+#plusReviewWritePopup .input_wrap.ty2 .input_content input[type="email"] {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    border-radius: 0;
+    height: 31px;
+    width: 100%;
+    font-size: 14px;
+}
+
+#plusReviewWritePopup.input_wrap.ty2 .input_title {
+    text-align:left;
+    vertical-align: middle;
+    width: 90px;
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    min-height: 42px;
+}
+
+
+
+#plusReviewWritePopup.input_wrap.ty2 .input_content {
+    text-align: left;
+    vertical-align: middle;
+}
+
+#plusReviewWritePopup .input_wrap.ty3 {
+    display: block;
+    padding: 10px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#plusReviewWritePopup .input_wrap.ty3 .input_title {
+    display: block;
+    padding-bottom: 10px;
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+}
+
+#plusReviewWritePopup .input_wrap.ty3 .input_content {
+    display: block;
+    height:200px;
+}
+
+#plusReviewWritePopup .input_wrap.ty3 .input_content .textarea {
+    width: 100%;
+    border: none;
+    height: 100%;
+    resize: none;
+    font-size: 14px;
+}
+
+.plus-review-write-section {
+    background: #FFFFFF
+}
+
+.plus-review-write-section #board-attach {
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 5px;
+    list-style: none
+}
+
+.plus-review-write-section #board-attach li.item {
+    overflow: hidden;
+    float: left;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 7px;
+    margin-right: 7px
+}
+
+.plus-review-write-section   button.file-face {
+    width: 50px;
+    height: 50px;
+    border: none;
+    background-image: url('../img/btn/btn_file_plus.png');
+    background-size: 100% 100%;
+    font-size: 0
+}
+
+/*.plus-review-write-section #board-attach li.item button.file-face.preview {
+    border: none;
+    background-size: 100% auto
+}*/
+
+.plus-review-write-section   input.file-hidden {
+    width: 50px !important;
+    height: 50px;
+    /*margin-bottom: -20px;*/
+    opacity: 0
+}
+
+#plusReviewWritePopup .select-small-outer .rating {
+    display: block;
+    margin: 5px 0 5px 5px;
+}
+
+#plusReviewWritePopup .rating {
+    display: inline-block;
+    width: 70px;
+    height: 15px;
+    background: url('../img/etc/star-bg-88x15.png') no-repeat left top;
+    vertical-align: middle;
+    text-indent: -9999px;
+    background-size: 70px;
+}
+
+#plusReviewWritePopup .rating span {
+    display: block;
+    background: url('../img/etc/star-fill-88x15.png') no-repeat left top;
+    font-size: 13px;
+    background-size: 70px;
+}
+.plus-review-write-section #board-attach li.item button.file-face.preview {
+    border: none;
+    background-size: 100% auto
+}
+
+.plus-review-write-section table td {
+    padding: 8px;
+    border-bottom: solid 1px #DBDBDB;
+    vertical-align: middle
+}
+
+.plus-review-write-section table td textarea {
+    height: 120px;
+    border: 0
+}
+
+
+#plusReviewWritePopup  .view-end-price ul {
+    float: right;
+}
+
+#plusReviewWritePopup  .view-end-price ul li {
+    overflow: hidden;
+    padding: 0 0 5px;
+}
+
+#plusReviewWritePopup   .view-end-price ul li span {
+    float: left;
+    width: 90px;
+    padding: 4px 0 0;
+    font-size: 13px;
+}
+
+#plusReviewWritePopup  .view-end-price ul li strong {
+    float: right;
+    font-size: 15px;
+}
+
+#plusReviewWritePopup  .view-end-price ul li:last-child {
+    padding: 0;
+}
+
+#plusReviewWritePopup     .view-end-price ul li:last-child * {
+    color: #3e3d3c;
+}
+
+#plusReviewWritePopup   .view-end-price ul li:last-child span {
+    padding: 2px 0 0;
+    font-size: 15px;
+}
+
+#plusReviewWritePopup    .view-end-price ul li:last-child strong {
+    font-size: 18px;
+}
+
+
+#plusReviewWritePopup    .select-small-outer .rating {
+    display: block;
+    margin: 5px 0 5px 5px;
+}
+
+#plusReviewWritePopup  .selected-goods-wrap {
+    padding: 0 10px;
+    border-bottom: 1px solid #ddd;
+    background: #f8f8f8;
+}
+
+#plusReviewWritePopup   .selected-goods + .selected-goods {
+    border-top: 1px solid #ddd;
+}
+
+#plusReviewWritePopup    .selected-goods {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+
+}
+
+#plusReviewWritePopup   .goods-item-cell {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#plusReviewWritePopup   .goods-item-cell.cell-img {
+    width: 80px;
+    padding: 10px 10px 10px 0;
+}
+
+#plusReviewWritePopup .goods-item-cell.cell-img .goods-img {
+    display: block;
+    border: 1px solid #e5e5e5;
+}
+
+#plusReviewWritePopup .goods-item-cell.cell-img .goods-img img {
+    width: 100%;
+    vertical-align: top;
+}
+
+#plusReviewWritePopup .goods-item-cell.cell-info {
+    text-align:left;
+    font-size: 12px;
+    padding: 10px 0;
+}
+
+#plusReviewWritePopup .goods-item-cell.cell-price {
+    text-align: right;
+    font-size: 12px;
+}
+
+#plusReviewWritePopup .cell-delete {
+    position: absolute;
+    right: 10px;
+    bottom : 10px;
+    z-index: 2000;
+    text-decoration: underline;
+}
+
+#plusReviewWritePopup .option-label {
+    float: left !important;
+    width: 90px !important;
+    min-height: 0px !important;
+}
+
+#plusReviewWritePopup .option-value {
+    float: left !important;
+}
+
+#plusReviewWritePopup .ly_ct{
+    padding-top:0px !important;
+}
+
+/**상품기준게시판**/
+.plus-review-goods-list {
+    width: 98%;
+    margin-top:15px;
+    position:relative;
+}
+
+.plus-review-goods-list .row {
+    margin-left:11px;
+    margin-bottom: 30px;
+    position: absolute;
+}
+
+.plus-review-goods-list .row img {
+    width:100%;
+    max-width: 100%;
+    height: auto;
+}
+
+.plus-review-goods-list .row  .name {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #222222;
+}
+
+.plus-review-goods-list .row .review-info {
+    margin-top: 5px;
+    font-size: 9px;
+    color: #999999;
+}
+
+.plus-review-goods-list .row .review-info .red-bold {
+    margin-left: 5px;
+    font-weight: bold;
+    font-size: 10px;
+    color: #fa2828;
+    padding-right:5px;
+}
+
+.plus-review-goods-list .row .article-area {
+    margin-top: 10px;
+    font-size: 11px;
+    color: #707070;
+}
+.plus-review-goods-list .row .article-area li{
+    margin-bottom:8px;
+}
+.plus-review-goods-list .row .article-area li .article{
+    width:125px;
+    display: block;
+    float: left;
+    word-break:break-all;
+}
+
+.plus-review-goods-list .row .article-area li .icon-review {
+    width: 16px;
+    height: 15px;
+    float: left;
+    background: url('../img/icon/ico_m_review.png') no-repeat 0px 3px;
+    background-size: contain;
+    margin-right:5px;
+}
+
+.plus-review-view .head.sub {
+    height: 42px;
+    padding: 0 45px 0 43px;
+    background: #fff;
+    border-bottom: 1px solid #c3c3c3;
+    text-align: center;
+    line-height: 45px;
+}
+
+.plus-review-view .head.sub .bn_back {
+    left: 0;
+    padding: 12px 15px 11px 12px;
+}
+
+.plus-review-view .head.sub .bn {
+    position: absolute;
+    padding: 12px 15px 11px 12px;
+}
+
+.plus-review-view .h_tit {
+    color: inherit;
+    font-size: 15px;
+}
+
+.plus-review-view .ly_btn_close .sp {
+    width: 10px;
+    background-position: -195px -55px;
+    height: 19px;
+}
+
+.plus-review-view .inp_chk .sp {
+    background-image: url(../img/common/sp.png);
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-top: -3px;
+    vertical-align: middle;
+    overflow: hidden;
+    font-size: 0;
+    line-height: 999px;
+    white-space: nowrap;
+}
+
+.plus-review-write-section .inp_chk .sp {
+    background-image: url(../img/common/sp.png);
+    display: inline-block;
+    width: 20px !important;
+    height: 20px;
+    margin-top: -3px;
+    vertical-align: middle;
+    overflow: hidden;
+    font-size: 0;
+    line-height: 999px;
+    white-space: nowrap;
+}
+
+.plus-review-view .recommend-inline{
+    display:inline-block;
+    text-indent: 20px;
+}
+
+.plus-review-view  .recommend-inline .recommend-count{
+    color:#fa2828;
+}
+
+/**상품기준게시판lnjts**/
+/**--------------------------------------------------------------------------------------------------------------------**/
+/* 리스트 - 평가, 리뷰 타이틀 관련 */
+/* 리스트 - 평가, 리뷰 타이틀 관련 */
+/*
+ * 플러스리뷰 시작
+*/
+/* 리스트 - 평가, 리뷰 타이틀 관련 */
+.default-div {
+    flex:1;
+    width: 100%;
+    display:table-cell;
+}
+.plus-review-title {
+    background-color:#f2f3f3;
+    /*border-top:1px solid #c3c3c3;*/
+    border-bottom:1px solid #c3c3c3;
+    height:55px;
+    position:relative;
+}
+.plus-review-title .plus-review-title-area {
+    display:table;
+    height:inherit;
+}
+.plus-review-title .plus-review-title-area > span {
+    display:table-cell;
+    height:inherit;
+    vertical-align:middle;
+}
+.plus-review-title .plus-review-title-area .title {
+    font-size:13px;
+    color:#606060;
+}
+.plus-review-title .plus-review-title-area .point {
+    font-weight:bold;
+    font-size:24px;
+    color:#fa2828;
+    padding-left:8px;
+    top: 10px;
+}
+.plus-review-title .plus-review-title-area .eval-title {
+    padding-left:10px;
+    top: 10px;
+}
+.plus-review-title .plus-review-title-area .review-title {
+    padding-left:15px;
+    top: 10px;
+}
+.plus-review-title .review-write-btn {
+    position:absolute;
+    right:10px;
+    top:10px;
+}
+.review-write-btn .btn {
+    width:80px;
+    height:35px;
+    line-height:35px;
+    background:#666;
+    border:none;
+    font-weight:normal;
+}
+
+/* 상단 타이틀(총 *개의 상품평)에 border 가 먹혀있어 2px처럼 보이게 되어있음 */
+.item-list-head {
+    border-bottom:none;
+}
+
+/* 리스트 - 별점, 댓글, 추천수 관련 */
+.plus-review-list .list,
+.plus-review-contents  .ratings {
+    /*padding:13px 0 15px 0;*/
+    padding:13px 0 15px 10px;
+    border-bottom:1px solid #e5e5e5;
+}
+.plus-review-list .list .title,
+.plus-review-contents .ratings div.info {
+    display:inline-block;
+    padding:0 5px 0 0;
+    line-height:inherit;
+    word-break:normal;
+    overflow:visible;
+    font-size:11px;
+    color:#999;
+}
+.plus-review-list .list .total-count,
+.plus-review-contents .ratings div.info {
+    float:right;
+    padding-right:10px;
+}
+.plus-review-list .list .recomm,
+.plus-review-contents .recomm {
+    padding-left:10px;
+}
+.plus-review-list .list .count,
+.plus-review-contents .count {
+    font-size:11px;
+    color:#666;
+}
+.plus-review-list .list div.contents {
+    width:100%;
+    display:table;
+    padding:13px 0 0 0;
+    word-break: break-all;
+}
+.plus-review-list .list div.contents > div {
+    display:table-cell;
+}
+.plus-review-list .list div.contents > div.text {
+    width:*;
+}
+.plus-review-list .list div.contents > div.image {
+    width:60px;
+    text-align:right;
+}
+.plus-review-list .list div.contents .image:nth-child(1) {
+    padding-right:10px;
+}
+.plus-review-list .list div.contents .image:nth-last-child(1) {
+    display:table-cell;
+    width:60px;
+    padding:0 10px;
+}
+.plus-review-list .list .text-info {
+    display:table;
+}
+.plus-review-list .list div.text {
+    text-align:justify;
+    flex: 1;
+}
+.plus-review-list .list div.text .new,
+.plus-review-list .list div.text-info .new {
+    background-image:url('../img/icon/icon_m_new.png');
+    background-repeat:no-repeat;
+    background-size:13px;
+    display:inline-block;
+    width:13px;
+    height:13px;
+    vertical-align:middle;
+}
+.plus-review-list .list div.text .new img,
+.plus-review-list .list div.text-info .new img {
+    width:13px;
+    height:13px;
+    vertical-align:middle;
+}
+.plus-review-list .list div.text a.more,
+.plus-review-list .list div.text-info a.more {
+    text-decoration:underline;
+    color:#222;
+    font-size:12px;
+}
+.plus-review-list .list div.contents .image img {
+    width:50px;
+    height:50px;
+    border:1px solid #e5e5e5;
+}
+
+/* 전체 리스트 */
+
+.plus-review-list .list.all .goods-image {
+    display: table-cell;
+    width: 65px;
+    padding-right: 10px;
+}
+.plus-review-list .list.all .goods-image img {
+    width:65px;
+    height:65px;
+    border:1px solid #e5e5e5;
+}
+.plus-review-list .list .inform {
+    padding-right:10px;
+    padding-bottom:10px;
+    text-align:justify;
+    word-break: break-all;
+}
+.plus-review-list .list.all div.info .date {
+    padding:0 !important;
+}
+.plus-review-list .list.all .total-count {
+    padding:0;
+}
+
+/* 리스트 더보기 */
+.btn_list_more_box{text-align: center;margin-bottom: 20px;}
+.btn_list_more_box.hide{display:none;}
+.btn_list_more{display:inline-block; padding:4px 4px 2px 4px; text-align:center; border-radius:5px; background:#fff; font-size:12px; border:1px solid #9f9f9f; color:##494949; font-weight:bold; box-sizing:border-box;}
+
+/* 리스트 - 작성자, 등록일 관련 */
+.plus-review-list .list div.info {
+
+}
+.plus-review-contents .comments .list .info {
+    padding-bottom:10px;
+}
+.plus-review-list .list div.info .writer,
+.plus-review-contents .comments .list .info .writer {
+    font-size:11px;
+    color:#999;
+    padding-right:10px;
+}
+.plus-review-list .list div.info .date,
+.plus-review-contents .ratings div.info .date,
+.plus-review-contents .comments .list .info .report,
+.plus-review-contents .comments .list .info .date {
+    font-size:11px;
+    color:#999;
+    padding-left:10px;
+}
+
+/* 플러스리뷰 상세 페이지 관련 */
+.plus-review-contents .ratings div.info .writer,
+.plus-review-list .list.all div.info .writer {
+    font-size:11px;
+    color:#999;
+}
+.plus-review-contents .ratings div.info .writer:after,
+.plus-review-list .list.all div.info .writer:after {
+    content:'';
+    position:relative;
+    right:0;
+    top:2px;
+    width:1px;
+    height:10px;
+    background:#cacaca;
+    display:inline-block;
+    margin-left:10px;
+}
+.plus-review-contents div.ratings {
+    border-bottom:1px solid #e5e5e5;
+}
+.plus-review-contents div.contents,
+.plus-review-write div.contents {
+    padding:15px 0 0 10px;
+    display:flex;
+}
+.plus-review-contents div.contents .image,
+.plus-review-write div.contents .image {
+    width:80px;
+    float:left;
+    vertical-align:top;
+}
+.plus-review-contents div.contents .image img,
+.plus-review-write div.contents .image img {
+    width:80px;
+    height:80px;
+}
+.plus-review-contents div.contents .info,
+.plus-review-write div.contents .info {
+    float:left;
+    padding:0 10px;
+}
+.plus-review-contents div.contents .info .goods-name,
+.plus-review-write div.contents .info .goods-name {
+    font-size:13px;
+    color:#333;
+    line-height:18px;
+    text-align:justify;
+}
+.plus-review-contents div.contents .info .price,
+.plus-review-write div.contents .info .price {
+    font-family:Arial;
+    font-size:19px;
+    color:#333;
+    padding-top:23px;
+    font-weight:bold;
+}
+.plus-review-contents div.plus-div {
+    margin:10px 0 0 10px;
+}
+/* 플러스리뷰 상세페이지 정보 관련 */
+.plus-review-contents div.inform {
+    clear:both;
+    padding:1px 0 0 10px;
+    border-bottom:1px solid #e7e7e7;
+}
+.plus-review-contents div.inform .image {
+    margin:10px 10px 0 0;
+}
+.plus-review-contents div.inform .image img {
+    width:100%;
+}
+.plus-review-contents div.plus-info {
+    background:#f8f8f8;
+    margin:10px 0;
+    padding: 15px 0;
+}
+.plus-review-contents div.plus-info dt {
+    font-size:12px;
+    color:#5f5f5f;
+}
+.plus-review-contents div.plus-info dd {
+    font-size:12px;
+    color:#adadad;
+}
+/* 플러스리뷰 구매자 정보 */
+.plus-review-contents .inform .text {
+    margin:10px 10px 25px 0;
+    text-align:justify;
+}
+.plus-review-contents .inform .plus-info table {
+    /*margin:0;
+    padding:13px 0;*/
+}
+.plus-review-contents .inform .plus-info table caption,
+.plus-review-write .write-box table caption {
+    visibility:hidden;
+    position:absolute;
+    left:-9999em;
+    text-indent:-9999em;
+    width:1px;
+    height:1px;
+    margin:0;
+    padding:0;
+    background: none;
+    font-size:0;
+    line-height:0;
+}
+.plus-review-contents .inform .plus-info table tr {
+    vertical-align:top;
+}
+.plus-review-contents .inform .plus-info table tr th {
+    vertical-align:top;
+    word-break:break-all;
+    color:#5f5f5f;
+    padding:4px 15px 4px 15px;
+    text-align:justify;
+    font-weight:normal;
+}
+.plus-review-contents .inform .plus-info table tr td {
+    vertical-align:top;
+    word-break:break-all;
+    color:#adadad;
+    text-align:justify;
+    padding:4px 10px 4px 0;
+}
+
+/* 플러스리뷰 상세페이지 댓글 관련 */
+.plus-review-contents .comments {
+}
+.plus-review-contents .comments .title {
+    position:relative;
+    border-bottom:1px solid #e7e7e7;
+    padding:15px 10px;
+}
+.plus-review-contents .comments .title .comment-count {
+    display:inline-block;
+}
+.plus-review-contents .comments .title .count {
+    color:#fa2828;
+}
+.plus-review-contents .comments .title .write {
+    position:absolute;
+    top:8px;
+    right:10px;
+    border:1px solid #fa2828;
+    border-radius:3px;
+    width:62px;
+    height:28px;
+    text-align:center;
+    line-height:28px;
+}
+.plus-review-contents .comments .title .write button {
+    color:#fa2828;
+    font-size:12px;
+}
+.plus-review-contents .comments .title .report {
+    position: absolute;
+    right: 80px;
+    top:8px;
+    height:30px;
+}
+.plus-review-contents .comments .title .report button{
+    font-size:12px;
+    display: inline-block;
+    padding: 6px 3px 7px;
+    vertical-align:top;
+    box-sizing:border-box;
+}
+.js_btn_report{
+    display: inline-block;
+    padding: 4px 10px;
+    color: #333333;
+    font-size: 13px;
+    border: 1px solid #c7c7c7;
+    background: #ffffff;
+    border-radius: 3px;
+}
+.plus-review-contents .comments .list {
+    padding:15px 10px 0 10px;
+    border-bottom:1px solid #cfcfcf;
+}
+.plus-review-contents .comments .list.reply {
+    padding:15px 10px 0 20px;
+}
+.plus-review-contents .comments .list.reply .text {
+    text-align:justify;
+    padding-left:10px;
+}
+.plus-review-contents .comments .list.reply .info,
+.plus-review-contents .comments .list.reply .buttons {
+    padding-left:10px;
+}
+
+.plus-review-contents .comments .list div:not(.buttons, .comment-box) {
+    padding-bottom:10px;
+}
+.plus-review-contents .comments .comment-list .list.reply .icon {
+    content:'';
+    position:absolute;
+    width:8px;
+    height:8px;
+    background:#a2a2a2;
+    z-index:1;
+}
+.plus-review-contents .comments .comment-list .list.reply .icon:after {
+    content:'';
+    position:absolute;
+    left:2px;
+    width:6px;
+    height:6px;
+    background:#fff;
+    z-index:2;
+}
+/* 플러스리뷰 상세페이지 댓글 수정 삭제 버튼 관련 */
+.plus-review-contents .comments .list .buttons {
+    padding-bottom:15px;
+}
+.plus-review-contents .comments .list .buttons button.icon-button {
+    display:inline-block;
+    background:url(../img/common/icon-comment-option.png) 0 0 no-repeat;
+    width:22px;
+    height:22px;
+    font-size:0;
+    text-indent:100%;
+    overflow:hidden;
+    -webkit-background-size:66px 22px;
+    background-size:66px 22px;
+    border:1px solid #c7c7c7;
+    -webkit-box-sizing:content-box;
+    -moz-box-sizing:content-box;
+    box-sizing:content-box;
+}
+.plus-review-contents .comments .list .buttons button.modify {
+    background-position:-22px 0;
+}
+.plus-review-contents .comments .list .buttons button.delete {
+    background-position:-44px 0;
+}
+.plus-review-contents .comments .comment-write {
+    padding:15px 10px;
+    background:#f1f1f1;
+    border-bottom:1px solid #cfcfcf;
+}
+.plus-review-contents .comments .comment-write .comment-button {
+    display: table-cell;
+    vertical-align: top;
+    padding-left: 10px;
+}
+.plus-review-contents .comments .comment-write .comment-box {
+    width:100%;
+    display: table-cell;
+    /* margin:0 5px 0 0; */
+    height: 70px;
+    /* border:1px solid #c7c7c7; */
+    padding:0;
+}
+.plus-review-contents .comments .comment-write .comment-box textarea {
+    width:100%;
+    height:70px;
+    margin:0;
+    padding:5px;
+    border:0;
+    box-sizing:border-box;
+    border: 1px solid #c7c7c7;
+    -webkit-border: 1px solid #c7c7c7;
+    -webkit-box-sizing:border-box;
+    -webkit-border-radius: 0;
+    -webkit-appearance: none;
+    resize: none;;
+
+}
+.plus-review-contents .comments .comment-write .comment-button button {
+    width:70px;
+    height:70px;
+    background:#666;
+    color:#fff;
+}
+.plus-review-contents .review-buttons {
+    padding:15px 10px;
+}
+.plus-review-contents .review-buttons ul {
+    display:table;
+    table-layout:fixed;
+    width:100%;
+}
+.plus-review-contents .review-buttons li:first-child {
+    padding-left:0 !important;
+}
+.plus-review-contents .review-buttons li {
+    display:table-cell;
+    padding-left:5px;
+}
+.plus-review-contents .comments .comment-list .list .comment-write {
+    margin-bottom:15px;
+    border-top:1px solid #cfcfcf;
+}
+.plus-review-contents .comments .comment-list .text,
+.plus-review-contents .comments .comment-write .non-member {
+    padding-bottom:10px;
+}
+.plus-review-contents .comments .comment-write .non-member .text {
+    height: 31px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    color: #9f9f9f;
+    line-height: 20px;
+    background: #ffffff;
+}
+.plus-review-contents .comments .comment-write .non-member .private-div textarea {
+    width:100%;
+    height:60px;
+    text-align:justify;
+    border:none;
+    box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    resize:none;
+    border:1px solid #c3c3c3;
+}
+.plus-review-contents .comments .comment-write .comment-contents {
+    display: table;
+    align-items:center;
+}
+
+/* 리뷰 작성 레이어 팝업 */
+.plus-review-write .benefit {
+    font-size:14px;
+    color:#fff;
+    background:#666;
+    padding:13px 10px;
+    min-height:14px; /* 최소 높이 총 합: 40px */
+}
+.plus-review-write .input_title {
+    color: #222 !important;
+    font-weight:normal !important;
+    min-widgh:70px;
+}
+.plus-review-write .write-box .input_wrap.ty2 {
+    border-bottom:1px solid #c3c3c3;
+    padding-top:10px;
+}
+.plus-review-write .write-box .input_content span {
+    color:#888;
+    font-size:14px;
+}
+.plus-review-write .write-box input:not([type="radio"]):not([type="checkbox"]) {
+    color:#888;
+    font-weight:normal;
+}
+.plus-review-write .write-box .writer {
+    min-height:40px;
+}
+.plus-review-write .write-box .input_content button.order-select {
+    float: right;
+    border: 1px solid #919191;
+    border-radius: 3px;
+    background: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#f0f0f0));
+    font-size: 14px;
+    color: #888;
+    padding: 8px 10px;
+}
+.plus-review-write .write-box .delete {
+    float:right
+}
+.plus-review-write .write-box .delete a {
+    font-size: 11px;
+    color: #707070;
+    text-decoration: underline;
+}
+.plus-review-write .write-box .orders,
+.plus-review-write .write-box .ratings {
+    padding: 10px !important;
+}
+.plus-review-write .write-box .contents {
+    padding:15px 0 10px 10px;
+}
+.plus-review-write .write-box .input_wrap ty2 .scroll {
+    overflow-y:auto;
+    overflow-x:hidden;
+    max-height:150px;
+}
+.plus-review-write .write-box .ratings {
+    padding-bottom:15px;
+}
+.plus-review-write .write-box .input_wrap.ty2.inform {
+    border:none;
+    background:#f9f9f9;
+}
+.plus-review-write .write-box .buyer-inform {
+    /*padding-bottom: 10px;*/
+    background: #f9f9f9;
+    border-bottom:1px solid #c3c3c3;
+}
+.plus-review-write .write-box .input_wrap.ty3 {
+    border-bottom:1px solid #c3c3c3;
+}
+.plus-review-write .order-text {
+    color:#888;
+    font-size:14px;
+}
+.plus-review-write .board-attach li.item {
+    overflow: hidden;
+    float: left;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 7px;
+    margin-right: 7px
+}
+.plus-review-write .board-attach li.item button.file-face {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-image: url('../img/btn/btn_file_plus.png');
+    background-size: 100% 100%;
+    font-size: 0
+}
+.plus-review-write .non-member div {
+    padding:10px;
+    border-bottom:1px solid #c3c3c3;
+    margin: 0;
+    display: inherit;
+}
+.plus-review-write .non-member .private-div textarea {
+    width:100%;
+    height:120px;
+    text-align:justify;
+    border:none;
+    box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    resize:none;
+}
+
+.plus-review-write-section .gray{
+    border-bottom: 1px solid #ddd;background: #f8f8f8;
+}
+
+/**포토후기**/
+.photo_wrap{position: relative;overflow: hidden;margin: 0 0 0 0;}
+.photo_wrap .photo{float: left;position: absolute;border: 1px solid #dbdbdb;margin: 20px 0 0 10px;}
+.photo_wrap .photo a{display: block;overflow: hidden;}
+.photo_wrap .photo a + a{border-top: 1px solid #e8e8e8;}
+.photo_wrap .photo .img{position: relative;overflow: hidden;}
+.photo_wrap .photo .img img{width: 100%;border: 0 none;vertical-align: top;}
+.photo_wrap .photo .img strong{position: absolute;right: 0;bottom: 0;width: 34px;height: 34px;line-height: 32px;font-size: 14px; color: #ffffff;background-color:#151413; text-align: center;}
+.photo_wrap .photo .text{font-size: 12px;color:#999999;margin: 15px 15px 15px 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 라인수 */
+    -webkit-box-orient: vertical;
+    word-wrap:break-word;
+}
+.photo_wrap .photo .cont_wrap{position: relative;padding: 15px 14px 15px 14px;}
+.photo_wrap .photo .cont_wrap .img{position: absolute;left: 14px;top: 15px;}
+.photo_wrap .photo .cont_wrap .cont{padding: 0 0 0 49px;}
+.photo_wrap .photo .cont_wrap .cont strong{color: #484848;}
+.photo_wrap .photo .cont_wrap ul{overflow: hidden;}
+.photo_wrap .photo .cont_wrap ul li{}
+.photo_wrap .photo .cont_wrap ul li:first-child .tit{margin: 0;}
+.photo_wrap .photo .cont_wrap .tit{font-size: 12px; color: #666666;}
+.photo_wrap .photo .cont_wrap .con{font-size: 12px; color: #fa2828;font-weight: bold;padding: 0 0 0 5px;}
+.photo_wrap .photo .cont_wrap .img img{width: 38px;height:38px;}
+
+.no-data{text-align: center;margin: 50px 0;}
+.plus-review-title{border-bottom:none;}
+.plus_review_add_search{background:#f2f3f3; border-bottom:#e5e5e5 1px solid; padding:0 10px 6px;}
+.plus_review_add_search > a{font-size:13px; font-weight:bold; color:#000; line-height:38px; text-align:center; display:block; border:#e2e2e2 1px solid; background:#fff;}
+.plus_review_add_search.on > a{border-color:#9d4656; color:#9e4455;}
+.plus_review_add_search > a > span{vertical-align:middle;}
+.plus_review_add_search > a > span.arrow{width:7px; height:12px; background:url('../img/btn/bg_plus_review_add_search_arrow.png') left top no-repeat; background-size:7px auto; display:inline-block; margin-left:20px;}
+.plus_review_add_search.on > a > span.arrow{background-position:left bottom;}
+
+#plusReviewAlikeSearchPopup{position:relative; height:100%;}
+#plusReviewAlikeSearchPopup .ly_ct{overflow:hidden; overflow-y:scroll; padding:0; height:100%;}
+#plusReviewAlikeSearchPopup .alike_search_wrap{background:#f5f5f5; padding-bottom:85px;}
+#plusReviewAlikeSearchPopup .alike_search_cont{padding:10px 15px 15px; margin-top:11px; border-bottom:#ebebeb 1px solid; background:#fff;}
+#plusReviewAlikeSearchPopup .alike_search_cont > p{font-size:13px; font-weight:bold; color:#333333; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;}
+#plusReviewAlikeSearchPopup .alike_search_cont:first-child{margin-top:0;}
+#plusReviewAlikeSearchPopup .alike_search_option{margin-top:6px;}
+#plusReviewAlikeSearchPopup .alike_search_option ul{overflow:hidden;}
+#plusReviewAlikeSearchPopup .alike_search_option li{float:left; margin-right:12px; margin-top:12px; display:block; max-width:100%; box-sizing:border-box; position:relative;}
+#plusReviewAlikeSearchPopup .alike_search_option label{display:inline-block; border:#e6e6e6 1px solid; line-height:30px; max-width:100%; padding:0 14px; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; box-sizing:border-box;}
+#plusReviewAlikeSearchPopup .alike_search_option input[type=checkbox]{visibility:hidden; position:absolute; top:0; left:0;}
+#plusReviewAlikeSearchPopup .alike_search_option input[type=checkbox]:checked + label{border-color:#3e3d3c; background:#3e3d3c; color:#fff;}
+#plusReviewAlikeSearchPopup .block-pd{position:fixed; bottom:0; left:0; border-top:#cccccc 1px solid; border-bottom:#cccccc 1px solid; margin:0;}
+#plusReviewAlikeSearchPopup .block-pd .btn_bx {display:table; width:100%;}
+#plusReviewAlikeSearchPopup .block-pd .btn_bx li {display:table-cell; width:65%; padding:0;}
+#plusReviewAlikeSearchPopup .block-pd .btn_bx li:first-child {width:35%;}
+#plusReviewAlikeSearchPopup .block-pd .btn_bx li .pbtn{display: block; width: 100%; height: 42px; box-sizing: border-box; border:none; -webkit-box-sizing: border-box; color: #fff; font-size: 14px; font-weight: bold; text-align: center; vertical-align: middle; line-height: 36px}
+#plusReviewAlikeSearchPopup .block-pd .btn_bx li .pbtn.js-pr-popup-close{background:#ffffff; color:#3e3d3c;}
+
+.plus_review_goods_option{padding:6px 11px; overflow:hidden; background:#f2f3f3;}
+.plus_review_goods_option > div{width:62%; float:right;}
+.plus_review_goods_option > div:first-child{width:35%; float:left;}
+.plus_review_loading{text-align:center; margin:10px 0;}
+.plus_review_loading img{max-width:100%;}
+
+.selected-goods-wrap .pr_remove_goods {
+    padding-left: 20px;
+}
+#plusReviewWritePopup .itemselect .pr_empty_goods_txt {
+    float: left;
+    line-height: 30px;
+}
+/*** 플러스 리뷰 전체보기 위젯(기본형) ***/
+/* 플러스리뷰 기본형 */
+.plus_review_article_widget .board_list_plus_review{position:relative; padding:20px 0 0 0; border-top:2px solid #dbdbdb;}
+.plus_review_article_widget .board_list_plus_review:after{display:block; clear:both; content:"";}
+.plus_review_article_widget .board_list_plus_review > ul{float:left; width:100%; font-size:0;}
+.plus_review_article_widget .board_list_plus_review > ul > li{display:inline-block; position:relative; margin:0 0 40px 0; font-size:12px; text-align:center; vertical-align:top;}
+/* 플러스 리뷰 > 전체 상품후기 리스트 */
+.plus_review_article_widget .plus_review_view{margin:-21px 0 0 0; background:#ffffff;}
+.plus_review_article_widget .plus_review_view_list{display: table; width:100%; margin-top:-1px;padding:20px 0 20px 0;border-top:1px solid #dbdbdb;border-bottom:1px solid #dbdbdb;}
+.plus_review_article_widget .plus_review_view_list .goods_photo{display:block; width:100px; height:100px; border:1px solid #dbdbdb;}
+.plus_review_article_widget .plus_review_view_list .goods_photo img{width:100%; height:100%;}
+/* 별 + 날짜 + 이름 */
+.plus_review_article_widget .plus_review_view .star_day_name{padding:0 20px 0 20px; display: table-cell;width: 15%;}
+.plus_review_article_widget .plus_review_view .star_day_name strong{display:block; color:#ffcc00; font-size:20px;}
+.plus_review_article_widget .plus_review_view .star_day_name span{display:block; padding:5px 0 5px 0; color:#787878;}
+/* 옵션, 내용 */
+.plus_review_article_widget .plus_review_view .option_text_file_box{padding: 0 10px 0 10px;display: table-cell;width: 85%; vertical-align:top;}
+.plus_review_article_widget .plus_review_view .option_text_file_box .goods_tit{display:block; padding:0 0 10px 0; font-size:13px;}
+/* 옵션 */
+.plus_review_article_widget .plus_review_view .option_text_file_box .option_list_cont{display:block; padding:20px 20px 20px 20px; border-bottom:1px solid #f0f0f0; background:#f8f8f8;}
+.plus_review_article_widget .plus_review_view .option_text_file_box .option_list_cont dl{display:block; width:100%; min-height:31px; padding:0; font-size:0;}
+.plus_review_article_widget .plus_review_view .option_text_file_box .option_list_cont dt{display:inline-block; width:100px; padding:0; color:#484848; font-size:12px; font-weight:bold; vertical-align:middle;}
+.plus_review_article_widget .plus_review_view .option_text_file_box .option_list_cont dd{display:inline-block; height:21px; padding:7px 0 0 0; font-size:12px; vertical-align:middle;}
+/* 내용 */
+.plus_review_article_widget .plus_review_view .text_file_cont {word-break:break-word;}
+.plus_review_article_widget .plus_review_view .text_file_cont .review_text{min-height:50px; margin:15px 0 15px 0;}
+.plus_review_article_widget .plus_review_view .text_file_cont .btn_review_text_more{margin:0 0 0 10px; color:#484848; font-size:11px; border-bottom:1px solid #484848;}
+/* 내용안에 이미지 */
+.plus_review_article_widget .plus_review_view .text_file_cont .file_upload_list{float:none; font-size:0; cursor:pointer;}
+.plus_review_article_widget .plus_review_view .text_file_cont .file_upload_list ul li{display:inline-block; position:relative; width:auto; height:auto; margin:10px 8px 10px 0;}
+.plus_review_article_widget .plus_review_view .text_file_cont .file_upload_list ul li img{width:100px; height:100px; border:1px solid #dbdbdb;}
+.plus_review_article_widget .plus_review_view .text_file_cont .file_upload_list .img_pr_zoom{position:absolute; top:102px; left:0px; max-width:600px; width:auto; height:auto; z-index:999000;}
+/* 댓글 */
+.plus_review_article_widget .plus_review_view .review_comment_box{display:block;}
+.plus_review_article_widget .plus_review_view .review_comment_top{overflow:hidden; width:100%; padding:10px 0 10px 0; border-bottom:none 0;}
+.plus_review_article_widget .plus_review_view .review_comment_top .comment_num{padding:0 20px 0 0;}
+.plus_review_article_widget .plus_review_view .review_comment_top .comment_num a{color: #717171;}
+.plus_review_article_widget .plus_review_view .review_comment_top .comment_num strong{ border-bottom:1px solid #333;}
+.plus_review_article_widget .plus_review_view .review_comment_top .comment_best_num{color:#ab3e55;}
+.plus_review_article_widget .plus_review_view .review_comment_top .btn_view_comment_box{float:right;}
+.plus_review_article_widget .plus_review_view .btn_comment_best{display:inline-block; min-width:50px; margin:0 0 0 10px; padding:1px 5px 2px 5px; color:#ffffff; font-size:11px; border:1px solid #ab3e55; background:#ab3e55; text-align:center;}
+.plusreview-all-list .review_comment_box .reply {padding-top:20px; padding-bottom:20px;border-top:solid 1px #dbdbdb; }
+/*** 플러스 리뷰 전체보기 위젯(간편형) ***/
+.plus_review_article_widget.simple .plus_review_view {margin:0;}
+.plus_review_article_widget.simple .plus_review_view .star_day_name{padding: 0; display: table-cell;width: 15%;}
+.plus_review_article_widget.simple .plus_review_view .plus_reivew_contents a{text-decoration: underline; color: #222; font-size: 12px;}
+.plus_review_article_widget .plus_review_view .text_file_cont .file_upload_list{cursor:pointer;}
+.plus_review_article_widget .plus_review_view .star_day_name{padding:0 20px 0 20px; display: table-cell;width: 15%;}
+.plus_review_article_widget .plus_review_view .star_day_name strong{display:block; color:#ffcc00; font-size:20px;}
+.plus_review_article_widget .plus_review_view .star_day_name span{display:block; padding:5px 0 5px 0; color:#787878;}
+.plus_review_article_widget .plus_review_list ul li {padding:10px 10px 10px 10px; border-bottom:1px solid #e5e5e5;}
+.plus_review_article_widget .list_left {display:table-cell; width:100%; vertical-align:top;}
+.plus_review_article_widget .list_left .goods_nm{font-size:13px; font-weight:bold; padding-bottom:10px;}
+.plus_review_article_widget .list_left .plus_reivew_contents_box .plus_reivew_contents a {text-decoration:underline;}
+.plus_review_article_widget .list_left .plus_reivew_contents_box {padding-bottom:10px;}
+.plus_review_article_widget .list_right {display:table-cell; padding:0 0 0 10px; vertical-align:top; width:100%;}
+.plus_review_article_widget .list_right .plus_reivew_contents_box {display:table; width:100%; padding:10px 0 5px 0;}
+.plus_review_article_widget .list_right .plus_reivew_contents_box .plus_reivew_contents {display:table-cell; padding:0 10px 0 0; vertical-align:top;}
+.plus_review_article_widget .list_right .plus_reivew_contents_box .plus_reivew_contents_img {display:table-cell; width:60px; vertical-align:top; font-size:0;}
+.plus_review_article_widget .list_right .plus_reivew_contents_box .plus_reivew_contents_img img {width:60px;}

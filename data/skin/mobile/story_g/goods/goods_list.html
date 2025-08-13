@@ -1,0 +1,203 @@
+{*** 상품리스트 | goods/goods_list.php ***}
+{#header}
+
+<!-- 설문조사 배너 -->{=pollViewBanner()}<!-- 설문조사 배너 -->
+<!-- gd5 상단 하위 카테고리 -->
+<!--{ ? themeInfo.cateHtml1Mobile }--><div>{=stripslashes(str_replace('&nbsp;', ' ', themeInfo.cateHtml1Mobile))}</div><!--{ / }-->
+<!--{ ? naviDisplay.naviUse =='y' }-->
+<div class="srlst_bx">
+    <ul class="lst">
+        <!--{ @ goodsDataSubCategory }-->
+        <li {.style} <!--{ ? cateCd == .cateCd }-->class="selected" <!--{ / }-->><a href="?{cateType}Cd={.cateCd}" >{.cateNm} <!--{ ? naviDisplay.naviCount =='y' }--><em>({.goodsCnt+0})</em> <!--{ / }--></a></li>
+        <!--{ / }-->
+    </ul>
+</div>
+<!--{ / }-->
+<!-- gd5 상단 하위 카테고리 // -->
+
+
+<!--{ ? themeInfo.recomDisplayMobileFl == 'y'  && widgetGoodsList}-->
+<div class="goods-list-recom">
+    <!--{ ? themeInfo.cateHtml2Mobile }--><div class="user-tune">{=stripslashes(str_replace('&nbsp;', ' ', themeInfo.cateHtml2Mobile))}</div><!--{ / }-->
+    <div class="my_tit">{=__('추천상품')} <a class="btn-main-top-more" href="../goods/goods_recom.php?{cateType}Cd={=cateCd}"><em>{=__('더보기')}</em></a></div>
+    <!-- 추천상품 -->
+    {=includeWidget('goods/_goods_display.html')}
+    <!-- 추천상품 -->
+</div>
+<!--{ / }-->
+
+
+<section id="goodslist" class="content">
+    <!--{ ? themeInfo.cateHtml3Mobile }--><div>{=stripslashes(str_replace('&nbsp;', ' ', themeInfo.cateHtml3Mobile))}</div><!--{ / }-->
+    <div class="goods-sort-area">
+        <div class="goods-sort">
+            <div class="inp_sel">
+                <select name="goods_sort" onchange="get_list(1,true);">
+                    <option value="">{=__('상품정렬')}</option>
+                    <option value="date">{=__('등록순')}</option>
+                    <option value="price_asc">{=__('낮은가격순')}</option>
+                    <option value="price_dsc">{=__('높은가격순')}</option>
+                </select>
+            </div>
+        </div>
+        <div class="goods-view-type">
+            <input type="hidden" name="displayType" value="{themeInfo.displayType}" >
+            <!-- 리스트형식 -->
+            <div class="view-list   <!--{ ? themeInfo.displayType =='02' }-->view-on<!--{ / }-->" data-key="02" ><span class="sprite-icon icon-list"></span></div>
+
+            <!-- 하나씩 크게 -->
+            <div class="view-gallery1 <!--{ ? themeInfo.displayType =='09' }-->view-on<!--{ / }-->" data-key="09"><span class="sprite-icon icon-one"></span></div>
+
+            <!-- 두개씩 -->
+            <div class="view-gallery2 <!--{ ? themeInfo.displayType =='01' }-->view-on<!--{ / }-->" data-key="01"><span class="sprite-icon icon-grid1"></span></div>
+            <!-- <div class="view-gallery" onClick="javascript:setViewType('gallery');"><span class="sprite-icon icon-grid2"></span></div> -->
+        </div>
+    </div>
+    <div class="goods-area">
+
+        <div class="goods-content">
+            { # goodsTemplate }
+        </div>
+
+        <div class="block-pd more-btn">
+            <button type="button" class="bn_more" data-page="2" >{=__('더보기')}</button>
+        </div>
+        <div class="loading-img"></div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    <!--
+    <!--{ ? cateType == 'cate' }-->
+    var keyValue = 'C{gGlobal.locale}{cateCd}';
+    <!--{ : }-->
+    var keyValue = 'B{gGlobal.locale}{brandCd}';
+    <!--{ / }-->
+
+    var key = {
+        html: 'html' + keyValue,
+        page: 'page' + keyValue,
+        viewType: 'viewType' + keyValue,
+        sortType: 'sortType' + keyValue,
+        endFlag: 'endflag' + keyValue,
+    };
+
+    var gdStorage = null;
+    if (typeof performance !== 'undefined' && performance.getEntriesByType) {
+        const [navigation] = performance.getEntriesByType("navigation");
+        if (navigation.type === "reload") { // 새로고침일때만 gd세션 로드하기
+            gdStorage = loadSession(key.html);
+            var gdPage = loadSession(key.page);
+            var gdViewType = loadSession(key.viewType);
+            var gdSortType = loadSession(key.sortType);
+            var endFlag = loadSession(key.endFlag);
+        }
+    }
+
+    $(document).ready(function(){
+        if (gdStorage) {
+            $(".goods-content").html(gdStorage);
+            $('.more-btn button').data('page',parseInt(gdPage)+1);
+            $('.goods-view-type>div[data-key!="' + gdViewType + '"]').removeClass('view-on');
+            $('.goods-view-type>div[data-key="' + gdViewType + '"]').addClass('view-on');
+            $('input[name="displayType"]').val(gdViewType);
+            $('select[name="goods_sort"]>option[value="' + gdSortType + '"]').prop('selected', true);
+        }
+
+        $('.more-btn button').on('click', function(e){
+            get_list($(this).data('page'),false);
+        });
+
+        $('.goods-view-type div').on('click', function(e){
+            $(".goods-view-type div").removeClass('view-on');
+            $('input[name="displayType"]').val($(this).data('key'));
+            $(this).addClass('view-on');
+            get_list('1',true);
+        });
+
+        $(document).on('click','.btn-alert-login',function (e){
+            alert("{=__('로그인하셔야 본 서비스를 이용하실 수 있습니다.')}");
+            document.location.href = "../member/login.php";
+            return false;
+        });
+
+        $('body').on('click', '.js-option-layer', function(e){
+            var params = {
+                type : $(this).data('type'),
+                sno: $(this).data('sno'),
+                goodsNo: $(this).data('goodsno')
+            };
+
+            $('#popup-option').modal({
+                remote: '../goods/layer_option.php',
+                cache: false,
+                params: params,
+                type : 'POST',
+                show: true
+            });
+        });
+
+    });
+
+    var endflag = false;
+    function get_list(page, reloadFl){
+        var displayType = $('input[name="displayType"]').val();
+        var sort =  $('select[name="goods_sort"]').val();
+
+        $.ajax({
+            method      : 'GET',
+            url         : './goods_list.php',
+            data        : {
+                'mode' : 'data',
+                'cateCd' : '{cateCd}',
+                'brandCd' : '{brandCd}',
+                'cateType' : '{cateType}',
+                'displayType' : displayType,
+                'page' : page,
+                'sort' : sort
+            },
+            beforeSend     : function() {
+                $('.goods-list-item').on('click', function(){return false;})
+                $('.more-btn button').hide();
+                $('.loading-img').append('<img src="../img/icon/icon_loading.gif">');
+            },
+            success     : function(data) {
+                $('.goods-list-item').off('click');
+                $('.more-btn button').show();
+                $('.loading-img img').remove();
+
+                if($(data).filter("div.no_bx").length) {
+                    if(page =='1' && endflag == false) {
+                        $(".goods-content").append(data);
+                        saveSession(key.endFlag, true);
+                        saveSession(key.html, $('.goods-content').html());
+                        endflag = true;
+                        if ($(data).find('.goods-list-info').length < {themeInfo.lineCnt * themeInfo.rowCnt}) {
+                            $('.more-btn').hide();
+                        }
+                    } else {
+                        alert("{=__('더이상 상품이 없습니다')}");
+                        $('.more-btn').hide();
+                    }
+
+                } else {
+                    if(reloadFl === true) $(".goods-content").html(data);
+                    else  $(".goods-content").append(data);
+
+                    $('.more-btn button').data('page',parseInt(page)+1);
+                    saveSession(key.html, $('.goods-content').html());
+                    saveSession(key.page, parseInt(page));
+                    if ($(data).find('.goods-list-info').length < {themeInfo.lineCnt * themeInfo.rowCnt}) {
+                        $('.more-btn').hide();
+                    }
+                }
+            }
+        });
+        saveSession(key.sortType, sort);
+        saveSession(key.viewType, displayType);
+    }
+
+    //-->
+</script>
+
+{#footer}

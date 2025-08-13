@@ -1,0 +1,99 @@
+{*** 미확인 입금자 리스트 | service/ghost_depositor.php ***}
+{ # header }
+
+<!-- 미확인 입금자 리스트 레이어 -->
+<form id="frmSearchBase" method="get">
+<div class="layer-depositor unknown-layer">
+    <div class="box">
+        <div class="view">
+            <h2>{=__('미확인 입금자 리스트')}</h2>
+            <div>
+                <div class="banner"><img src="../img/etc/ghost_depositor_title_{designSkin}.png" alt="{=__('미확인 입금자 리스트')}" /></div>
+
+                <ul class="search">
+                    <li>
+                        <strong>{=__('입금일자')}</strong>
+							<span class="txt-field" >
+								<input type="text" name="depositDate" class="text js-datepicker" value="{searchDate}">
+							</span>
+                    </li>
+                    <li>
+                        <strong>{=__('입금자명')}</strong>
+							<span class="txt-field">
+								<input type="text" name="ghostDepositor" class="text" value="{searchName}">
+							</span>
+                        <button type="submit" class="skinbtn base2 btn-search"><em>{=__('검색')}</em></button>
+                    </li>
+                </ul>
+                <div class="space"></div>
+                <div class="board">
+                    <table summary="{=__('미확인 입금자 리스트입니다.')}" cellspacing="0" border="1">
+                        <colgroup>
+                            <col />
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th scope="col">{=__('번호')}</th>
+                            <th scope="col">{=__('입금일자')}</th>
+                            <th scope="col">{=__('고객명')}</th>
+                            <th scope="col">{=__('은행')}</th>
+                            <th scope="col">{=__('입금액')}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--{ ? loop }-->
+                            <!--{ @ loop }-->
+                            <tr>
+                                <td>{.no}</td>
+                                <td>{.depositDate}</td>
+                                <td>{.ghostDepositor}</td>
+                                <td>{.bankName}</td>
+                                <td>{.depositPrice}{=__('원')}</td>
+                            </tr>
+                            <!--{ / }-->
+                        <!--{ / }-->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="board-paging">
+                    <!--{? bankdaUse}-->
+                    <nav>
+                        <ul class="pagination pagination-sm">
+                            {paging}
+                        </ul>
+                    </nav>
+                    <!--{:}-->
+                    {page->getPage()}
+                    <!--{/}-->
+                </div>
+            </div>
+            <button type="button" class="close" title="{=__('닫기')}" onclick="window.close();">{=__('닫기')}</button>
+        </div>
+    </div>
+</div>
+</form>
+<!-- //미확인 입금자 리스트 레이어 -->
+<script>
+
+    $(document).ready(function () {
+        // 인풋박스 선택 이벤트
+        if ($('.js-datepicker').length) {
+
+            $('.js-datepicker').datetimepicker({
+                locale: '{=gGlobal.locale}',
+                format: 'YYYY-MM-DD',
+                dayViewHeaderFormat: 'YYYY MM',
+                viewMode: 'days',
+                ignoreReadonly: true,
+                debug: false,
+                keepOpen: false
+            });
+            $('.check-cal img').click(function (e) {
+                $(this).prev('.js-datepicker').data('DateTimePicker').show();
+            });
+        }
+    });
+</script>
+
+
+{ # footer }

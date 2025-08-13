@@ -1,0 +1,34 @@
+{*** 회원가입 > 가입완료 | member/join_ok.php ***}
+{ # header }
+<section class="content" id="memberjoin">
+    <div class="join-step2">
+        <div class="inner">
+            <div class="step-item ">
+                <div class="inner">{=__('약관동의')}</div>
+            </div>
+            <div class="step-item">
+                <div class="inner">{=__('계정생성')}</div>
+            </div>
+            <div class="step-item active">
+                <div class="inner">{=__('가입완료')}</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="join_bx v2">
+        <p class="tx">{=__('%s님%s 가입을 축하드립니다!', memNm, '<br/>')}</p>
+        <a href="../member/login.php" class="btn">{=__('로그인 하기')}</a>
+    </div>
+
+</section>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnHome').click(function (e) {
+            e.preventDefault();
+            top.location.href = '../main/index.php';
+        });
+    });
+</script>
+{=fbCompleteRegistrationScript}
+{ # footer }

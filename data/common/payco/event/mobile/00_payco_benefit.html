@@ -1,0 +1,29 @@
+<link rel="stylesheet" type="text/css" href="css/w.css">
+<div class="payco_benefit-dimmed"></div>
+<div class="payco_benefit-popup" data-top="{=eventPopupOption['top']}" data-left="{=eventPopupOption['left']}">
+    <div class="payco_benefit-pop">
+        <div class="payco_benefit-tit_area">
+            <h2 class="payco_benefit-tit">PAYCO 결제하면, 또 할인!</h2>
+        </div>
+        <div class="payco_benefit-content">
+            <!--{@ couponInfoArr}-->
+            <!--{? .key_ == 'ILT01' }-->
+            <div class="payco_benefit-section">
+                <h3 class="payco_benefit-tit_sub">{.value_['title']}</h3>
+                <ul class="payco_benefit-lst">
+                    <li class="payco_benefit-lst_item">
+                        <span class="payco_benefit-txt_align">{.value_['text']}</span>
+                    </li>
+                </ul>
+            </div>
+            <!--{:}-->
+            <div class="payco_benefit-section_sub">
+                <h3 class="payco_benefit-tit_sub">{.value_['title']}</h3>
+                <p class="payco_benefit-txt">{.value_['text']}</p>
+            </div>
+            <!--{/}-->
+            <!--{/}-->
+        </div>
+        <a href="#" class="payco_benefit-btn_close">PAYCO 결제할인 팝업 닫기</a>
+    </div>
+</div>

@@ -1,0 +1,105 @@
+{*** 마이페이지 | mypage/index.php ***} { # header }
+
+ <div class="contents">
+    <div class="contents-inner mypage">
+
+        <!-- 마이페이지 회원 요약정보 -->
+        {=includeWidget('mypage/_member_summary.html')}
+        <!--// 마이페이지 회원 요약정보 -->
+
+        <!-- 진행 중인 주문 -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="h2">{=__('진행 중인 주문')}</h2>
+                <p class="sub-text">{=__('최근 30일 내에 진행중인 주문정보입니다.')}</p>
+            </div>
+            <div class="section-body">
+                <div class="order-step clear">
+                    <ol class="clear">
+                        <li>
+                            <p class="text">{eachOrderStatus.o1.name}</p>
+                            <div class="num {eachOrderStatus.o1.active}"><span>{=number_format(eachOrderStatus.o1.count)}</span></div>
+                            <span class="icon icon-arr1-r">&nbsp;</span>
+                        </li>
+                        <li>
+                            <p class="text">{eachOrderStatus.p1.name}</p>
+                            <div class="num {eachOrderStatus.p1.active}"><span>{=number_format(eachOrderStatus.p1.count)}</span></div>
+                            <span class="icon icon-arr1-r">&nbsp;</span>
+                        </li>
+                        <li>
+                            <p class="text">{eachOrderStatus.g1.name}</p>
+                            <div class="num {eachOrderStatus.g1.active}"><span>{=number_format(eachOrderStatus.g1.count)}</span></div>
+                            <span class="icon icon-arr1-r">&nbsp;</span>
+                        </li>
+                        <li>
+                            <p class="text">{eachOrderStatus.d1.name}</p>
+                            <div class="num {eachOrderStatus.d1.active}"><span>{=number_format(eachOrderStatus.d1.count)}</span></div>
+                            <!-- 숫자가 1 이상인경우 active 클래스 -->
+                            <span class="icon icon-arr1-r">&nbsp;</span>
+                        </li>
+                        <li>
+                            <p class="text">{eachOrderStatus.d2.name}</p>
+                            <div class="num {eachOrderStatus.d2.active}"><span>{=number_format(eachOrderStatus.d2.count)}</span></div>
+                            <!-- 숫자가 1 이상인경우 active 클래스 -->
+                            <span class="icon icon-arr1-r">&nbsp;</span>
+                        </li>
+                        <li>
+                            <p class="text">{eachOrderStatus.s1.name}</p>
+                            <div class="num {eachOrderStatus.s1.active}"><span>{=number_format(eachOrderStatus.s1.count)}</span></div>
+                            <span class="icon icon-arr1-r">&nbsp;</span>
+                        </li>
+                    </ol>
+                    <div class="order-total-status">
+                        <div class="item">
+                            <span class="title">{=__('취소')}</span>
+                            <span class="num"><span{?eachOrderStatus.c.active} class="c-red f-bold"{/}>{=number_format(eachOrderStatus.c.count + eachOrderStatus.f.count)}</span>{=__('건')}</span>
+                        </div>
+                        <div class="item">
+                            <span class="title">{=__('교환')}</span>
+                            <span class="num"><span{?eachOrderStatus.e.active} class="c-red f-bold"{/}>{=number_format(eachOrderStatus.e.count)}</span>{=__('건')}</span>
+                            <!-- 숫자가 1 이상인경우 c-red 클래스 -->
+                        </div>
+                        <div class="item">
+                            <span class="title">{=__('반품')}</span>
+                            <span class="num"><span{?eachOrderStatus.b.active} class="c-red f-bold"{/}>{=number_format(eachOrderStatus.b.count)}</span>{=__('건')}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--// 진행 중인 주문 -->
+
+        <!-- 최근 주문 정보 -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="h2">{=__('최근 주문 정보')}</h2>
+                <p class="sub-text">{=__('최근 30일 내에 주문하신 내역입니다.')}</p>
+                <div class="option">
+                    <a href="../mypage/order_list.php">{=__('더보기')} <img src="../img/etc/icon-arr2-r.png" alt="" class="va-m" /></a>
+                </div>
+            </div>
+            <div class="section-body">
+                <!-- 주문상품 리스트 -->
+                {=includeFile('mypage/_order_goods_list.html')}
+                <!--// 주문상품 리스트 -->
+            </div>
+        </div>
+        <!--// 최근 주문 정보 -->
+
+        <!-- 최근 본 상품 -->
+        <div class="section">
+            <div class="section-header type1">
+                <h2 class="h2">{=__('최근 본 상품')}</h2>
+                <p class="sub-text">{=__('%s님께서 본 최근 상품입니다.', gMember.memNm)}</p>
+            </div>
+            <div class="section-body">
+                <div class="item-display type-gallery">
+                    {=includeWidget('goods/_goods_display.html')}
+                </div>
+            </div>
+        </div>
+        <!--// 최근 본 상품 -->
+    </div>
+</div>
+
+{ # footer }

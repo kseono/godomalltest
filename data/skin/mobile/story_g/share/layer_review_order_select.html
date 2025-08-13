@@ -1,0 +1,86 @@
+{*** 주문 선택하기 레이어 | share/layer_order_select.php ***}
+
+<div class="ly_head">
+    <h1 class="h_tit elp">{=__('주문내역')}</h1>
+</div>
+<div class="ly_ct" style="background-color: #ffffff;height:100%;overflow: scroll">
+    <div class="temp-loop">
+        <div class="orderlist-wrap" id="ajaxSearchResult">
+        </div>
+    </div>
+    <div class="block-pd more-btn" style="height:100px">
+        <button type="button" class="more-btn btn-gray btn-w btn js-paging-more" data-page="1">{=__('더보기')}</button>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var goodsNo = '{=req.goodsNo}';
+        var mode = '{=req.mode}';
+        var total = '{=total}';
+        params = {goodsNo: goodsNo, mode: mode};
+        $.ajax({
+            method: "get",
+            url: "../share/layer_review_order_search.php",
+            data: params,
+            dataType: 'text'
+        }).success(function (data) {
+            $('#ajaxSearchResult').html(data);
+            $('.js-paging-more').data('page', 1);
+            if ($('.js-pr-row').length == total) {
+                $('.js-paging-more').hide();
+            }
+        }).error(function (e) {
+            alert(e.responseText);
+        });
+
+        $('.js-layer-close').bind('click', function () {
+            $('#addPlusReviewOrderLayer').hide();
+//            closePlusReviewPopup();
+        })
+
+        /**
+         * 더보기버튼 클릭
+         */
+        $('.js-paging-more').bind('click', function () {
+            if ($('#ajaxSearchResult ul.my_goods>li').length < 1) {
+                alert("{=__('데이터가 없습니다.')}");
+                return;
+            }
+            var page = $(this).data('page') + 1;
+            var goodsNo = '{=req.goodsNo}';
+            var params = {page: page, mode: 'plusReviewPopup',goodsNo : goodsNo};
+            var self = $(this);
+            $.ajax({
+                method: "get",
+                url: "../share/layer_review_order_search.php",
+                data: params,
+                dataType: 'text'
+            }).success(function (data) {
+                console.log(data);
+                if (data == '') {
+                    alert("{=__('주문이 없습니다.')}");
+                    return;
+                }
+                self.data('page', page);
+                $('#ajaxSearchResult').append(data);
+                if ($('.js-pr-row').length == total) {
+                    $('.js-paging-more').hide();
+                }
+            }).error(function (e) {
+                alert(e.responseText);
+            });
+        })
+    })
+
+    /**
+     * 주문선택
+     */
+    $('#ajaxSearchResult').on('click', '.js-select-confirm', function (e) {
+        e.stopPropagation();
+        var checkedOrderGoodsNo = $(this).data('ordergoodsno');
+        setAddOrder(checkedOrderGoodsNo);
+        $('.js-layer-close').trigger('click');
+    })
+</script>
+<button type="button" class="bn_cls v2 js-layer-close"><span class="sp">{=__('닫기')}</span></button>
+

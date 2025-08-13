@@ -1,0 +1,53 @@
+{*** 상단 고정 레이어 팝업창 | main/html.php?htmid=popup/top.htm ***}
+<style>
+    #{=popupCode} .mobile-top-banner {
+    width: {=data.mobilePopupSizeW}{=data.mobileSizeTypeW};
+    height: {=data.mobilePopupSizeH}{=data.mobileSizeTypeH};
+    margin-top: {=data.mobilePopupPositionT}px;
+    margin-left: {=data.mobilePopupPositionL}px;
+    background: {=data.mobilePopupBgColor}
+    }
+    #{=popupCode} .mobile-top-banner-ctrl a {
+    <!--{ ? todayUnSee.todayUnSeeFl == 'y'  }-->
+    width: 50%;
+    <!--{ : }-->
+    width: 100%;
+    <!--{ / }-->
+    }
+    <!--{ ? data.mobileContentImgFl == 'y'}-->
+    #{=popupCode} .mobile-top-banner-content img {
+    max-width:{=data.mobilePopupSizeW}{=data.mobileSizeTypeW};
+    }
+    <!--{ / }-->
+</style>
+<div class="mobile-top-banner-area">
+    <div class="mobile-top-banner">
+        <div class="mobile-top-banner-content">
+            {=viewPopupContent}
+        </div>
+    </div>
+    <div class="mobile-top-banner-ctrl">
+        <!--{ ? todayUnSee.todayUnSeeFl == 'y'  }-->
+        <a onclick="popup_top_cookie('{=popupCode}')"><input type="checkbox" name="todayUnSee" style="display:none" onClick="hide_top_popup('1', '{=popupCode}', this);">오늘 하루 보이지 않음</a>
+        <!--{ / }-->
+        <a onclick="hide_top_popup('2', '{=popupCode}');">닫기</a>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        <!--{ ? data.mobileSizeTypeH == '%' }-->
+        var percentHeight = ($(window).height() * (Number('{=data.mobilePopupSizeH}') / 100)) - $('.mobile-top-banner-ctrl').height();
+        $('#{=popupCode} .mobile-top-banner').css('height', percentHeight + 'px');
+        <!--{ / }-->
+        var topHeight = $('.top-area').height();
+        var height = $('#{=popupCode} .mobile-top-banner').outerHeight(true);
+        if (height > topHeight) $('.top-area').height(height + 'px');
+
+        var headTop = Number($('#header').css('top').replace('px', ''));
+        if (headHeight <= 0) headHeight = headTop;
+        if (height > topHeight) headTotalHeight = height + headHeight;
+
+        var headRealTop = (headTotalHeight - $(window).scrollTop()) < headHeight ? headHeight : headTotalHeight - $(window).scrollTop();
+        $('#header, #slide').css('top', headRealTop + 'px');
+    });
+</script>

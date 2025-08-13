@@ -1,0 +1,17 @@
+메인 페이지 : main/index.php
+일반 인트로 페이지 : intro/intro.php
+회원 인트로 페이지 : intro/member.php
+성인 인트로 페이지 : intro/adult.php
+상품 리스트 페이지 : goods/goods_list.php
+인기 상품 리스트 : goods/populate.php
+상품 상세 페이지 : goods/goods_view.php
+상품 검색 결과 페이지: goods/goods_search.php
+장바구니 페이지 : order/cart.php
+주문하기 페이지 : order/order.php
+주문완료 페이지 : order/order_end.php
+주문 목록 페이지: mypage/order_list.php
+주문 상세 페이지: mypage/order_view.php
+로그인 페이지 : member/login.php
+회원가입 페이지 : member/join.php
+회원가입 완료 페이지 : member/join_ok.php
+마이페이지 : mypage/index.php

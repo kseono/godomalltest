@@ -1,0 +1,168 @@
+{*** 게시판 상품선택 레이어 | share/layer_goods_select.php ***}
+<script type="text/javascript" src="\{=c.PATH_SKIN}js/gd_multi_select_box.js" charset="utf-8"></script>
+<div class="box goods-select-layer layer-size-h-a">
+    <div class="view">
+        <h2>{=__('상품 선택')}</h2>
+        <!-- 주문 검색 -->
+        <div class="scroll-area">
+            <form id="frmBoardSearch" name="frmBoardSearch" action="../share/layer_goods_search.php" onsubmit="return false;">
+                <input type="hidden" name="mode" value="quick">
+                <input type="hidden" name="isPlusReview" value="{isPlusReview}" />
+                <div class="date-check">
+                    <div class="date-check-row">
+                        <div class="date-check-head">
+                            <h3 class="h3">
+                                {=__('카테고리')}
+                            </h3>
+                        </div>
+                        <div class="date-check-body">
+                            {=cateDisplay}
+                        </div>
+                    </div>
+                    <div class="date-check-row">
+                        <div class="date-check-head">
+                            <h3 class="h3">
+                                {=__('검색어')}
+                            </h3>
+                        </div>
+                        <div class="date-check-body">
+                            <div class="search-box1">
+                                <div class="search-filter">
+                                    <div class="choice-select">
+                                        <select name="key" class="tune">
+                                            <option value="goodsNm">{=__('상품명')}</option>
+                                            <option value="goodsNo">{=__('상품코드')}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="search-text">
+                                    <div class="txt-field">
+                                        <input type="text" class="text" placeholder="{=__('검색어를 입력해주세요.')}" name="keyword" maxlength="20">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="date-check-submit">
+                    <button type="button" class="js-select-search skinbtn point2 cl-find">
+                        <em>{=__('조회')} <img alt="" src="\{=c.PATH_SKIN}img/etc/search.png"></em></button>
+                </div>
+            </form>
+
+            <div id="ajaxSearchResult" style="padding:0px">
+            </div>
+
+        </div>
+        <div class="btn">
+            <button class="skinbtn point1 layer-close btn-close"><em>{=__('취소')}</em></button>
+            <button class="skinbtn btn-m point2 js-select-confirm"><em>{=__('확인')}</em></button>
+        </div>
+        <button title="{=__('닫기')}" class="close" type="button">{=__('닫기')}</button>
+    </div>
+
+</div>
+<script type="text/javascript">
+    <!--
+    $(document).ready(function () {
+        /**
+         * 상품조회클릭
+         */
+        $('input[name=keyword]').keyup(function (e) {
+            if (e.keyCode == 13) {
+                $('.js-select-search').trigger('click');
+            }
+        })
+
+        $('.js-select-search').bind('click', function (e) {
+            var target = $('#cateGoods1');
+            if ($('#plusReviewCateGoods1').length > 0) {
+                target = $('#plusReviewCateGoods1');
+            }
+
+            if ($.trim(target.val()).length < 1 && $.trim($('#frmBoardSearch input[name=keyword]').val()).length < 1) {
+                alert("{=__('카테고리나 검색어를 선택/입력 해주세요.')}");
+                return;
+            }
+
+            params = $("#frmBoardSearch").serialize();
+            $.ajax({
+                method: "get",
+                url: "../share/layer_goods_search.php",
+                data: params,
+                dataType: 'text'
+            }).success(function (data) {
+                $('#ajaxSearchResult').html(data);
+            }).error(function (e) {
+                console.log(e.responseText);
+            });
+        })
+
+        $('.js-select-confirm').bind('click', function () {
+            if ($('#frmSelect input[type=radio][name="goodsNo[]"]:checked').length < 1) {
+                alert("{=__('상품을 선택해주세요.')}");
+                return;
+            }
+
+            var bdId = '{bdId}';
+            var bdSno = '{bdSno}';
+            var canFlag = true;
+            var resultJson = {
+                "info": []
+            };
+
+            var checkedGoodsNo = $('#frmSelect input[name="goodsNo[]"]:checked').val();
+            var imgSrc = $('#tbl_add_' + checkedGoodsNo).find('.add-item .img img').attr('src');
+            var goodsName = $('#tbl_add_' + checkedGoodsNo).find('.item-info').text();
+            var price = $('#tbl_add_' + checkedGoodsNo).find('.item-price').text();
+            resultJson.info.push({
+                "goodsNo": checkedGoodsNo,
+                "goodsImgageSrc": imgSrc,
+                "goodsName": goodsName,
+                "goodsPrice": price,
+            });
+
+            if (bdId == 'goodsreview') {
+                $.ajax({
+                    method: "post",
+                    async: false,
+                    url: "../board/board_ps.php",
+                    data: {mode: 'validRegistOrderGoodsNo', bdId: bdId, goodsNo: checkedGoodsNo, bdSno: bdSno},
+                    dataType: 'text'
+                }).success(function (data) {
+                    if (data != 'n') {
+                        alert('선택하신 상품은 후기를 작성하실 수 없습니다.');
+                        canFlag = false;
+                    }
+                    console.log(data);
+                    return;
+                }).error(function (e) {
+                    alert(e.responseText);
+                });
+
+                if (canFlag == false) {
+                    return false;
+                }
+            }
+            setAddGoods(resultJson);
+            closeLayer();
+        })
+    })
+
+    function goAjaxPaging(page) {
+        page = encodeURI(page);
+        $.ajax({
+            method: "get",
+            url: "../share/layer_goods_search.php",
+            data: page,
+            dataType: 'text'
+        }).success(function (data) {
+            $('#ajaxSearchResult').html(data);
+        }).error(function (e) {
+            alert(e.responseText);
+        });
+    }
+
+    //-->
+</script>

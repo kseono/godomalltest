@@ -1,0 +1,1624 @@
+{*** 상품상세 | goods/view.php ***}
+{#header}
+<style>
+    /* 배송아이콘 관련 추가 영역 */
+    .item_delivery_schedule_tit{padding-top:15px !important;}
+    .item_delivery_schedule{position:relative; padding:15px 0 !important;}
+    .ly_day_delivery_show{color:#333;}
+    .item_delivery_schedule strong{position:relative; color:#333;}
+    .item_delivery_schedule .day_delivery{padding-left:40px;}
+    .item_delivery_schedule .day_delivery:after{content:''; position:absolute; top:50%; left:0; margin-top:-16px; width:32px; height:32px; background:url('../img/icon/icon_day_delivery.png') left center no-repeat; background-size:32px 32px;}
+    .item_delivery_schedule .now_buy{padding-left:40px;}
+    .item_delivery_schedule .now_buy:after{content:''; position:absolute; top:50%; left:0; margin-top:-16px; width:32px; height:32px; background:url('../img/icon/icon_now_buy.png') left center no-repeat; background-size:32px 32px;}
+    .item_delivery_schedule .now_buy span{color:#227fff;}
+    .ly_day_delivery {text-align:center; padding-top:35px;}
+    .ly_day_delivery p{font-size:12px; color:#333; margin-top:4px;}
+    .ly_day_delivery p:first-child{margin-top:0;}
+    .ly_day_delivery p span{color:#4284de}
+    .ly_day_delivery p.infor{color:#888;margin-top:15px;}
+    /* // 배송아이콘 관련 추가 영역 */
+</style>
+<script type="text/javascript" src="../js/gd_goods_view.js"></script>
+<script src="../js/slider/slick/slick.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    <!--
+    var goodsNo = '{goodsView.goodsNo}';
+    var bdGoodsReviewId = '{bdGoodsReviewId}';
+    var bdGoodsQaId = '{bdGoodsQaId}';
+    var goodsViewController = new gd_goods_view();
+
+
+    function loadGoodsBoardList(bdId,goodsNo,page){
+        $.ajax({
+            method: "GET",
+            url: "../goods/goods_board_list.php",
+            data: {bdId: bdId, goodsNo: goodsNo, gboard : 'y',page : page},
+            dataType: 'text',
+            cache: false,
+            async: false,
+        }).success(function (data) {
+            $.getScript('../js/plugins/modalEffects.js');
+            if(page > 1) {
+                $('.js-board-'+bdId+'-more').remove();
+                $('.js-board-' + bdId+'-view').find(".item-list").append(data);
+            } else {
+                $('.js-board-' + bdId+'-view').find(".item-list").html(data);
+            }
+        }).error(function (e) {
+            alert(e.responseText);
+        });
+    }
+
+    /**
+     * KC마크 인증정보창
+     * @param string url KC인증번호검색 url
+     * @return
+     */
+    function popupKcInfo(url) {
+        var win = popup({
+            url: url
+            , target: 'searchPop'
+            , width: 750
+            , height: 700
+            , resizable: 'no'
+            , scrollbars: 'yes'
+        });
+        win.focus();
+        return win;
+    }
+
+    $(document).ready(function () {
+
+        var parameters        = {
+            'setControllerName' : goodsViewController,
+            'setOptionFl' : '{=goodsView['optionFl']}',
+            'setOptionTextFl'    : '{=goodsView['optionTextFl']}',
+            'setOptionDisplayFl'    : '{=goodsView['optionDisplayFl']}',
+            'setAddGoodsFl'    : '<!--{ ? is_array(goodsView['addGoods']) }-->y<!--{ : }-->n<!--{ / }-->',
+            'setIntDivision'    : '{=c.INT_DIVISION}',
+            'setStrDivision'    : '{=c.STR_DIVISION}',
+            'setMileageUseFl'    : '{=mileageData['useFl']}',
+            'setCouponUseFl'    : '{=couponUse}',
+            'setMinOrderCnt'    : '{=goodsView['minOrderCnt']}',
+            'setMaxOrderCnt'    : '{=goodsView['maxOrderCnt']}',
+            'setStockFl'    : '{=gd_isset(goodsView['stockFl'])}',
+            'setSalesUnit' : '{=gd_isset(goodsView['salesUnit'],1)}',
+            'setDecimal' : '{currency.decimal}',
+            'setGoodsPrice' : '{=gd_isset(goodsView['goodsPrice'],0)}',
+            'setGoodsNo' : '{=goodsView['goodsNo']}',
+            'setMileageFl' : ' {=goodsView['mileageFl']}',
+            'setFixedSales' : '{=goodsView['fixedSales']}',
+            'setFixedOrderCnt' : '{=goodsView['fixedOrderCnt']}',
+            'setOptionPriceFl' : '{=optionPriceFl}'
+        };
+
+        if(window.location.hash== '#detail-review'){
+            setTimeout(function(){
+                $('a[data-target=js-board-goodsreview-view]').trigger('click');
+            },1);
+        }
+        else if(window.location.hash== '#detail-qna') {
+            setTimeout(function(){
+                $('div[data-target=js-board-goodsqa-view]').trigger('click');
+            },1);
+        }
+
+        $('.bn_srch').bind('click', function(e){
+            var $viewport = $('head').children('meta[name="viewport"]');
+            $viewport.attr('content', 'user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width');
+        });
+
+
+        $('#frmSearchTop .ly_btn_close').bind('click', function(e){
+            var $viewport = $('head').children('meta[name="viewport"]');
+            $viewport.attr('content', 'user-scalable=yes, width=device-width');
+        });
+
+        // 공유하기 버튼 클릭시 단축주소 가져오기 처리
+        $('.js-share-open').on('click', function(){
+            if ($(".js-share-view").is(":hidden")) {
+                // 단축주소 가져오기
+                $.ajax({
+                    type: 'post',
+                    url: './goods_ps.php',
+                    async: true,
+                    cache: true,
+                    data: {
+                        mode: 'get_short_url',
+                        url: '{=snsShareUrl}'
+                    },
+                    success: function (data) {
+                        var json = $.parseJSON(data);
+                        $('.copy input').val(json.url);
+                        $('.copy button').attr('data-clipboard-text', json.url);
+                    }
+                });
+                $(".js-share-view").show();
+                $(".js-share-open span").addClass("on");
+            } else {
+                $(".js-share-view").hide();
+                $(".js-share-open span").removeClass("on");
+            }
+        });
+
+
+        $(".js-password-layer .bn_cls").on('click',function (e){
+            $(".js-password-layer").addClass("hidden");
+            return false;
+        });
+
+        goodsViewController.init(parameters);
+
+
+        $('.goods-view-image-slider').slick({
+            dots: true,
+            arrows: false,
+            infinite: true,
+            slidesToShow: 1,
+            adaptiveHeight: true,
+            fade: true
+        });
+
+        $('.goods-view-image-slider').on('beforeChange', function(event, slick, currentSlide, nextSlide){
+            $(".js-option-add-image").remove();
+            $(".slick-slide").show();
+        });
+
+        $(document).on('click','.btn-alert-login',function (e){
+            var target = $(this).attr('id');
+            alert("{=__('로그인하셔야 본 서비스를 이용하실 수 있습니다.')}");
+            target == undefined ? document.location.href = "../member/login.php" : document.location.href = "../member/login.php?id=" + target;
+            return false;
+        });
+
+        //옵션레이어불러오기
+        var params = {
+            type : 'goods',
+            goodsNo: '{goodsView['goodsNo']}',
+            currentPageUrl: '{currentPageUrl}'
+        };
+
+        $.ajax({
+            method: "POST",
+            cache: false,
+            url: "../goods/layer_option.php",
+            data: params,
+            success: function (data) {
+                $(".st-buy-content").empty().append(data);
+            }
+        });
+
+
+        //하단 정보
+        $('.detail_sub_lst > li').find('>a,>.js_accordian').on('click', function (e) {
+            if ($(this).is('a')){
+                e.preventDefault();
+            }
+
+            if ($(this).hasClass('disabled')) {
+                return;
+            }
+
+            $('.detail_sub_lst > li').removeClass('selected');
+            $(this).parent('li').toggleClass('selected');
+            if ($(this).parent('li').hasClass('selected')) {
+                $(".js-goods-info").children("div").hide();
+                $("."+$(this).data('target')).show();
+            } else {
+                $("."+$(this).data('target')).hide();
+            }
+
+            if ($(this).data('bdid') == bdGoodsQaId || $(this).data('bdid') == bdGoodsReviewId) {
+                $(".js-board-goodsreview-view .item-list").html('');
+                $(".js-board-goodsqa-view .item-list").html('');
+                loadGoodsBoardList($(this).data('bdid'),goodsNo,1);
+                if($(this).data('bdid') == bdGoodsReviewId){
+                    $('#plusReviewList').show();
+                }
+            }
+
+        });
+
+        //상세정보
+        $('.cont_detail .btn_info').on('click', function (e) {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                $('.cont_detail .ly_info').hide();
+            } else {
+                $(this).addClass('selected');
+                $('.cont_detail .ly_info').show();
+            }
+        });
+
+
+        $('.cont_detail .ly_info li a').on('click', function (e) {
+            if($(this).attr("href") =="#detail-qna") {
+                $($(this).attr("href")+" div:first").click();
+            } else {
+                $($(this).attr("href")+" a:first").click();
+            }
+        });
+
+        //필수정보
+        openblock();
+
+
+        $('.btn-add-order').on('click', function(e){
+            goods_order('d');
+            return false;
+        });
+
+        $('.btn-add-wish').on('click', function(e){
+            goods_order('w');
+            return false;
+        });
+
+        $('.btn-add-cart').on('click', function(e){
+            goods_order();
+            return false;
+        });
+
+        $('.js-option-layer').on('click', function(e){
+            var params = {
+                type : $(this).data('type'),
+                sno: $(this).data('sno'),
+                goodsNo: $(this).data('goodsno')
+            };
+
+            $('#popup-option').modal({
+                remote: '../goods/layer_option.php',
+                cache: false,
+                params: params,
+                type : 'POST',
+                show: true
+            });
+        });
+
+        //상품 재입고 알림 팝업 오픈
+        <!--{ ?goodsView['restockUsableFl'] === 'y' && !gGlobal.isFront }-->
+        $('.btn-add-restock').on('click', function(e){
+            window.open("./popup_goods_restock.php?goodsNo="+goodsNo, "popupRestock", "top=100, left=200, status=0, width=500px, height=600px");
+            return false;
+        });
+        <!--{/}-->
+
+        $('.btn-tab-area').on('click', function(e){
+            change_tab($(this));
+            return false;
+        });
+
+        <!--{ ? goodsView['timeSaleFl'] }-->
+        $("#displayTimeSale").hide();
+        gd_dailyMissionTimer("{=goodsView['timeSaleInfo']['timeSaleDuration']}");
+        <!--{/}-->
+
+        <!--{ ? ! canGoodsReview}-->
+        $('.tab-goodsreview').remove();
+        <!--{/}-->
+
+        <!--{ ? ! canGoodsQa}-->
+        $('.tab-goodsqa').remove();
+        <!--{/}-->
+
+        $('input[name="writerPw"]').bind('keydown', function(e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                $('.js-submit').trigger('click');
+            }
+        });
+
+        // 장바구니 이동 레이어
+        <!--{ ? cartInfo.moveCartPageFl == 'n' && cartInfo.moveCartPageDeviceFl != 'pc' }-->
+        $('.layer-cartaddconfirm').click(function(){
+            location.href = '../order/cart.php';
+        });
+        <!--{ / }-->
+
+        // 장바구니 이동 레이어
+        <!--{ ? cartInfo.wishPageMoveDirectFl == 'n' && cartInfo.moveWishPageDeviceFl != 'pc' }-->
+        $('.layer-wishaddconfirm').click(function(){
+            $('#addWishLayer').addClass('dn');
+            $('#layerDim').addClass('dn');
+            location.href = '../mypage/wish_list.php';
+        });
+        <!--{ / }-->
+
+        <!--{ ? naverPay }-->
+        /* 네이버페이를 사용하는 경우 window.history 이슈 때문에 동적으로 iframe 생성 */
+        var naverPayIframe = $('<iframe name="naverPayIframe" id="naverPayIframe" frameborder="0" src="/blank.php" style="display:none;" width="100%" height="500" bgcolor="#000"></iframe>');
+        naverPayIframe.appendTo("body");
+        <!--{ / }-->
+
+        {customReadyScript}
+    });
+
+
+    <!--{ ? goodsView['timeSaleFl'] }-->
+    /**
+     * 시간간격 카운트
+     * @returns {String}
+     */
+    function gd_dailyMissionTimer(duration) {
+
+        var timer = duration;
+        var days,hours, minutes, seconds;
+
+        var interval = setInterval(function(){
+            days    = parseInt(timer / 86400, 10);
+            hours    = parseInt(((timer % 86400 ) / 3600), 10);
+            minutes = parseInt(((timer % 3600 ) / 60), 10);
+            seconds = parseInt(timer % 60, 10);
+            if(days <= 0) {
+                $('.time-day-view').hide();
+            } else {
+                $('#timeViewDay').html("");
+
+                days     = days < 10 ? "0" + days : days;
+                for(i = 0; i < days.toString().length; i++) {
+                    $('#timeViewDay').append("<strong class='time-day-view'>"+days.toString().substr(i,1)+"</strong>");
+                }
+                $('.time-day-view-tail').text("{=__('일')}");
+            }
+
+            hours     = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            $('#timeViewTime strong').eq(0).text(hours.toString().substr(0,1));
+            $('#timeViewTime strong').eq(1).text(hours.toString().substr(1,1));
+
+            $('#timeViewTime strong').eq(2).text(minutes.toString().substr(0,1));
+            $('#timeViewTime strong').eq(3).text(minutes.toString().substr(1,1));
+
+            $('#timeViewTime strong').eq(4).text(seconds.toString().substr(0,1));
+            $('#timeViewTime strong').eq(5).text(seconds.toString().substr(1,1));
+
+            $("#displayTimeSale").show();
+
+            if (--timer < 0) {
+                timer = 0;
+                clearInterval(interval);
+            }
+        }, 1000);
+    }
+    <!--{/}-->
+
+
+    function openblock(){
+        $($('.js-openblock')[0]).find('.openblock-content').show(); // 첫번째 페이지 열어놓기
+        $($('.js-openblock')[0]).find('.toggle-btn').addClass('open'); // 첫번째 페이지 버튼 open 상태로.
+        $('.js-openblock .openblock-header').bind('click',function(){
+            var content = $(this).next();
+            var btn = $(this).find('.toggle-btn');
+            if(content.css('display')=='block'){
+                btn.removeClass('open');
+                content.hide();
+            }else{
+                btn.addClass('open');
+                content.show();
+            }
+        });
+        $('.js-openblock .openblock-header-sub').bind('click',function(){
+            var content = $(this).next();
+            var btn = $(this).find('.toggle-btn');
+            if(content.css('display')=='block'){
+                btn.removeClass('open');
+                content.hide();
+            }else{
+                btn.addClass('open');
+                content.show();
+            }
+        });
+    }
+
+
+    //-->
+</script>
+
+<div class="cont_detail">
+
+    <button type="button" class="btn_info">INFO</button>
+    <ul class="ly_info">
+        <li><a href="#goodsDescription" id="btn-godos-descriptiton" class="">{=__('상세정보')}</a></li>
+        <li><a href="#goodsInfo" id="btn-godos-info" class="">{=__('기본정보')}</a></li>
+        <li><a href="#detail-review" id="btn-detail-review" class="">{=__('상품평')}<span> ({goodsReviewCount})</span></a></li>
+        <li><a href="#detail-qna" id="btn-detail-qna" class="">{=__('상품문의')}<span> ({goodsQaCount})</span></a></li>
+    </ul>
+    <div>
+
+        <!--{ ? snsShareUseFl }-->
+        <div class="ly_share  js-share-view" style="display:none">
+            <h2>{=__('공유하기')}</h2>
+            <ul>
+                <!--{ @ snsShareButton }-->
+                {.value_}
+                <!--{ / }-->
+            </ul>
+            <!--{ ? snsShareUrl }-->
+            <div class="copy">
+                <div>
+                    <input type="text" value="{snsShareUrl}" class="text">
+                </div>
+                <button type="button" class="gd_clipboard btn-positive btn-copyurl" data-clipboard-text="{snsShareUrl}" title="{=__('상품주소')}"><em class="h28">{=__('URL복사')}</em></button>
+            </div>
+            <!--{ / }-->
+        </div>
+
+        <!--{ / }-->
+
+    <ul class="slider-wrap goods-view-image-slider" >
+        <!--{ @ gd_isset(goodsView['image']['detail']['img']) }-->
+        <li>{=.value_}</li>
+        <!--{ / }-->
+    </ul>
+
+    </div>
+    <!--{ ? in_array('goodsColor',displayAddField) }-->
+    {goodsView['goodsColor']}
+    <!--{ / }-->
+    <!--{ ? goodsView['timeSaleFl'] }-->
+    <div class="time-sale">
+        <div class="event">
+            <div class="count" id="displayTimeSale">
+                <strong><img src="../img/common/icon-timesale.png" alt="" class="icon-timesale"> {=goodsView['timeSaleInfo']['benefit']}% {=__('할인')} </strong>
+                <div id="timSaleDate" class="timesaledate">
+                    <span id="timeViewDay"></span>
+                    <span class="time-day-view-tail"></span>
+                <span id="timeViewTime">
+                    <strong class="time"></strong>
+                    <strong class="time"></strong>
+                    <span>:</span>
+                    <strong class="time"></strong>
+                    <strong class="time"></strong>
+                    <span>:</span>
+                    <strong class="time"></strong>
+                    <strong class="time"></strong>
+                </span>
+                </div>
+
+                <!--{ ? goodsView['timeSaleInfo']['orderCntDisplayFl']=='y' }-->
+                    <strong class="sale-cnt">{=__('현재 ')}<span>{=number_format(goodsView['timeSaleInfo']['orderCnt'])}</span>{=__('개 구매')}</strong>
+                <!--{ / }-->
+
+            </div>
+        </div>
+
+
+    </div>
+    <!--{ / }-->
+
+
+    <div class="detail_info">
+
+        <form  method=post>
+            <input type="hidden" name="mode" value="cartIn" />
+            <input type="hidden" name="scmNo" value="{=goodsView['scmNo']}" />
+            <input type="hidden" name="cartMode" value="" />
+            <input type="hidden" name="set_goods_price"   value="{=gd_global_money_format(gd_isset(goodsView['goodsPrice'],0),false)}" />
+            <input type="hidden" name="set_goods_fixedPrice"  id="set_goods_fixedPrice" value="{=gd_isset(goodsView['fixedPrice'],0)}" />
+            <input type="hidden" name="set_goods_mileage" value="{=gd_isset(goodsView['goodsMileageBasic'],0)}" />
+            <input type="hidden" name="set_goods_stock" value="{=gd_isset(goodsView['stockCnt'],0)}" />
+            <input type="hidden" name="set_coupon_dc_price" value="{=gd_isset(goodsView['goodsPrice'],0)}" />
+
+            <input type="hidden" name="set_goods_total_price" id="set_goods_total_price" value="0" />
+            <input type="hidden" name="set_option_price"  id="set_option_price" value="0" />
+            <input type="hidden" name="set_option_text_price" id="set_option_text_price" value="0" />
+            <input type="hidden" name="set_add_goods_price"  id="set_add_goods_price" value="0" />
+            <input type="hidden" name="set_total_price" value="0" />
+
+
+            <input type="hidden" name="mileageFl" value="{=goodsView['mileageFl']}" />
+            <input type="hidden" name="mileageGoods" value="{=goodsView['mileageGoods']}" />
+            <input type="hidden" name="mileageGoodsUnit" value="{=goodsView['mileageGoodsUnit']}" />
+            <input type="hidden" name="goodsDiscountFl" value="{=goodsView['goodsDiscountFl']}" />
+            <input type="hidden" name="goodsDiscount" value="{=goodsView['goodsDiscount']}" />
+            <input type="hidden" name="goodsDiscountUnit" value="{=goodsView['goodsDiscountUnit']}" />
+
+            <input type="hidden" name="taxFreeFl" value="{=goodsView['taxFreeFl']}" />
+            <input type="hidden" name="taxPercent" value="{=goodsView['taxPercent']}" />
+
+            <input type="hidden" name="scmNo" value="{=goodsView['scmNo']}" />
+            <input type="hidden" name="brandCd" value="{=goodsView['brandCd']}" />
+            <input type="hidden" name="cateCd" value="{=goodsView['cateCd']}" />
+
+
+            <input type="hidden" id="set_dc_price" value="0" />
+
+            <!--{ ? goodsView['timeSaleFl'] }-->
+            <!--{ ? goodsView['timeSaleInfo']['mileageFl'] =='n' }-->
+            <input type="hidden" name="goodsMileageExcept" value="y" />
+            <!--{ / }-->
+            <!--{ ? goodsView['timeSaleInfo']['memberDcFl'] =='n' }-->
+            <input type="hidden" name="memberBenefitExcept" value="y" />
+            <!--{ / }-->
+            <!--{ ? goodsView['timeSaleInfo']['couponFl'] =='n' }-->
+            <input type="hidden" name="couponBenefitExcept" value="y" />
+            <!--{ / }-->
+            <!--{ / }-->
+
+            <input type="hidden" id="goodsOptionCnt" value="1" />
+            <input type="hidden" name="useBundleGoods" value="1" />
+            <input type="hidden" name="goodsDeliveryFl" value="{=goodsView['delivery']['basic']['goodsDeliveryFl']}" />
+            <input type="hidden" name="sameGoodsDeliveryFl" value="{=goodsView['delivery']['basic']['sameGoodsDeliveryFl']}" />
+
+        <!--{ ? in_array('goodsIcon',displayAddField) && goodsView['goodsIcon'] }-->
+        <div class="prd_icon">{goodsView['goodsIcon']}</div>
+        <!--{ / }-->
+        <h2>  <!--{ ? goodsView['timeSaleFl'] && goodsView['timeSaleInfo']['goodsNmDescription'] }-->[{=goodsView['timeSaleInfo']['goodsNmDescription']}]<!--{ / }-->{=gd_isset(goodsView['goodsNmDetail'])}
+        </h2>
+
+        <!--{ ? goodsView['soldOut'] =='y' && soldoutDisplay.soldout_price == 'text'}-->
+        <strong class="price">{=soldoutDisplay.soldout_price_text}</strong>
+        <!--{ : goodsView['soldOut'] =='y' && soldoutDisplay.soldout_price == 'custom'}-->
+        <img src="{soldoutDisplay.soldout_price_img}">
+        <!--{ : }-->
+
+        <!--{ ? goodsView['goodsPriceString'] !='' }-->
+        <strong class="price">{goodsView['goodsPriceString']}</strong>
+        <!--{ : }-->
+
+            <!-- //myCouponSalePrice.s -->
+            <!--{ ? gd_isset(goodsView['myCouponSalePrice']) > 0 && ((!goodsView['timeSaleFl']) || (goodsView['timeSaleFl'] && couponUse == 'y')) }-->
+                <span class="coupon_price">{=__('내 쿠폰적용가')} </span>
+                <strong class="price">{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['myCouponSalePrice'])}</strong><span class="won2">{=gd_global_currency_string()}</span>
+                <!--{ ? goodsView['timeSaleFl'] && goodsView['timeSaleInfo']['goodsPriceViewFl'] =='y' && goodsView['oriGoodsPrice'] > 0 }-->
+                <del>{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['oriGoodsPrice'])}{=gd_global_currency_string()}</del>
+                <!--{ : }-->
+                <del>{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['goodsPrice'])}</del><span class="won1">{=gd_global_currency_string()}</span>
+                <!--{ / }-->
+            <!--{ / }-->
+            <!-- //myCouponSalePrice.e -->
+
+            <!--{ ? goodsView['couponPrice'] > 0 && ((!goodsView['timeSaleFl']) || (goodsView['timeSaleFl'] && couponUse == 'y')) }-->
+                <!--{ ? gd_isset(goodsView['myCouponSalePrice']) > 0 }--><br /><!--{ / }-->
+                <span class="coupon_price">{=__('쿠폰적용가')}</span><strong class="price">{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['couponPrice'])}</strong><span class="won">{=gd_global_currency_string()}</span>
+            <!--{ / }-->
+
+            <!--{ ? goodsView['timeSaleFl'] && goodsView['timeSaleInfo']['goodsPriceViewFl'] =='y' && goodsView['oriGoodsPrice'] > 0 }-->
+            <del>{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['oriGoodsPrice'])}{=gd_global_currency_string()}</del>
+            <strong class="price time-sale">{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['goodsPrice'])}</strong><span class="won">{=gd_global_currency_string()}</span>
+            <!--{ : }-->
+                <!--{ ? goodsView['couponPrice'] > 0 }-->
+                <del>{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['goodsPrice'])}</del>{=gd_global_currency_string()}
+                <!--{ : goodsView['displayCouponPrice'] !== 'y' }-->
+                <strong class="price">{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['goodsPrice'])}</strong><span class="won">{=gd_global_currency_string()}</span>
+                <!--{ / }-->
+            <!--{ / }-->
+
+            <!--{ ? addGlobalCurrency }-->
+            <em class="add_currency">{=gd_global_add_currency_display(goodsView['goodsPrice'])}</em>
+            <!--{ / }-->
+
+            <!--{ ? goodsView['dcPrice'] > 0 }-->
+            <br /><span class="coupon_price">{=__('할인적용가')}</span><strong class="price">{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['goodsPrice'] - goodsView['dcPrice'])}</strong><span class="won">{=gd_global_currency_string()}</span>
+            <del>{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['goodsPrice'])}</del><span class="won1">{=gd_global_currency_string()}</span>
+            <!--{ / }-->
+
+        <!--{ / }-->
+        <!--{ / }-->
+            {=myappGoodsBenefitMessage}
+            <!--{ ? empty(couponArrData) === false }-->
+        <!--{ ? gd_is_login() === false }-->
+            <button id="lnCouponDown" class="bn_coupon btn-alert-login">{=__('쿠폰받기')}</button>
+        <!--{ : }-->
+        <div class="goods_view_coupon_down"><a href="../goods/layer_coupon_down.php?goodsNo={goodsView.goodsNo}&scmNo={goodsView.scmNo}&brandCd={goodsView.brandCd}" class="bn_coupon" data-toggle="modal"  data-cache="false" data-target="#popup-coupon" data-type="post" >{=__('쿠폰받기')}</a></div>
+        <!--{ / }-->
+            <!--{ / }-->
+
+        <dl>
+            <!--{ ? goodsView['goodsPriceDisplayFl'] =='y'}-->
+            <dt>{=__('정가')}</dt>
+            <dd><del>{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['fixedPrice'])}{=gd_global_currency_string()}</del></dd>
+            <!--{ / }-->
+            { ? goodsView['makerNm'] }
+            <dt>{=__('제조사')}</dt>
+            <dd>{goodsView['makerNm']}</dd>
+            { / }
+            { ? goodsView['originNm'] }
+            <dt>{=__('원산지')}</dt>
+            <dd>{goodsView['originNm']}</dd>
+            { / }
+            <!--{ ? !gGlobal.isFront }-->
+            <dt>{=__('배송')}</dt>
+            <dd>
+                <!--{ ? goodsView['multipleDeliveryFl'] === true }-->
+                <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) == 'fixed'  }-->
+                <span>{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['delivery']['firstCharge']['0']['price'])}{=gd_global_currency_string()}</span>
+                <!--{ ? addGlobalCurrency }-->
+                <span>{=gd_global_add_currency_display(goodsView['delivery']['firstCharge']['0']['price'])}</span>
+                <!--{ / }-->
+                <!--{ : }-->
+                <span>{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['delivery']['firstCharge'][goodsView['selectedDeliveryPrice']]['price'])}{=gd_global_currency_string()}</span>
+                <!--{ ? addGlobalCurrency }-->
+                <span>{=gd_global_add_currency_display(goodsView['delivery']['firstCharge'][goodsView['selectedDeliveryPrice']]['price'])}</span>
+                <!--{ / }-->
+                <!--{ / }-->
+                <a href="../goods/goods_info.php?target=detail-conditional-shipping" data-toggle="modal" data-cache="false" data-target="#popup-detail-info" class="condition-del">({=__('조건부배송')})</a>
+                <!--{ : }-->
+                <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) == 'free'  }-->
+                <span>{=__('무료')}</span>
+                <!--{ : gd_isset(goodsView['delivery']['basic']['fixFl']) == 'fixed'  }-->
+                <span>{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['delivery']['charge']['0']['price'])}{=gd_global_currency_string()}</span>
+                <!--{ ? addGlobalCurrency }-->
+                <span>{=gd_global_add_currency_display(goodsView['delivery']['charge']['0']['price'])}</span>
+                <!--{ / }-->
+                <!--{ : }-->
+                <span>{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['delivery']['charge'][goodsView['selectedDeliveryPrice']]['price'])}{=gd_global_currency_string()}</span>
+                <!--{ ? addGlobalCurrency }-->
+                <span>{=gd_global_add_currency_display(goodsView['delivery']['charge'][goodsView['selectedDeliveryPrice']]['price'])}</span>
+                <!--{ / }-->
+                <a href="../goods/goods_info.php?target=detail-conditional-shipping" data-toggle="modal" data-cache="false" data-target="#popup-detail-info" class="condition-del">({=__('조건부배송')})</a>
+                <!--{ / }-->
+                <!--{ / }-->
+                <!--{ ? gd_isset(goodsView['delivery']['basic']['areaFl']) == 'y'  }-->
+                <a href="../goods/goods_info.php?target=detail-regional-shipping" data-toggle="modal" data-cache="false" data-target="#popup-detail-info">{=__('지역별 추가배송')}</a>
+                <!--{ / }-->
+
+                <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) != 'free' }-->
+                <!--{ ? gd_isset(goodsView['delivery']['basic']['collectFl']) == 'pre'  }-->
+                {=__('주문시결제')}({=__('선결제')})
+                <!--{ : gd_isset(goodsView['delivery']['basic']['collectFl']) == 'later'  }-->
+                {=__('상품수령시결제')}({=__('착불')})
+                <!--{ / }-->
+                <!--{ / }-->
+
+                <!--{ ? gd_isset(deliveryMethodFlText) }-->
+                <div style="margin-top: 5px;">{deliveryMethodFlText}</div>
+                <!--{ / }-->
+            </dd>
+            <!--{ / }-->
+            <!--{ ? goodsView['deliveryScheduleFl'] == 'y'}-->
+            <dt <!--{ ? goodsView['deliveryScheduleGuideText'] == '당일발송' || goodsView['deliveryScheduleType'] == 'send'}-->class="item_delivery_schedule_tit"<!--{ / }-->>배송일정</dt>
+            <dd>
+                <div class="item_delivery_schedule">
+                    <!--{ ? goodsView['deliveryScheduleType'] == 'time'}-->
+                    <a href="../goods/goods_info.php?target=delivery-schedule" class="ly_day_delivery_show" data-toggle="modal" data-cache="false" data-target="#popup-delivery-schedule"><strong <!--{ ? goodsView['deliveryScheduleGuideText'] == '당일발송'}-->class="day_delivery"<!--{ / }-->>{=goodsView['deliveryScheduleGuideText']}</strong></a>
+                    <!--{ : }-->
+                    <strong class="now_buy">지금 주문 시 <span class="date">{=goodsView['deliveryScheduleDate']}</span> 발송 예정</strong>
+                    <!--{ / }-->
+                </div>
+            </dd>
+            <!--{ / }-->
+        </dl>
+
+        <div class="price-result">
+            <!--
+            <span class="price-result-value">123,456,789</span>
+            <span class="unit">
+                원
+            </span>-->
+        </div>
+
+
+
+        </form>
+
+    </div>
+
+    <!-- 구매하기 하단 영역 -->
+    <!-- [D] 구매하기 버튼만 노출될 경우 class="btn_one" 추가 -->
+
+
+    <div class="st-buy">
+
+
+        <div class="st-buy-top-btn">
+        <a class="st-buy-close">
+            <span class="ly_detail_buy_btn">
+                <img src="../img/common/ly_detail_buy_btn.png" alt="">
+                </span>
+        </a>
+
+             <div class="ly_buy_dn js-goods-view-buy-btn">
+                 <div class="st-btn-buy-outer">
+                     <ul>
+                         <!--{ ?goodsView['restockUsableFl'] === 'y' && !gGlobal.isFront }-->
+                         <li>
+                             <a class="btn-add-restock">
+                                 <img src="../img/icon/ico_restock.png" border="0" style="margin-top: 18px; width: 17px; height: 17px;" /> {=__('재입고알림')}
+                             </a>
+                         </li>
+                         <!--{ / }-->
+                         <!--{ ?goodsView['orderPossible'] == 'n' }-->
+                         <li>  <a class="btn_buy">{=__('구매불가')}</a></li>
+                         <!--{ : }-->
+                         <li>  <a id="cartBtn" class="st-btn-buy basket" data-effect="st-effect-15" data-goods-no="{=goodsView['goodsNo']}"  data-pay="cart" >{=__('장바구니')}</a></li>
+                         <li>  <a class="st-btn-buy" data-effect="st-effect-15" data-goods-no="{=goodsView['goodsNo']}"  data-pay="cart" >{=__('바로구매')}</a></li>
+                         <!--{ / }-->
+                     </ul>
+                 </div>
+             </div>
+        </div>
+
+        <div class="st-buy-content" style="display:none" ></div>
+
+        <div id="div-add-pay" class="js-goods-add-pay" style="display:none">
+        <!--{ ? payco }-->
+        <div class="snsbtn">
+            <div class="js-payco-btn">
+                {payco}
+            </div>
+        </div>
+        <!--{ / }-->
+        <!--{ ? naverPay }-->
+        <div class="snsbtn">
+
+            <div class="js-naver-btn">
+                {naverPay}
+            </div>
+        </div>
+        <!--{ / }-->
+        </div>
+    </div>
+    <!-- // 구매하기 영역 -->
+
+
+    <div id="detail-goods-must-info" style="display:none">
+        <div class="ly_head v2">
+            <h1 class="h_tit elp">{=__('필수정보')}</h1>
+        </div>
+        <div class="ly_ct">
+            <div class="lst_info">
+                <!--{ ? goodsView['goodsMustInfo'] }-->
+                <table width=100% border=0 cellpadding=0 cellspacing=1 class="extra-information">
+                    <tbody>
+                    <!--{ @ goodsView['goodsMustInfo'] }-->
+                    <tr>
+                        <!--{ @ .value_ }-->
+                        <th>
+                            <!--{..value_['infoTitle']}-->
+                        </th>
+                        <td <!--{ ? (count(.value_) == 1) }-->colspan="3"<!--{ / }-->><!--{..value_['infoValue']}--></td>
+                        <!--{ / }-->
+                    </tr>
+                    <!--{ / }-->
+                    </tbody>
+                </table>
+                <!--{ / }-->
+            </div>
+        </div>
+    </div>
+
+
+    <!--{ ? (gd_isset(goodsView['delivery']['basic']['fixFl']) != 'free' && gd_isset(goodsView['delivery']['basic']['fixFl']) != 'fixed') ||  goodsView['multipleDeliveryFl'] === true }-->
+    <!-- 조건부 배송 레이어 -->
+    <div id="detail-conditional-shipping" style="display:none">
+        <div class="ly_head v2">
+            <h1 class="h_tit elp">{=__('조건부 배송')}</h1>
+        </div>
+        <div class="ly_ct">
+            <div class="ly_dev_wrap lst_info">
+                <h2 class="my_tit">{goodsView['delivery']['basic']['fixFlText']}</h2>
+                <!--{ ? goodsView['multipleDeliveryFl'] === true }-->
+                <div class="ly_btn_wrap">
+                    <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) != 'fixed'  }-->
+                    <div class="ly_btn <!--{ ? count(goodsView['delivery']['basic']['deliveryMethodFlData']) == 2 }-->two<!--{ : }-->three<!--{ / }-->">
+                        <!--{ @ goodsView['delivery']['basic']['deliveryMethodFlData']}-->
+                        <!--{ ? count(goodsView['delivery']['basic']['deliveryMethodFlData']) == 2 && .index_ % 2 == 0 }--><div class="row"><!--{ : }--><!--{ ? .index_ % 3 == 0 }--><div class="row"><!--{ / }--><!--{ / }-->
+                        <a class="delivery-method" onclick="selectDeliveryMethod(this, '{=.key_}')">{=.value_}</a>
+                        <!--{ ? count(goodsView['delivery']['basic']['deliveryMethodFlData']) == 2 &&  .index_ % 2 == 1 }--></div><!--{ : }--><!--{ ? .index_ % 3 == 2 }--></div><!--{ : }--><!--{ ? count(goodsView['delivery']['basic']['deliveryMethodFlData']) - .index_ < 3 && ((count(goodsView['delivery']['basic']['deliveryMethodFlData']) % 3 == 1 && .index_ % 3 == 0) || (count(goodsView['delivery']['basic']['deliveryMethodFlData']) % 3 == 2 && .index_ % 3 == 1)) }--></div><!--{ / }--><!--{ / }--><!--{ / }-->
+                        <!--{ / }-->
+                    </div>
+                    <script type="text/javascript">
+                        function selectDeliveryMethod(e, method) {
+                            $(e).parents(".ly_btn").find("a").removeClass("on");
+                            $(e).addClass("on");
+                            $('.delivery-method-tr').hide();
+                            $('.delivery-method-tr').filter('[data-method="' + method + '"]').show();
+                        }
+                        $(function(){
+                            $('.delivery-method').eq(0).trigger('click');
+                        })
+                    </script>
+                    <!--{ / }-->
+                </div>
+                <!--{ / }-->
+                <div class="tbl2">
+                    <table>
+                        <colgroup>
+                            <col width="50%" />
+                            <col width="50%" />
+                        </colgroup>
+                        <!--{ ? goodsView['multipleDeliveryFl'] === true }-->
+                        <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) == 'fixed' }-->
+                        <!--{ @ goodsView['delivery']['multiCharge'][0] }-->
+                        <!--{ ? gd_isset(.sno) }-->
+                        <tr>
+                            <td>{=goodsView['delivery']['basic']['deliveryMethodFlData'][.key_]}</td>
+                            <td>
+                                {=gd_global_currency_symbol()}{=gd_global_money_format(.price)}{=gd_global_currency_string()}
+                                <!--{ ? addGlobalCurrency }-->
+                                <span>{=gd_global_add_currency_display(.price)}</span>
+                                <!--{ / }-->
+                            </td>
+                        </tr>
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ : }-->
+                        <!--{ ? gd_isset(goodsView['delivery']['basic']['rangeRepeat']) != 'y'  }-->
+                        <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) == 'price'  }-->
+                        <!--{ @ goodsView['delivery']['multiCharge'] }-->
+                        <!--{ @ .value_ }-->
+                        <!--{ ? gd_isset(..sno) }-->
+                        <!--{ ? ..unitEnd > 0 }-->
+                        <tr class="delivery-method-tr" data-method="{=..key_}">
+                            <td>{=gd_global_money_format(..unitStart)}{..unitText} {=__('이상')} ~ {=gd_global_money_format(..unitEnd)}{..unitText} {=__('미만')}</td>
+                            <td>
+                                {=gd_global_currency_symbol()}{=gd_global_money_format(..price)}{=gd_global_currency_string()}
+                                <!--{ ? addGlobalCurrency }-->
+                                <span>{=gd_global_add_currency_display(..price)}</span>
+                                <!--{ / }-->
+                            </td>
+                        </tr>
+                        <!--{ : }-->
+                        <tr class="delivery-method-tr" data-method="{=..key_}">
+                            <td>{=gd_global_money_format(..unitStart)}{..unitText} {=__('이상')}</td>
+                            <td>
+                                {=gd_global_currency_symbol()}{=gd_global_money_format(..price)}{=gd_global_currency_string()}
+                                <!--{ ? addGlobalCurrency }-->
+                                <span>{=gd_global_add_currency_display(..price)}</span>
+                                <!--{ / }-->
+                            </td>
+                        </tr>
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ : gd_isset(goodsView['delivery']['basic']['fixFl']) == 'count' }-->
+                        <!--{ @ goodsView['delivery']['multiCharge'] }-->
+                        <!--{ @ .value_ }-->
+                        <!--{ ? gd_isset(..sno) }-->
+                        <!--{ ? ..unitEnd > 0 }-->
+                        <tr class="delivery-method-tr" data-method="{=..key_}">
+                            <td>{=number_format(..unitStart)}{..unitText} {=__('이상')} ~ {=number_format(..unitEnd)}{..unitText} {=__('미만')}</td>
+                            <td>
+                                {=gd_global_currency_symbol()}{=gd_global_money_format(..price)}{=gd_global_currency_string()}
+                                <!--{ ? addGlobalCurrency }-->
+                                <span>{=gd_global_add_currency_display(..price)}</span>
+                                <!--{ / }-->
+                            </td>
+                        </tr>
+                        <!--{ : }-->
+                        <tr class="delivery-method-tr" data-method="{=..key_}">
+                            <td>{=number_format(..unitStart)}{..unitText} {=__('이상')}</td>
+                            <td>
+                                {=gd_global_currency_symbol()}{=gd_global_money_format(..price)}{=gd_global_currency_string()}
+                                <!--{ ? addGlobalCurrency }-->
+                                <span>{=gd_global_add_currency_display(..price)}</span>
+                                <!--{ / }-->
+                            </td>
+                        </tr>
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ : }-->
+                        <!--{ @ goodsView['delivery']['multiCharge'] }-->
+                        <!--{ @ .value_ }-->
+                        <!--{ ? gd_isset(..sno) }-->
+                        <!--{ ? ..unitEnd > 0 }-->
+                        <tr class="delivery-method-tr" data-method="{=..key_}">
+                            <td>{=number_format(..unitStart, 2)}{..unitText} {=__('이상')} ~ {=number_format(..unitEnd, 2)}{..unitText} {=__('미만')}</td>
+                            <td>
+                                {=gd_global_currency_symbol()}{=gd_global_money_format(..price)}{=gd_global_currency_string()}
+                                <!--{ ? addGlobalCurrency }-->
+                                <span>{=gd_global_add_currency_display(..price)}</span>
+                                <!--{ / }-->
+                            </td>
+                        </tr>
+                        <!--{ : }-->
+                        <tr class="delivery-method-tr" data-method="{=..key_}">
+                            <td>{=number_format(..unitStart, 2)}{..unitText} {=__('이상')}</td>
+                            <td>
+                                {=gd_global_currency_symbol()}{=gd_global_money_format(..price)}{=gd_global_currency_string()}
+                                <!--{ ? addGlobalCurrency }-->
+                                <span>{=gd_global_add_currency_display(..price)}</span>
+                                <!--{ / }-->
+                            </td>
+                        </tr>
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ : }-->
+                        <!--{ @ goodsView['delivery']['multiCharge'] }-->
+                        <!--{ @ .value_ }-->
+                        <!--{ ? gd_isset(..sno) }-->
+                        <!--{ ? .index_ == 0 }-->
+                        <tr class="delivery-method-tr" data-method="{=..key_}">
+                            <td>
+                                <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) == 'price'  }-->
+                                {=gd_global_money_format(..unitStart)}
+                                <!--{ : gd_isset(goodsView['delivery']['basic']['fixFl']) == 'count' }-->
+                                {=number_format(..unitStart)}
+                                <!--{ : }-->
+                                {=number_format(..unitStart, 2)}
+                                <!--{ / }-->
+                                {..unitText} {=__('이상')} ~
+                                <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) == 'price'  }-->
+                                {=gd_global_money_format(..unitEnd)}
+                                <!--{ : gd_isset(goodsView['delivery']['basic']['fixFl']) == 'count' }-->
+                                {=number_format(..unitEnd)}
+                                <!--{ : }-->
+                                {=number_format(..unitEnd, 2)}
+                                <!--{ / }-->
+                                {..unitText} {=__('미만')}
+                            </td>
+                            <td>
+                                {=gd_global_currency_symbol()}{=gd_global_money_format(..price)}{=gd_global_currency_string()}
+                                <!--{ ? addGlobalCurrency }-->
+                                <span>{=gd_global_add_currency_display(..price)}</span>
+                                <!--{ / }-->
+                            </td>
+                        </tr>
+                        <!--{ : }-->
+                        <tr class="delivery-method-tr" data-method="{=..key_}">
+                            <td>
+                                <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) == 'price'  }-->
+                                {=gd_global_money_format(..unitStart)}
+                                <!--{ : gd_isset(goodsView['delivery']['basic']['fixFl']) == 'count' }-->
+                                {=number_format(..unitStart)}
+                                <!--{ : }-->
+                                {=number_format(..unitStart, 2)}
+                                <!--{ / }-->
+                                {..unitText} {=__('이상')}
+                                <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) == 'price'  }-->
+                                {=gd_global_money_format(..unitEnd)}
+                                <!--{ : gd_isset(goodsView['delivery']['basic']['fixFl']) == 'count' }-->
+                                {=number_format(..unitEnd)}
+                                <!--{ : }-->
+                                {=number_format(..unitEnd, 2)}
+                                <!--{ / }-->
+                                {..unitText} {=__('마다 추가')}
+                            </td>
+                            <td>
+                                {=gd_global_currency_symbol()}{=gd_global_money_format(..price)}{=gd_global_currency_string()}
+                                <!--{ ? addGlobalCurrency }-->
+                                <span>{=gd_global_add_currency_display(..price)}</span>
+                                <!--{ / }-->
+                            </td>
+                        </tr>
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ : }-->
+                        <!--{ ? gd_isset(goodsView['delivery']['basic']['rangeRepeat']) != 'y'  }-->
+                        <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) == 'weight'  }-->
+                        <!--{ @ goodsView['delivery']['charge'] }-->
+                        <!--{ ? .unitEnd > 0 }-->
+                        <tr>
+                            <td>{=number_format(.unitStart, 2)}{.unitText} {=__('이상')} ~ {=number_format(.unitEnd, 2)}{.unitText} {=__('미만')}</td>
+                            <td>{=gd_global_currency_display(.price)}</td>
+                        </tr>
+                        <!--{ : }-->
+                        <tr>
+                            <td>{=number_format(.unitStart, 2)}{.unitText} {=__('이상')}</td>
+                            <td>{=gd_global_currency_display(.price)}</td>
+                        </tr>
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ : gd_isset(goodsView['delivery']['basic']['fixFl']) == 'price'  }-->
+                        <!--{ @ goodsView['delivery']['charge'] }-->
+                        <!--{ ? .unitEnd > 0 }-->
+                        <tr>
+                            <td>{=gd_global_money_format(.unitStart, 2)}{.unitText} {=__('이상')} ~ {=gd_global_money_format(.unitEnd, 2)}{.unitText} {=__('미만')}</td>
+                            <td>{=gd_global_currency_display(.price)}</td>
+                        </tr>
+                        <!--{ : }-->
+                        <tr>
+                            <td>{=gd_global_money_format(.unitStart, 2)}{.unitText} {=__('이상')}</td>
+                            <td>{=gd_global_currency_display(.price)}</td>
+                        </tr>
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ : }-->
+                        <!--{ @ goodsView['delivery']['charge'] }-->
+                        <!--{ ? .unitEnd > 0 }-->
+                        <tr>
+                            <td>{=number_format(.unitStart)}{.unitText} {=__('이상')} ~ {=number_format(.unitEnd)}{.unitText} {=__('미만')}</td>
+                            <td>{=gd_global_currency_display(.price)}</td>
+                        </tr>
+                        <!--{ : }-->
+                        <tr>
+                            <td>{=number_format(.unitStart)}{.unitText} {=__('이상')}</td>
+                            <td>{=gd_global_currency_display(.price)}</td>
+                        </tr>
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ : }-->
+                        <!--{ @ goodsView['delivery']['charge'] }-->
+                        <!--{ ? .index_ == 0 }-->
+                        <tr>
+                            <td>
+                                <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) == 'price'  }-->
+                                {=gd_global_money_format(.unitStart)}
+                                <!--{ : gd_isset(goodsView['delivery']['basic']['fixFl']) == 'count' }-->
+                                {=number_format(.unitStart)}
+                                <!--{ : }-->
+                                {=number_format(.unitStart, 2)}
+                                <!--{ / }-->
+                                {.unitText} {=__('이상')} ~
+                                <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) == 'price'  }-->
+                                {=gd_global_money_format(.unitEnd)}
+                                <!--{ : gd_isset(goodsView['delivery']['basic']['fixFl']) == 'count' }-->
+                                {=number_format(.unitEnd)}
+                                <!--{ : }-->
+                                {=number_format(.unitEnd, 2)}
+                                <!--{ / }-->
+                                {.unitText} {=__('미만')}
+                            </td>
+                            <td>
+                                {=gd_global_currency_symbol()}{=gd_global_money_format(.price)}{=gd_global_currency_string()}
+                                <!--{ ? addGlobalCurrency }-->
+                                <span>{=gd_global_add_currency_display(.price)}</span>
+                                <!--{ / }-->
+                            </td>
+                        </tr>
+                        <!--{ : }-->
+                        <tr>
+                            <td>
+                                <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) == 'price'  }-->
+                                {=gd_global_money_format(.unitStart)}
+                                <!--{ : gd_isset(goodsView['delivery']['basic']['fixFl']) == 'count' }-->
+                                {=number_format(.unitStart)}
+                                <!--{ : }-->
+                                {=number_format(.unitStart, 2)}
+                                <!--{ / }-->
+                                {.unitText} {=__('이상')}
+                                <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) == 'price'  }-->
+                                {=gd_global_money_format(.unitEnd)}
+                                <!--{ : gd_isset(goodsView['delivery']['basic']['fixFl']) == 'count' }-->
+                                {=number_format(.unitEnd)}
+                                <!--{ : }-->
+                                {=number_format(.unitEnd, 2)}
+                                <!--{ / }-->
+                                {.unitText} {=__('마다 추가')}
+                            </td>
+                            <td>
+                                {=gd_global_currency_symbol()}{=gd_global_money_format(.price)}{=gd_global_currency_string()}
+                                <!--{ ? addGlobalCurrency }-->
+                                <span>{=gd_global_add_currency_display(.price)}</span>
+                                <!--{ / }-->
+                            </td>
+                        </tr>
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{ / }-->
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- //조건부 배송 레이어 -->
+    <!--{ / }-->
+
+    <!--{ ? gd_isset(goodsView['delivery']['basic']['areaFl']) == 'y'  }-->
+    <!-- 지역별 배송비 레이어 -->
+    <div id="detail-regional-shipping" style="display:none">
+
+        <div class="ly_head v2">
+            <h1 class="h_tit elp">지역별 추가 배송비</h1>
+        </div>
+        <div class="ly_ct">
+            <div class="lst_info">
+                <div class="tbl2">
+                    <table>
+                        <colgroup>
+                            <col width="50%" />
+                            <col width="50%" />
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>{=__('지역')}</th>
+                            <th>{=__('추가 배송비')}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--{ @ goodsView['delivery']['areaDetail'] }-->
+                        <tr>
+                            <td class="country">{.addArea}</td>
+                            <td>{=gd_global_currency_symbol()}{=gd_global_money_format(.addPrice)}{=gd_global_currency_string()}
+                                <!--{ ? addGlobalCurrency }-->
+                                <span>{=gd_global_add_currency_display(.addPrice)}</span>
+                                <!--{ / }-->
+                            </td>
+                        </tr>
+                        <!--{ / }-->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //지역별 배송비 레이어 -->
+    <!--{ / }-->
+    <!--{ ? goodsView['deliveryScheduleFl'] == 'y' && goodsView['deliveryScheduleType'] == 'time'}-->
+    <div id="delivery-schedule" style="display:none">
+        <div class="js-goods-info-detail">
+            <div class="ly_head v2">
+                <h1 class="h_tit elp">당일발송</h1>
+            </div>
+            <div class="ly_ct" style="">
+                <div class="ly_dev_wrap lst_info">
+                    <h2 class="my_tit">당일발송 안내</h2>
+                    <div class="tbl2">
+                        <div class="ly_day_delivery">
+                            <p><span>{=goodsView['deliveryScheduleTime']} 이전 주문 시</span> 당일 발송</p>
+                            <p><span>{=goodsView['deliveryScheduleTime']} 이후 주문 시</span> 익일 발송</p>
+                            <p class="infor">※ 주말, 휴일이 포함된 경우 익일(영업일 기준) 발송됩니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--{ / }-->
+    <ul class="detail_sub_lst">
+        <li id="goodsDescription" class="selected">
+            <a href="#" data-target="js-goods-description">{=__('상세정보')}</a>
+        </li>
+        <li id="goodsInfo">
+            <a href="#" data-target="js-goods-detail_infotext">{=__('기본정보')}</a>
+        </li>
+        <!--{ ? canGoodsReview || plusReviewConfig.isShowGoodsPage == 'y'}-->
+        <li id="detail-review" class="js-board-{bdGoodsReviewId}">
+            <a href="#" data-target="js-board-{bdGoodsReviewId}-view"  data-bdid="{bdGoodsReviewId}">
+                {=__('상품후기')}
+                <span class="itemnum">{goodsReviewCount+plusReview.info.reviewCount}</span>
+            </a>
+        </li>
+        <!--{/}-->
+        <!--{ ? canGoodsQa }-->
+        <li id="detail-qna" class="js-board-{bdGoodsQaId}">
+            <div data-target="js-board-{bdGoodsQaId}-view" data-bdid="{bdGoodsQaId}" class="js_accordian  ">
+                {=__('상품문의')}
+                <span class="itemnum">{goodsQaCount}</span>
+            </div>
+        </li>
+        <!--{/}-->
+    </ul>
+
+    <div class="js-goods-info">
+        <div class="js-goods-description goods-tabcontent" style="display:block">
+            <!-- 상품상세 공통정보 관리를 상세정보 상단에 노출-->
+            {=gd_isset(goodsView['commonContent'])}
+            {=gd_isset(goodsView['goodsDescriptionMobile'])}
+            <!--{ ? goodsView['externalVideoFl'] =='y'  && goodsView['externalVideoUrl'] }-->
+            <div style="text-align:center" id="external-video">
+                {=gd_youtube_player(goodsView['externalVideoUrl'], goodsView['externalVideoWidth'], goodsView['externalVideoHeight'])}
+            </div>
+            <!--{ / }-->
+            <!--{ ? goodsView['goodsMustInfo'] }-->
+            <div class="js-openblock openblock">
+                <section class="openblock-header">
+                    <h3>{=__('상품필수 정보')}</h3>
+                    <button class="toggle-btn btn-reset">
+                        <span class="sprite-icon icon-arr-b-gray"></span>
+                    </button>
+                </section>
+                <section class="openblock-content pd" >
+
+                    <table width=100% border=0 cellpadding=0 cellspacing=1 class="extra-information">
+                        <tbody>
+                            <!--{ @ goodsView['goodsMustInfo'] }-->
+                            <!--{ @ .value_ }-->
+                            <tr><th><!--{..value_['infoTitle']}--></th></tr>
+                            <tr><td><!--{..value_['infoValue']}--></td></tr>
+                            <!--{ / }-->
+                            <!--{ / }-->
+                        </tbody>
+                    </table>
+
+                </section>
+            </div>
+            <!--{ / }-->
+            <!--{ ? goodsView['goodsMustInfo'] }-->
+            <!--{ @ goodsView['addGoods']}-->
+            <!--{ ? .value_['addGoodsMustInfo'] == 'y' }-->
+            <div class="js-openblock openblock">
+                <section class="openblock-header">
+                    <h3>{=.value_['title']} {=__('상품필수 정보')}</h3>
+                    <button class="toggle-btn btn-reset">
+                        <span class="sprite-icon icon-arr-b-gray"></span>
+                    </button>
+                </section>
+                <section class="openblock-content pd" >
+                    <!--{ @ .value_['addGoodsList'] }-->
+                    <!--{ ? goodsView['addGoodsMustInfo'][..value_['addGoodsNo']] }-->
+                    <section class="openblock-header-sub">
+                    <h4>{=.value_['addGoodsList'][..key_]['goodsNm']}<!--{ ? .value_['addGoodsList'][..key_]['optionNm'] }-->({=.value_['addGoodsList'][..key_]['optionNm']})<!--{ / }--></h4>
+                    <button class="toggle-btn btn-reset">
+                        <span class="sprite-icon icon-arr-b-gray"></span>
+                    </button>
+                    </section>
+                    <table width=100% border=0 cellpadding=0 cellspacing=1 class="extra-information" style="display: block">
+                        <tbody>
+                        <!--{ @ goodsView['addGoodsMustInfo'][..value_['addGoodsNo']] }-->
+                        <!--{ @ ...value_ }-->
+                        <tr><th><!--{....value_['infoTitle']}--></th></tr>
+                        <tr><td><!--{....value_['infoValue']}--></td></tr>
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        </tbody>
+                    </table>
+                    <!--{ / }-->
+                    <!--{ / }-->
+                </section>
+            </div>
+            <!--{ / }-->
+            <!--{ / }-->
+            <!--{ / }-->
+        </div>
+
+
+        <div  class="js-goods-detail_infotext goods-tabcontent" style="display:none">
+
+
+            <div class="openblock">
+                <section class="openblock-header">
+                    <h3>{=__('기본정보')}</h3>
+                </section>
+                <section class="openblock-content pd" >
+
+
+                    <table width=100% border=0 cellpadding=0 cellspacing=1 class="extra-information">
+                        <!--{ @ displayField }-->
+                        <!--{? .value_ :'fixedPrice'}-->
+                        <!--{ ? gd_isset(goodsView['fixedPrice']) > 0  && goodsView['goodsPriceDisplayFl'] =='y'}-->
+                        <tr ><th>{=__('정가')}</th></tr>
+                        <tr><td>{=fixedPriceTag}{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['fixedPrice'])}{=fixedPriceTag2}{=gd_global_currency_string()}</td></tr>
+                        <!--{ / }-->
+                        <!--{: 'goodsPrice'}-->
+                        <tr><th> <!--{ ? goodsView['timeSaleFl'] }-->{=__('타임세일가')}<!--{ : }-->{=__('판매가')}<!--{ / }--></th></tr>
+                            <tr><td>
+                                <!--{ ? goodsView['soldOut'] =='y' && soldoutDisplay.soldout_price == 'text'}-->
+                                {=soldoutDisplay.soldout_price_text}
+                                <!--{ : goodsView['soldOut'] =='y' && soldoutDisplay.soldout_price == 'custom'}-->
+                                <img src="{soldoutDisplay.soldout_price_img}">
+                                <!--{ : }-->
+
+                                <!--{ ? goodsView['goodsPriceString'] !='' }-->
+                                {goodsView['goodsPriceString']}
+                                <!--{ : }-->
+                                <!--{ ? goodsView['timeSaleFl']  && goodsView['timeSaleInfo']['goodsPriceViewFl'] =='y' && goodsView['oriGoodsPrice'] > 0 }-->
+                                {=goodsPriceTag}<del>{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['oriGoodsPrice'])}{=goodsPriceTag2}{=gd_global_currency_string()}</del>
+                                {=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['goodsPrice'])}{=gd_global_currency_string()}
+                                <!--{ : }-->
+                                {=goodsPriceTag}{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['goodsPrice'])}{=goodsPriceTag2}{=gd_global_currency_string()}
+                                <!--{ / }-->
+
+                                <!--{ ? addGlobalCurrency }-->
+                                <span>{=goodsPriceTag}{=gd_global_add_currency_display(goodsView['goodsPrice'])}{=goodsPriceTag2}</span>
+                                <!--{ / }-->
+
+                                <!--{ / }-->
+                                <!--{ / }-->
+
+                            </td></tr>
+                        <!--{: 'couponPrice'}-->
+                        <!--{ ? gd_isset(goodsView['couponPrice']) > 0 && couponUse == 'y'  && goodsView['goodsPriceDisplayFl'] =='y'}-->
+                        <tr><th>{=__('쿠폰적용가')}</th></tr>
+                        <tr><td>
+                            {=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['couponPrice'])}{=gd_global_currency_string()}
+                            (-{=gd_global_money_format(goodsView['couponSalePrice'])}{=gd_global_currency_string()}<!--{ ? in_array('dcRate', displayAddField) && gd_isset(goodsView['couponDcRate']) }-->, {=goodsView['couponDcRate']}%<!--{ / }-->)
+                        </td></tr>
+                        <!--{ / }-->
+                        <!--{: 'myCouponPrice'}-->
+                        <!--{ ? gd_isset(goodsView['myCouponSalePrice']) > 0 && couponUse == 'y'  && goodsView['goodsPriceDisplayFl'] =='y'}-->
+                        <tr><th>{=__('내 쿠폰적용가')}</th></tr>
+                        <tr><td>
+                            {=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['myCouponSalePrice'])}{=gd_global_currency_string()}
+                            (-{=gd_global_money_format(goodsView['myCouponPrice'])}{=gd_global_currency_string()}<!--{ ? in_array('dcRate', displayAddField) && gd_isset(goodsView['myCouponDcRate']) }-->, {=goodsView['myCouponDcRate']}%<!--{ / }-->)
+                        </td></tr>
+                        <!--{ / }-->
+                        <!--{ : 'goodsDiscount' }-->
+                        <!--{ ? goodsView['dcPrice'] > 0}-->
+                        <tr><th>{=__('할인적용가')}</th></tr>
+                        <tr><td>
+                            {=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['goodsPrice'] - goodsView['dcPrice'])}{=gd_global_currency_string()}
+                            <!--{ ? addGlobalCurrency }-->
+                            <span>{=gd_global_add_currency_display(goodsView['goodsPrice'] - goodsView['dcPrice'])}</span>
+                            <!--{ / }-->
+                            <!--{ ? in_array('dcRate', displayAddField) && gd_isset(goodsView['goodsDcRate']) }--> <span>({=goodsView['goodsDcRate']}%)</span><!--{ / }-->
+                        </td></tr>
+                        <!--{ / }-->
+                        <!--{: 'maxOrderCnt'}-->
+                        <!--{ ? !(goodsView['minOrderCnt'] === '1' && goodsView['maxOrderCnt'] === '0')}-->
+                        <tr> <th>{=__(displayDefaultField[.value_])}</th></tr>
+                        <tr><td>
+                            <!--{ ? goodsView['fixedOrderCnt'] == 'option' }-->옵션당
+                            <!--{ : goodsView['fixedOrderCnt'] == 'goods' }-->상품당
+                            <!--{ : goodsView['fixedOrderCnt'] == 'id' }-->ID당
+                            <!--{ / }-->
+                                <!--{ ? goodsView['minOrderCnt']}-->{=__('최소 %s개', goodsView['minOrderCnt'])} <!--{ / }--> <!--{ ? goodsView['maxOrderCnt'] }-->/ {=__('최대 %s개', goodsView['maxOrderCnt'])}<!--{ / }-->
+                        </td></tr>
+                        <!--{ / }-->
+                        <!--{: 'benefit'}-->
+                        <tr class="benefits dn" >
+                            <th>{=__(displayDefaultField[.value_])}</th></tr>
+                            <tr class="benefits dn" ><td><div>
+                                <p class="benefits_dc_desc">{=__('할인')} : <strong class="total_benefit_price"></strong> [<span class="benefit_price"></span>]</p>
+                                <p class="benefits_mileage_desc">{=__('적립')} {=gd_display_mileage_name()} : <strong class="total_benefit_mileage"></strong> [<span class="benefit_mileage"></span>]</p>
+                            </div></td>
+                        </tr>
+                        <!--{: 'couponDownload'}-->
+                        <!--{ ? empty(couponArrData) === false }-->
+                        <tr class="coupon"><th>{=__('쿠폰')}</th></tr>
+                        <tr><td>
+
+                            <!--{ ? gd_is_login() === false }-->
+                            <button class="bn_coupon btn-alert-login">{=__('쿠폰받기')}</button>
+                            <!--{ : }-->
+                            <a href="../goods/layer_coupon_down.php?goodsNo={goodsView.goodsNo}&scmNo={goodsView.scmNo}&brandCd={goodsView.brandCd}" class="bn_coupon" data-toggle="modal"  data-cache="false" data-target="#popup-coupon" data-type="post" >{=__('쿠폰받기')}</a>
+                            <!--{ / }-->
+
+                        </td>
+                        </tr>
+                        <!--{ / }-->
+                        <!--{: 'delivery'}-->
+                        <!--{ ? !gGlobal.isFront }-->
+                        <tr class="delivery"><th>{=__('배송비')}</th></tr>
+                        <tr><td>
+
+                            <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) == 'free'  }-->
+                            <span>{=__('무료')}</span>
+                            <!--{ : gd_isset(goodsView['delivery']['basic']['fixFl']) == 'fixed'  }-->
+                            <span>{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['delivery']['charge']['0']['price'])}{=gd_global_currency_string()}</span>
+                            <!--{ ? addGlobalCurrency }-->
+                            <span>{=gd_global_add_currency_display(goodsView['delivery']['charge']['0']['price'])}</span>
+                            <!--{ / }-->
+                            <!--{ : }-->
+                            <span>{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['delivery']['charge'][goodsView['selectedDeliveryPrice']]['price'])}{=gd_global_currency_string()}</span>
+                            <!--{ ? addGlobalCurrency }-->
+                            <span>{=gd_global_add_currency_display(goodsView['delivery']['charge'][goodsView['selectedDeliveryPrice']]['price'])}</span>
+                            <!--{ / }-->
+                            <a href="../goods/goods_info.php?target=detail-conditional-shipping" data-toggle="modal" data-cache="false" data-target="#popup-detail-info" class="condition-del">({=__('조건부배송')})</a>
+                            <!--{ / }-->
+                            <!--{ ? gd_isset(goodsView['delivery']['basic']['areaFl']) == 'y'  }-->
+                            <a href="../goods/goods_info.php?target=detail-regional-shipping" data-toggle="modal" data-cache="false" data-target="#popup-detail-info">{=__('지역별 추가배송')}</a>
+                            <!--{ / }-->
+
+                            <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) != 'free' }-->
+                            <!--{ ? gd_isset(goodsView['delivery']['basic']['collectFl']) == 'pre'  }-->
+                            {=__('주문시결제')}({=__('선결제')})
+                            <!--{ : gd_isset(goodsView['delivery']['basic']['collectFl']) == 'later'  }-->
+                            {=__('상품수령시결제')}({=__('착불')})
+                            <!--{ / }-->
+                            <!--{ / }-->
+                            </td>
+                        </tr>
+                        <!--{ / }-->
+                        <!--{: 'goodsWeight'}-->
+                        <!--{ ? gd_isset(goodsView['goodsWeight']) > 0 && gd_isset(goodsView['goodsVolume']) > 0 }-->
+                        <tr>
+                            <th>{=__(displayDefaultField[.value_])}</th>
+                            <tr><td><span>{=goodsView['goodsWeight']}{=weight.unit} / {=goodsView['goodsVolume']}{=gd_isset(volume.unit, '㎖')}</span></td></tr>
+                        </tr>
+                        <!--{ : }-->
+                        <!--{ ? gd_isset(goodsView['goodsWeight']) > 0 }-->
+                        <tr>
+                            <th>{=__(displayDefaultField[.value_])}</th>
+                            <tr><td><span>{=goodsView['goodsWeight']}{=weight.unit}</span></td></tr>
+                        </tr>
+                        <!--{ / }-->
+                        <!--{ ? gd_isset(goodsView['goodsVolume']) > 0 }-->
+                        <tr>
+                            <th>{=__(displayDefaultField[.value_])}</th>
+                            <tr><td><span>{=goodsView['goodsVolume']}{=gd_isset(volume.unit, '㎖')}</span></td></tr>
+                        </tr>
+                        <!--{ / }-->
+                        <!--{ / }-->
+                        <!--{: 'addInfo'}-->
+                        <!--{ ?  empty(goodsView['addInfo']) === false }-->
+                        <!-- 추가항목 -->
+                        <!--{ @ goodsView['addInfo'] }-->
+                        <tr><th>{=__(..infoTitle)}</th></tr>
+                        <tr><td>{=..infoValue}</td></tr>
+                        <!--{ / }-->
+                        <!-- // 추가항목 -->
+                        <!--{ / }-->
+                        <!--{: 'effectiveStartYmd'}-->
+                        <!--{ ? (goodsView['effectiveStartYmd'] != '0000-00-00 00:00:00' && goodsView['effectiveStartYmd']) || (goodsView['effectiveEndYmd'] != '0000-00-00 00:00:00' && goodsView['effectiveEndYmd']) }-->
+                        <tr><th>{=__(displayDefaultField[.value_])}</th></tr>
+                            <tr><td>
+                                 <!--{ ? goodsView['effectiveStartYmd'] != '0000-00-00 00:00:00' && goodsView['effectiveStartYmd'] }-->
+                                {=gd_date_format(__('Y년 m월 d일'), goodsView['effectiveStartYmd'])}
+                                <!--{ / }-->
+
+                                <!--{ ? goodsView['effectiveEndYmd'] != '0000-00-00 00:00:00' && goodsView['effectiveEndYmd'] }-->
+                                ~ {=gd_date_format(__('Y년 m월 d일'), goodsView['effectiveEndYmd'])}
+                                <!--{ / }-->
+
+                            </td>
+                        </tr>
+                        <!--{ / }-->
+                        <!--{: 'salesStartYmd'}-->
+                        <!--{ ? (goodsView['salesStartYmd'] != '0000-00-00 00:00:00' && goodsView['salesStartYmd']) || (goodsView['salesEndYmd'] != '0000-00-00 00:00:00' && goodsView['salesEndYmd']) }-->
+                        <tr><th>{=__(displayDefaultField[.value_])}</th></tr>
+                            <tr><td>
+                                 <!--{ ? goodsView['salesStartYmd'] != '0000-00-00 00:00:00' && goodsView['salesStartYmd'] }-->
+                                {=gd_date_format(__('Y년 m월 d일'), goodsView['salesStartYmd'])}
+                                <!--{ / }-->
+
+                                <!--{ ? goodsView['salesEndYmd'] != '0000-00-00 00:00:00' && goodsView['salesEndYmd'] }-->
+                                ~ {=gd_date_format(__('Y년 m월 d일'), goodsView['salesEndYmd'])}
+                                <!--{ / }-->
+
+                            </td>
+                        </tr>
+                        <!--{ / }-->
+                        <!--{: 'salesUnit'}-->
+                        <!--{ ? gd_isset(goodsView['salesUnit']) > 1 }-->
+                        <tr> <th>{=__(displayDefaultField[.value_])}</th></tr>
+                         <tr><td>{=number_format(goodsView['salesUnit'])}{=__('개')}</td> </tr>
+                        <!--{ / }-->
+                        <!--{: 'totalStock'}-->
+                        <!--{ ? goodsView['stockFl']=='y' }-->
+                        <tr><th>{=__(displayDefaultField[.value_])}</th></tr>
+                        <tr><td>{=number_format(goodsView['totalStock'])}{=__('개')}</td></tr>
+                        <!--{ / }-->
+                        <!--{:}-->
+                        <!--{ ? gd_isset(goodsView[.value_]) }-->
+                        <tr><th>{=__(displayDefaultField[.value_])}</th></tr>
+                        <tr><td>{=goodsView[.value_]}</td></tr>
+                        <!--{ / }-->
+                        <!--{ / }-->
+
+                        <!--{ / }-->
+
+                        <!--{ ? naverPay}-->
+                        <tr id="naver-mileage-accum" class="hidden">
+                            <th>{=__('네이버')}&nbsp;&nbsp;<br/>{=__('마일리지')} : <span id="naver-mileage-accum-rate"></span> {=__('적립')}</th> </tr>
+
+
+                        <!--{ / }-->
+                        <!--{ ? infoDelivery }-->
+                     <tr>
+                        <th>{=__('배송안내')}</th>
+                    </tr>
+                    <tr>
+                     <td>
+                         {infoDelivery}
+                     </td>
+                 </tr>
+                        <!--{ / }-->
+                        <!--{ ? infoExchange }-->
+                 <tr>
+
+                    <th>{=__('교환안내')}</th>
+                </tr>
+                <tr>
+                 <td>
+                     {infoExchange}
+                 </td>
+             </tr>
+                        <!--{ / }-->
+             <!--{ ? infoRefund }-->
+             <tr>
+                 <th>{=__('환불안내')}</th>
+             </tr>
+             <tr>
+                 <td>{infoRefund}</td>
+             </tr>
+             <!--{ / }-->
+
+             <!--{ ? infoAS }-->
+             <tr>
+                 <th>{=__('AS안내')}</th>
+             </tr>
+             <tr>
+                 <td>{infoAS}</td>
+             </tr>
+             <!--{ / }-->
+         </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+        <!--{ ? plusReviewConfig.isShowGoodsPage == 'y' }-->
+        {=includeFile(includePlusReviewFile)}
+        <!--{/}-->
+
+        <!--{ ? canGoodsReview}-->
+        <div class="detail_review js-board-{bdGoodsReviewId}-view" data-bdid="{bdGoodsReviewId}" style="display:none">
+        <!-- <div class="detail_review"> -->
+            <div class="item-list-head">
+                <div class="total-num">
+                    <b>{=__('총 %s개의 상품평', '<span class="num">' + goodsReviewCount + '</span>')}</b>
+                </div>
+
+                <div class="item-list-writebtn">
+                    <a href="../board/write.php?bdId={bdGoodsReviewId}&goodsNo={goodsView.goodsNo}&gboard=r&windowType=popup" class="btn btn_gr bn_inquiry js-btn-board-write" >{=__('글쓰기')}</a>
+                </div>
+            </div>
+            <div class="item-list">
+
+            </div>
+        </div>
+        <!--{/}-->
+        <div class="detail_review prd_inquiry js-board-{bdGoodsQaId}-view" data-bdid="{bdGoodsQaId}" style="display:none">
+            <div class="item-list-head">
+                <div class="total-num">
+                    <b>{=__('총 %s개의 상품문의', '<span class="num">' + goodsQaCount + '</span>')}</b>
+                </div>
+
+                <div class="item-list-writebtn">
+                    <a href="../board/write.php?bdId={bdGoodsQaId}&goodsNo={goodsView.goodsNo}&gboard=r&windowType=popup" class="btn btn_gr bn_inquiry js-btn-board-write">{=__('문의하기')}</a>
+                </div>
+            </div>
+            <div class="item-list">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--{ ? relation.relationFl!= 'n' }-->
+<div class="related-goods">
+    <h3>{=__('관련 상품')}</h3>
+    <div class="list">
+        <!--{ ? widgetGoodsList}-->
+        <!-- 추천상품 -->
+        {=includeWidget('goods/_goods_display.html')}
+        <!-- 추천상품 -->
+        <!--{ / }-->
+    </div>
+
+</div>
+<!--{ / }-->
+
+<!-- 비밀글 클릭시 인증 레이어 -->
+<form id="frmWritePassword">
+    <div class="cite-layer dn js-password-layer zidx120" data-sno="">
+        <div class="wrap">
+            <h4>{=__('비밀번호 인증')}</h4>
+            <div>
+                <p>{=__('비밀번호를 입력해 주세요.')}</p>
+                <input type="password" name="writerPw" class="text"/>
+                <a href="javascript:void(0)" class="btn btn_gr layer-close-btn js-submit"><em class="w70-h28">{=__('확인')}</em></a>
+            </div>
+            <button type="button" class="close" title="{=__('닫기')}">{=__('닫기')}</button>
+        </div>
+    </div>
+</form>
+<!-- 장바구니 담기 레이어 -->
+<!--{ ? cartInfo.moveCartPageFl == 'n' && cartInfo.moveCartPageDeviceFl != 'pc' }-->
+<div id="addCartLayer" class="add-cart-layer dn">
+    <div class="wrap">
+        <div>
+            <p><strong>{=__('상품이 장바구니에 담겼습니다.')}</strong><br />{=__('바로 확인하시겠습니까?')}</p>
+        </div>
+        <div class="btn-box">
+            <button class="btn layer-cartaddcancel btn-close"><em>{=__('취소')}</em></button>
+            <button class="btn layer-cartaddconfirm btn-cart"><em>{=__('확인')}</em></button>
+        </div>
+    </div>
+</div>
+<!--{ / }-->
+<!--{ ? cartInfo.wishPageMoveDirectFl == 'n' && cartInfo.moveWishPageDeviceFl != 'pc' }-->
+<!-- 찜리스트 레이어 -->
+<div id="addWishLayer" class="add-wish-layer dn">
+    <div class="wrap">
+        <div>
+            <p><strong>{=__('상품이 찜 리스트에 담겼습니다.')}</strong><br />{=__('바로 확인하시겠습니까?')}</p>
+        </div>
+        <div class="btn-box">
+            <button class="btn layer-wishaddcancel btn-close">{=__('취소')}</button>
+            <button class="btn layer-wishaddconfirm btn-wish">{=__('확인')}</button>
+        </div>
+    </div>
+</div>
+<!--{ / }-->
+<div id="layerDim" class="dn zidx110">&nbsp;</div>
+<script type="text/javascript" src="../js/gd_board_goods.js" charset="utf-8"></script>
+
+{=fbGoodsViewScript}
+{#footer}

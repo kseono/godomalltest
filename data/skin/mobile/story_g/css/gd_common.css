@@ -1,0 +1,183 @@
+@charset "UTF-8";
+
+/*** 미확인 입금자 리스트 (PC 동일 적용) | service/ghost_depositor.php ***/
+.m_ghost_depositor.pc .ly_ct{padding:0;}
+.m_ghost_depositor.pc .close_btn {position:absolute; top:0; right:0; z-index:100; display:none;}
+.ly_pop .m_ghost_depositor.pc .close_btn {display:block;}
+.m_ghost_depositor.pc .lys_close_btn{background:url('../img/icon/icon_x5.png') no-repeat center; background-size:17px; font-size:0; width:43px; height:43px;}
+.m_ghost_depositor.pc #ghost_depositor_cont .top_banner img{width:100%;}
+.m_ghost_depositor.pc .datepicker_area{margin-top:10px; position:relative; z-index:1;}
+.m_ghost_depositor.pc .datepicker_area > div:first-child{padding:0 15px;}
+.m_ghost_depositor.pc .datepicker_area > div:first-child:after{content:''; display:block; clear:both;}
+.m_ghost_depositor.pc .datepicker_area > div:first-child > div{float:right; width:48%;}
+.m_ghost_depositor.pc .datepicker_area > div:first-child > div:first-child{float:left;}
+.m_ghost_depositor.pc .datepicker_area > div:first-child > div strong{font-size:13px; color:#666666; display:block; margin-bottom:13px;}
+.m_ghost_depositor.pc .datepicker_area > div:first-child > div input{width:100%; height:38px; border:1px solid #dbdbdb; color:#333333; text-indent:10px; box-sizing:border-box;}
+.m_ghost_depositor.pc .datepicker_area > div:first-child > div:first-child input{background: url('../img/icon/icon_calendar.png') no-repeat right center; background-size:36px auto;}
+.m_ghost_depositor.pc .datepicker_area > .piker_search_btn{margin:10px 0 0; text-align:center;}
+.m_ghost_depositor.pc .datepicker_area > .piker_search_btn button{font-size:14px; font-weight:bold; color:#fff; width:120px; height:39px; border:none; position:relative; top:0; right:0; display:inline; background:#ab3e55;}
+.m_ghost_depositor.pc .ghost_depositor_table{margin-top:15px;}
+.m_ghost_depositor.pc .ghost_depositor_table table{text-align:center; width:100%; table-layout:fixed;}
+.m_ghost_depositor.pc .ghost_depositor_table table th{padding:8px 7px;}
+.m_ghost_depositor.pc .ghost_depositor_table table th{font-size:12px; font-weight:bold; color:#808080; background:#fafafa; border-bottom:1px solid #f0f0f0; border-top:1px solid #e0e0e0;}
+.m_ghost_depositor.pc .ghost_depositor_table table td{padding:10px 7px; word-break:break-all;}
+.m_ghost_depositor.pc .ghost_depositor_more_btn{margin:10px 0 30px; padding:0 15px;}
+.m_ghost_depositor.pc .ghost_depositor_more_btn .more_btn{font-size:14px; font-weight:bold; color:#666666; background:#f0f0f0; border-color:#e0e0e0; width:100%; padding: 10px 0 10px 0; text-align:center; border:1px solid #9f9f9f;}
+.m_ghost_depositor.pc .ghost_depositor_no_list{background:url('../img/icon/icon_ex.png') center 80px no-repeat; background-size:80px; padding-top:185px;}
+.m_ghost_depositor.pc .ghost_depositor_no_list p{font-size:15px; font-weight:bold; color:#666666; text-align:center;}
+
+/*** 미확인 입금자 리스트 (모바일 별도 적용) | service/ghost_depositor.php ***/
+.m_ghost_depositor.mobile .ly_head{background:#54688f; border-bottom:#54688f 1px solid;}
+.m_ghost_depositor.mobile .ly_head .h_tit{font-size:15px; font-weight:bold; color:#ffffff; line-height:42px;}
+.m_ghost_depositor.mobile .ly_ct{padding:0;}
+.m_ghost_depositor.mobile .close_btn {position:absolute; top:0; right:0; z-index:100; display:none;}
+.ly_pop .m_ghost_depositor.mobile .close_btn {display:block;}
+.m_ghost_depositor.mobile .lys_close_btn{background:url('../img/icon/icon_x6.png') no-repeat center; background-size:17px; font-size:0; width:43px; height:43px;}
+.m_ghost_depositor.mobile .datepicker_area{padding:15px 0 0; background:#54688f; position:relative; z-index:1;}
+.m_ghost_depositor.mobile .datepicker_area > div:first-child{padding:0 21px;}
+.m_ghost_depositor.mobile .datepicker_area > div:first-child > div{margin-top:9px;}
+.m_ghost_depositor.mobile .datepicker_area > div:first-child > div:first-child{margin-top:0;}
+.m_ghost_depositor.mobile .datepicker_area > div:first-child > div input{font-size:14px; color:#333333; width:100%; height:38px; border:1px solid #dbdbdb; color:#333333; text-indent:10px; background-color:#ffffff; border-radius:5px; box-sizing:border-box;}
+.m_ghost_depositor.mobile .datepicker_area > div:first-child > div:first-child input{background-image:url('../img/icon/icon_calendar.png'); background-repeat:no-repeat; background-position:right center; background-size:36px auto;}
+.m_ghost_depositor.mobile .datepicker_area > div:first-child > div input::placeholder{color:#888888;}
+.m_ghost_depositor.mobile .datepicker_area > div:first-child > div:first-child input[type="date"]:not(.has-value):before{content: attr(placeholder); color:#888888;}
+.m_ghost_depositor.mobile .datepicker_area > .piker_search_btn{margin:15px 0 0; text-align:center;}
+.m_ghost_depositor.mobile .datepicker_area > .piker_search_btn button{font-size:15px; font-weight:bold; color:#fff; width:100%; height:45px; border:none; position:relative; top:0; right:0; display:inline; background:#39476b;}
+.m_ghost_depositor.mobile .datepicker_area > .txt_infor{padding:12px 21px; background:#f9f9f9; border-bottom:#f0f0f0 1px solid; text-align:center;}
+.m_ghost_depositor.mobile .ghost_depositor_li li{border-bottom:#f0f0f0 1px solid; padding:19px 30px;}
+.m_ghost_depositor.mobile .ghost_depositor_li li > div{margin-top:7px;}
+.m_ghost_depositor.mobile .ghost_depositor_li li > div:first-child{margin-top:0;}
+.m_ghost_depositor.mobile .ghost_depositor_li li > div:after{content:''; display:block; clear:both;}
+.m_ghost_depositor.mobile .ghost_depositor_li li > div > p{font-size:12px; color:#333333; float:right; width:50%; text-align:right; line-height:1.3em; word-break:break-all;}
+.m_ghost_depositor.mobile .ghost_depositor_li li > div > p:first-child{float:left; width:40%; text-align:left;}
+.m_ghost_depositor.mobile .ghost_depositor_li li > div:first-child > p{font-size:16px; font-weight:bold; color:#54688f;}
+.m_ghost_depositor.mobile .ghost_depositor_li li > div:first-child > p:first-child{color:#333333;}
+.m_ghost_depositor.mobile .ghost_depositor_more_btn{margin:10px 0 30px; padding:0 15px;}
+.m_ghost_depositor.mobile .ghost_depositor_more_btn .more_btn{font-size:14px; font-weight:bold; color:#666666; background:#f0f0f0; border-color:#e0e0e0; width:100%; padding: 10px 0 10px 0; text-align:center; border:1px solid #9f9f9f;}
+.m_ghost_depositor.mobile .ghost_depositor_no_list{background:url('../img/icon/icon_ex.png') center 80px no-repeat; background-size:80px; padding-top:185px;}
+.m_ghost_depositor.mobile .ghost_depositor_no_list p{font-size:15px; font-weight:bold; color:#666666; text-align:center;}
+
+/*** 미확인 입금자 배너 이미지 ***/
+.btn_ghost_depositor{display:block;}
+.btn_ghost_depositor img{width:100%;}
+.btn_ghost_depositor.type_pc{width:192px; margin:0 auto;}
+
+/** 위메프 아이디 로그인 약관 팝업 css **/
+/* popup */
+#popup .containers .top{padding:20px 40px;text-align:center;background:#000}
+#popup .containers .top .title{font-size:16px;color:#fff;}
+#popup .containers .content{padding:0 20px;}
+#popup .containers .content .logo{padding:30px 0 0;text-align:center;}
+#popup .containers .content .tit_1{margin-top:30px;text-align:center;line-height:26px;font-size:16px;color:#222;}
+#popup .containers .content .box_info{margin:30px auto 0;padding:30px 20px 32px;text-align:center;background:#f4f4f4;}
+#popup .containers .content .box_info dl{text-align:left;margin:12px 0;}
+#popup .containers .content .box_info dl:after{display:block;content:'';clear:both;}
+#popup .containers .content .box_info dl dt{float:left;width:65px;font-weight:bold;font-size:16px;color:#222;}
+#popup .containers .content .box_info dl dd{float:left;max-width:70%;font-size:16px;color:#222;}
+#popup .containers .content .box_check{margin-top:22px;}
+#popup .containers .content .box_check > div{margin-bottom:12px;}
+#popup .containers .content .box_check .eType{display:inline-block;width:20px;height:20px;margin-right:10px;vertical-align:middle;}
+#popup .containers .content .box_check .eType + label{padding-left:0;background:none;}
+#popup .containers .content .box_check label{display:inline-block;font-size:15px;color:#222;}
+#popup .containers .content .box_check label .ico{padding-right:14px;background:url(../img/etc/btn_arrow.png) 99% 50% no-repeat;color:#222;}
+#popup .containers .content .box_check span{font-size:15px;color:#888;}
+#popup .containers .content .btn_wrap{text-align:center;margin-top:30px;}
+#popup .containers .content .btn_wrap a{display:inline-block;max-width:206px;height:55px;line-height:55px;padding:0 20px;font-size:16px;background:#fa2828;color:#fff;}
+#popup .containers .bottom{padding:0 20px 45px;margin-top:45px;line-height:23px;font-size:13px;color:#555;}
+#popup .containers .bottom a{color:#2b50f0;}
+
+/* layer popup */
+.layer_popup{padding:20px;left:20px;right:20px;background:#fff;}
+.layer_popup .title{font-weight:bold;font-size:20px;color:#222;}
+.layer_popup .box_text{height:292px;padding:20px;margin-top:10px;border:1px solid #eaeaea;overflow-y:scroll;line-height:19px;font-size:12px;color:#666;}
+.layer_popup .btn_wrap{margin-top:20px;text-align:center;}
+.layer_popup .btn_wrap .btn_close{display:inline-block;width:72px;height:42px;line-height:42px;font-weight:bold;font-size:13px;background:#444;color:#fff;}
+.dim{display:none;width:100%;height:100%;position:fixed;top:0;left:0;background:rgba(0,0,0,0.5);}
+.dim.on{display:block;}
+.ly_ag{display:none;position:absolute;top:0;}
+
+/* checkbox design */
+.box_check input[type="checkbox"]{display:none;}
+.box_check input[type="checkbox"] + label{display:inline-block;line-height:24px;padding-left:36px;margin:-2px 10px 0 0;vertical-align:middle;background:url(../img/etc/ico_check_off.png) 0 0 no-repeat;cursor:pointer;}
+.box_check input[type="checkbox"]:checked + label{background:url(../img/etc/ico_check_on.png) 0 0 no-repeat;}
+
+@media only screen and (max-width:499px){
+    /* popup */
+    #popup .containers .top .title{font-size:14px;}
+    #popup .containers .content .tit_1{line-height:24px;font-size:14px;}
+    #popup .containers .content .box_info dl dt{font-size:14px;}
+    #popup .containers .content .box_info dl dd{font-size:14px;}
+    #popup .containers .content .box_check label{font-size:13px;}
+    #popup .containers .content .box_check span{font-size:13px;}
+    #popup .containers .content .btn_wrap a{height:45px;line-height:45px;padding:0 20px;font-size:14px;}
+    #popup .containers .bottom{padding:0 20px 20px;margin-top:25px;line-height:20px;font-size:12px;}
+
+    /* layer popup */
+    .layer_popup .title{font-weight:bold;font-size:18px;color:#222;}
+    .layer_popup .box_text{height:292px;padding:20px;margin-top:10px;border:1px solid #eaeaea;overflow-y:auto;line-height:19px;font-size:12px;color:#666;}
+    .layer_popup .btn_wrap .btn_close{display:inline-block;width:72px;height:42px;line-height:42px;font-weight:bold;font-size:12px;background:#444;color:#fff;}
+}
+/** 위메프 아이디 로그인 약관 팝업 css **/
+
+/** 조건별 배송비 테이블 **/
+.ly_dev_wrap .ly_btn_wrap{ padding:0 10px 0 10px;}
+.ly_dev_wrap .ly_btn{display:table;margin:30px 0 0 0;border-collapse: collapse;width:100%;}
+.ly_dev_wrap .ly_btn:first-child{margin:10px 0 0 0;}
+.ly_dev_wrap .ly_btn .row{display:table-row;}
+.ly_dev_wrap .ly_btn a{display: table-cell;width:50%;font-size:12px; color:#333; text-align:center;vertical-align:middle;border:1px solid #e7e7e7;box-sizing:border-box;padding:9px 10px 9px 10px;background-color:#f2f2f2;}
+.ly_dev_wrap .ly_btn.three a{width:33.3px;}
+.ly_dev_wrap .ly_btn a.on{position:relative;color:#fff;background-color:#4f4e4d;border:1px solid #4f4e4d;}
+.ly_dev_wrap .tbl2 table{border-left:0; border-right:0;border-top:0;}
+.ly_dev_wrap .tbl2 td{font-weight:normal;color:#222;padding:6px 10px 6px;}
+.ly_dev_wrap .tbl2 tr:first-child td{border-top:0;}
+/** 조건별 배송비 테이블 **/
+
+/* 비회원 주문불가 안내 */
+.cert_warning{width:100%;letter-spacing:-0.5px;padding:20px 30px 40px 30px; -webkit-box-sizing:border-box; box-sizing:border-box;}
+.cert_warning .cert_warning_wrap{ padding:105px 0 0 0;  background:url('../img/intro/blackout.png') no-repeat center top; background-size:95px auto;text-align:center;box-sizing:border-box;text-align:center;margin:15px 0 0 0;}
+.cert_warning .cert_warning_wrap strong{font-size:13px;color:#333;}
+.cert_warning .cert_warning_wrap p{display:block;font-size:12px;color:#333;padding:15px 15px 15px 15px;margin:20px 0 0 0;text-align:center;background-color:#f9f9f9;}
+.cert_warning .cert_warning_wrap p span{display:block;}
+.cert_warning .cert_warning_wrap p a{text-decoration:underline;font-weight:bold;}
+.cert_warning .cert_warning_wrap > a{margin:30px 0 0 0;}
+
+/* 14세 이상 동의 추가 */
+.cert{background-color: #f9f9f9;border-top:1px solid #e8e8e8;text-align:center;overflow: hidden;}
+.cert p{font-size:13px; color:#5e5e5e;margin:15px 0 13px 0;}
+.cert .cert_btn{padding:0 10px 20px 10px;}
+.cert .cert_btn ul{display:table; width:100%;}
+.cert .cert_btn ul li{display:table-cell; padding:0 5px 0 5px;}
+.cert .cert_btn ul li a{font-size:12px;height:32px;line-height:30px;}
+
+/* 체크박스 라디오버튼 스타일 */
+.form_element{display:inline-block; overflow:hidden; position:relative;}
+span.form_element{display:inline-block;}
+.form_element label{position:relative;top:0;left:0;display:inline-block;min-width:20px;min-height:20px;padding:0 0 0 27px;background:url('../img/common/input/check_off.png') no-repeat 1px top;}
+.form_element label:hover{background:url('../img/common/input/check_over.png') no-repeat 1px top;}
+.form_element label.on{background:url('../img/common/input/check_on.png') no-repeat 1px top;}
+.form_element label.choice{background:url('../img/common/input/radio_off.png') no-repeat 1px 50%;}
+.form_element label.choice:hover{background:url('../img/common/input/radio_over.png') no-repeat 1px 50%;}
+.form_element label.choice.on{background:url('../img/common/input/radio_on.png') no-repeat 1px 50%;}
+.form_element label.check_s{min-width:13px;padding:0 0 0 22px;background:url('../img/common/input/check_off.png') no-repeat 1px 2px;}
+.form_element label.check_s:hover{background:url('../img/common/input/check_over.png') no-repeat 1px 2px;}
+.form_element label.check_s.on{background:url('../img/common/input/check_on.png') no-repeat 1px 2px;}
+.form_element label.choice_s{min-width:13px;padding:0 0 0 22px;background:url('../img/common/input/radio_off_small.png') no-repeat 1px 50%;}
+.form_element label.choice_s:hover{background:url('../img/common/input/radio_over_small.png') no-repeat 1px 50%;}
+.form_element label.choice_s.on{background:url('../img/common/input/radio_on_small.png') no-repeat 1px 50%;}
+.form_element label.single{width:21px;height:21px;padding:1px 0 0;background-color:transparent;text-indent:-9999px;}
+.form_element label.single:hover{background-color:transparent;}
+.form_element label span{color:#979797;}
+.form_element label img{vertical-align:middle;}
+.form_element input{position:absolute;top:3px;left:1px;width:0;z-index:-1;visibility:hidden;}
+/** 체크박스용 비활성화 **/
+.form_element label.check_dis { background-image: url('../img/common/input/check_dis.png'); }
+
+.js_btn_report{
+    display: inline-block;
+    padding: 4px 10px;
+    color: #333333;
+    font-size: 13px;
+    border: 1px solid #c7c7c7;
+    background: #ffffff;
+    border-radius: 2px;
+}

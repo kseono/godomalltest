@@ -1,0 +1,134 @@
+{*** 쿠폰적용_상품 | share/coupon_apply_goods.htm ***}
+<script type="text/javascript">
+<!--
+var formID	= '{=formID}';
+
+/**
+ * 쿠폰 처리 페이지
+ */
+var couponUrl	= mobileRootPath+'share/coupon_ps.php';
+
+/**
+ * 해당쿠폰 적용
+ *
+ * @author artherot
+ * @param string modeStr 처리모드
+ * @param integer cartSno 장바구니 번호
+ * @param integer applySno 쿠폰 증정 번호
+ */
+function coupon_process(modeStr, cartSno, applySno)
+{
+	$.post(couponUrl,{'mode' : 'coupon_'+modeStr+'_goods', 'cartSno' : cartSno, 'applySno' : applySno}, function(data){
+		// 처리 결과
+		if (data.result == 'success') {
+			location.reload();
+		} else {
+			alert(data.log);
+		}
+	}, 'json');
+}
+
+/**
+ * 상품 쿠폰 레이어창 닫기
+ *
+ * @author artherot
+ */
+function close_popup()
+{
+	$('#'+formID).html();
+	$('#'+formID).hide();
+}
+//-->
+</script>
+
+<!-- 상단 타이틀 -->
+<div class="titleBar">{=contentTitle}</div>
+<!-- // 상단 타이틀 -->
+
+<div class="couponApplyGoods">
+	<div class="cartList">
+		<table>
+		<thead>
+		<tr>
+			<th class="width_image">{=__('이미지')}</th>
+			<th>{=__('상품정보')}</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>
+				<div class="image">{=couponData['goods']['goodsImage']}</div>
+				<div><img src="../../img/common/btn_apply_cancel.gif"  alt="{=__('적용취소')}" title="{=__('적용취소')}" class="middle hand" onclick="coupon_process('cancel', '{=cartSno}');" /></div>
+			</td>
+			<td>
+				<ul>
+					<li class="goods_name">{=couponData['goods']['goodsNm']}</li>
+				</ul>
+				<div class="cartGoodsInfo">
+					<ul>
+						<li class="price">
+							<span class="titleText">{=__('상품가')} : </span>
+							<strong>{=number_format(couponData['goods']['goodsPrice'])}</strong><span class="unit">{=__('원')}</span>
+						</li>
+						<!--{ ? couponData['goods']['optionPrice'] > 0 }-->
+						<li class="price">
+							<span class="titleText">{=__('옵션가')} : </span>
+							<span class="option">{=number_format(couponData['goods']['optionPrice'])}</span><span class="unit">{=__('원')}</span>
+						</li>
+						<!--{ / }-->
+						<li>
+							<span class="titleText">{=__('수량')} : </span>
+							<strong>{=number_format(couponData['goods']['goodsCnt'])}</strong><span class="unit">{=__('개')}</span>
+						</li>
+						<li class="totalPrice">
+							<span class="titleText">{=__('합계')} : </span>
+							<strong>{=number_format(couponData['goods']['orderPrice'])}</strong><span class="unit">{=__('원')}</span>
+						</li>
+					</ul>
+				</div>
+			</td>
+		</tr>
+		</table>
+	</div>
+
+	<div class="list_form">
+		<table>
+		<thead>
+		<tr>
+			<th>{=__('쿠폰 정보')}</th>
+			<th>{=__('적용')}</th>
+		</tr>
+		</thead>
+		<tbody>
+		<!--{ ? gd_isset(couponData['coupon']) }-->
+			<!--{ @ couponData['coupon'] }-->
+		<tr>
+			<td class="center <!--{ ? .index_ % 2 == 1 }-->even<!--{ / }-->">
+				<div class="couponNm">{=.couponNm}</div>
+				<div class="info">
+					<div>{=__('사용 기간')} : <span class="font-date">{=.expireEdt}</span></div>
+					<div><!--{ ? .benefitMethod == 'dc' }-->{=__('할인 금액')}<!--{ : }-->적립 {=mileage['unit']}<!--{ / }--> : <span class="price">{=number_format(.benefitPrice)}</span></div>
+				</div>
+			</td>
+			<td class="btn_width <!--{ ? .index_ % 2 == 1 }-->even<!--{ / }-->">
+				<!--{ ? .applyPossible == 'y' }-->
+				<img src="../../img/common/btn_apply.gif"  alt="{=__('적용')}" title="{=__('적용')}" class="middle hand" onclick="coupon_process('apply', '{=cartSno}', '{=.sno}');" />
+				<!--{ : .applyPossible == 's' }-->
+				<img src="../../img/common/btn_applying.gif"  alt="{=__('적용중')}" title="{=__('적용중')}" class="middle"  />
+				<!--{ : }-->
+				<img src="../../img/common/btn_apply_no.gif"  alt="{=__('적용불가')}" title="{=__('적용불가')}" class="middle"  />
+				<!--{ / }-->
+			</td>
+		</tr>
+			<!--{ / }-->
+		<!--{ : }-->
+		<tr>
+			<td class="no-data" colspan="6">{=__('적용 가능한 쿠폰이 없습니다.')}</td>
+		</tr>
+		<!--{ / }-->
+		</tbody>
+		</table>
+	</div>
+
+	<div class="btn_close"><img src="../../img/common/btn_close_popup.gif" alt="{=__('닫기')}" class="middle hand" onclick="close_popup();" /></div>
+</div>

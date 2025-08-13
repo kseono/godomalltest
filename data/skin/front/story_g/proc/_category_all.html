@@ -1,0 +1,79 @@
+{*** [위젯] 레이어형 전체 카테고리 | proc/_category_all.html ***}
+
+<div class="all-category category">
+    <a href="#">{=__('전체 카테고리')}</a>
+    <div class="all-category-layer category">
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    <!--
+    $(document).ready(function(){
+
+        $('.header .top-service .all-category.category > a').on('click', function(){
+
+            $.ajax({
+                method: "POST",
+                cache: false,
+                url: "../goods/goods_ps.php",
+                data: "mode=get_all_category",
+                success: function(data) {
+                    var getData = $.parseJSON(data);
+
+                    if(data =='false') {
+                        $(".all-category-layer.category").html('');
+                    } else {
+                        var addHtml = "<div><h2>{=__('전체 카테고리')}</h2>";
+                        $.each(getData, function (categoryKey, categoryVal) {
+                            addHtml += "<ul>";
+                            $.each(categoryVal, function (key, val) {
+
+                                addHtml += '<li><strong><a href="../goods/goods_list.php?cateCd='+val.cateCd+'">'+val.cateNm+'</strong></a>';
+                                if(val.children) {
+                                    addHtml += '<ul>';
+                                    $.each(val.children, function (key1, val1) {
+                                        addHtml += '<li><a href="../goods/goods_list.php?cateCd='+val1.cateCd+'">'+val1.cateNm+'</a>';
+                                        if(val1.children) {
+                                            addHtml += '<ul>';
+                                            $.each(val1.children, function (key2, val2) {
+                                                addHtml += '<li><a href="../goods/goods_list.php?cateCd='+val2.cateCd+'">'+val2.cateNm+'</a></li>';
+                                                if(val2.children) {
+                                                    addHtml += '<ul>';
+                                                    $.each(val2.children, function (key3, val3) {
+                                                        addHtml += '<li><a href="../goods/goods_list.php?cateCd='+val3.cateCd+'">'+val3.cateNm+'</a></li>';
+                                                    });
+                                                    addHtml += '</ul>';
+                                                }
+                                            });
+                                            addHtml += '</ul>';
+                                        }
+                                        addHtml += '</li>';
+
+                                    });
+                                    addHtml += '</ul>';
+                                }
+
+                                addHtml += '</li>';
+                            });
+                            addHtml += "</ul>";
+                        });
+                        addHtml += "<button type=\"button\" title=\"{=__('닫기')}\"><span>{=__('닫기')}</span></button></div>";
+
+                        $(".all-category-layer.category").html(addHtml);
+                        $(".all-category-layer.category").addClass('db');
+                    }
+
+                },
+                error: function (data) {
+                    alert(data.message);
+                }
+            });
+
+        });
+
+    });
+
+    //-->
+</script>

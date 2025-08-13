@@ -1,0 +1,85 @@
+{*** [위젯] 인기상품 | proc/_populate.php ***}
+<!--{ ? data }-->
+<div class="rank_top_wrap">
+    <div class="rank_top_box">
+        <div class="rank_visible_sec">
+            <span class="hot_item_tit"><strong>HOT</strong> ITEMS</span>
+            <div class="rolling_rank_list">
+                <ul>
+                    <!--{ @ data }-->
+                    <li class="<!--{ ? .index_ <= 2 }-->top{=.index_ + 1}<!--{ / }--> <!--{ ? config.template == '01' }--> hide<!--{ / }-->"><em>{=.index_ + 1}</em><a href="../goods/goods_view.php?goodsNo={.goodsNo}">{.goodsNm}</a></li>
+                    <!--{ / }-->
+                </ul>
+            </div>
+            <!-- //rolling_rank_list -->
+            <!--{ ? config.useFl == 'y' }--><span class="popular_more{=config.template} more_btn"><a href="../goods/populate.php">{=__('더보기')}</a></span><!--{ / }-->
+            <!--{ ? config.template == '02' }--><button>{=__('열기')}/{=__('닫기')}</button><!--{ / }-->
+        </div>
+        <div class="layer_rank_list"<!--{ ? config.template == '01' }--> style="display:block;"<!--{ / }-->>
+        <ul>
+            <!--{ @ data }-->
+            <li<!--{ ? .index_ <= 2 }--> class="top{=.index_ + 1}"<!--{ / }-->><em>{=.index_ + 1}</em><a href="../goods/goods_view.php?goodsNo={.goodsNo}">{.goodsNm}</a></li>
+            <!--{ / }-->
+        </ul>
+    </div>
+    <!-- //layer_rank_list -->
+</div>
+<!-- //rank_top_box -->
+</div>
+<!-- //rank_top_wrap -->
+
+<style type="text/css">
+    .main-link-wrap {border-bottom:1px solid #666;}
+    .rank_top_wrap {overflow:hidden; position:relative;}
+    .rank_top_box .rank_visible_sec {overflow:hidden; height:40px; width:100%; padding:0 10px; border-bottom:1px solid #e0e0e0;}
+    .rank_top_box .rank_visible_sec .hot_item_tit {display:inline-block; float:left; width:90px; padding:12px 0 0 0; color:#383838; font-size:14px; font-weight:bold;}
+    .rank_top_box .rank_visible_sec .hot_item_tit strong {color:#fa2828;}
+    .rank_top_box .rank_visible_sec .rolling_rank_list  {display:inline-block;float:left; width:70%;}
+    .rank_top_box .rank_visible_sec .rolling_rank_list ul {display:inline-block;}
+    .rank_top_box .rank_visible_sec .rolling_rank_list li { position:relative; height:30px; padding:10px 0 0 25px; line-height:1;}
+    .rank_top_box .rank_visible_sec .rolling_rank_list li em {position:absolute; top:11px; left:0; margin:0 8px 0 0; padding:5px 0 3px 0; width:18px; background:#bababa; border-radius:2px; font-size: 11px; color:#fff; text-align:center; line-height:1;}
+    .rank_top_box .rank_visible_sec .rolling_rank_list .top1 em,
+    .rank_top_box .rank_visible_sec .rolling_rank_list .top2 em,
+    .rank_top_box .rank_visible_sec .rolling_rank_list .top3 em {background:#999999;}
+    .rank_top_box .rank_visible_sec .rolling_rank_list li a {display:inline-block; padding:14px 100px 1px 25px; text-overflow: ellipsis; -o-text-overflow: ellipsis;overflow: hidden; white-space: nowrap; word-wrap: normal !important;  color:#333; font-size:14px;}
+    .rank_top_box .rank_visible_sec .more_btn {position:absolute; top:0; right:0; height:27px; background:#fff;}
+    .rank_top_box .rank_visible_sec .popular_more01 {padding:12px 5px 0 15px;}
+    .rank_top_box .rank_visible_sec .popular_more02 {padding:12px 55px 0 15px;}
+    .rank_top_box .rank_visible_sec .more_btn a {padding:6px 9px 5px 9px; border:1px solid #cccccc; border-radius:4px; font-size:11px; color:#1c1c1c; background:#fff;}
+
+    .rank_top_box .layer_rank_list {display:none; padding:15px 0 0 0; border-bottom:1px solid #666;}
+    .rank_top_box .on {display:block;}
+    .rank_top_box button {position:absolute; top:0; right:0; display:inline-block; width:42px; height:40px; background:#fafafa url('../img/icon/ico_open.png') no-repeat center; background-size:13px 8px; border-left:1px solid #e0e0e0; font-size:0; text-indent:-9999px; text-align:center;}
+    .rank_top_box button.on {position:absolute; top:0; right:0; display:inline-block; width:42px; height:40px; background:#fafafa url('../img/icon/ico_close.png') no-repeat center; background-size:13px 8px; border-left:1px solid #e0e0e0; font-size:0; text-indent:-9999px; text-align:center;}
+    .rank_top_box .layer_rank_list ul {padding:0 0 6px 0;}
+    .rank_top_box .layer_rank_list li {padding:0 0 12px 0; text-overflow: ellipsis; white-space: nowrap; word-wrap: normal; overflow: hidden;}
+    .rank_top_box .layer_rank_list li em {display:inline-block; margin:0 8px 0 15px; width:18px; height:18px; line-height: 18px; background:#bababa; border-radius:2px; font-size: 11px; color:#fff; text-align:center;}
+    .rank_top_box .layer_rank_list .top1 em,
+    .rank_top_box .layer_rank_list .top2 em,
+    .rank_top_box .layer_rank_list .top3 em {background:#999999;}
+    .rank_top_box .layer_rank_list li:first-child a {color:#333;}
+    .rank_top_box .layer_rank_list li a {color:#666; font-size:14px;}
+    .rolling_rank_list li.hide {display:none;}
+</style>
+
+<script src="../js/jquery/vticker/jquery.vticker.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $('.rank_visible_sec button').click(function(){
+        if($('.layer_rank_list').hasClass('on')){
+            $('.layer_rank_list').removeClass('on');
+            $('.rank_top_box button').removeClass('on');
+            $('.rolling_rank_list li').removeClass('hide');
+            $('.main-link-wrap').css('border-bottom','1px solid #c3c3c3');
+        }else{
+            $('.layer_rank_list').addClass('on');
+            $('.rank_top_box button').addClass('on');
+            $('.rolling_rank_list li').addClass('hide');
+            $('.main-link-wrap').css('border-bottom','1px solid #666');
+        }
+    });
+    $(function() {
+        var $scroller = $('.rolling_rank_list');
+        $scroller.vTicker();
+    });
+</script>
+<!--{ / }-->

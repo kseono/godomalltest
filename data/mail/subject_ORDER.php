@@ -1,0 +1,1 @@
+[{rc_mallNm}] {rc_orderNm}님의 주문내역을 알려드립니다.

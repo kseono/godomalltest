@@ -1,0 +1,101 @@
+{*** 쿠폰적용_주문 | share/coupon_apply_order.htm ***}
+<script type="text/javascript">
+<!--
+var formID	= '{=formID}';
+
+/**
+ * 해당쿠폰 적용
+ *
+ * @author artherot
+ * @param string modeStr 처리모드
+ * @param integer applySno 쿠폰 증정 번호
+ * @param integer useCouponPrice 쿠폰 할인 금액
+ * @param string useCouponUnit 할인인지 적립인지
+ * @param string payMethodFl 결제방법 체크
+ */
+function coupon_process(modeStr, applySno, useCouponPrice, useCouponUnit, payMethodFl)
+{
+	if (modeStr == 'apply') {
+		$('input[name=\'useCouponGive\']').val(applySno);
+		$('#useCouponPrice').html(useCouponPrice.toString().number_format());
+		$('#useCouponUnit').html(useCouponUnit);
+
+		// 쿠폰에 따른 결제방법 체크
+		if (payMethodFl == 'all') {
+			$('input[name=\'settleKind\']').attr('disabled','');
+		} else {
+			$('input[value=\'gb\']').attr('checked','checked');
+			$('input[name=\'settleKind\']:not(:checked)').attr('disabled','disabled');
+			receipt_selector();
+		}
+	} else if (modeStr == 'cancel') {
+		$('input[name=\'useCouponGive\']').val('');
+		$('#useCouponPrice').html('');
+		$('#useCouponUnit').html('');
+		$('input[name=\'settleKind\']').attr('disabled','');
+		receipt_selector();
+	}
+
+	close_popup();
+}
+
+/**
+ * 주문 쿠폰 레이어창 닫기
+ *
+ * @author artherot
+ */
+function close_popup()
+{
+	$('#'+formID).html();
+	$('#'+formID).hide();
+}
+//-->
+</script>
+
+<!-- 상단 타이틀 -->
+<div class="titleBar">{=contentTitle}</div>
+<!-- // 상단 타이틀 -->
+
+<div class="couponApplyOrder">
+	<div class="list_form">
+		<table>
+		<thead>
+		<tr>
+			<th>{=__('쿠폰정보')}</th>
+			<th>{=__('적용')}</th>
+		</tr>
+		</thead>
+		<tbody>
+		<!--{ ? gd_isset(couponData) }-->
+			<!--{ @ couponData }-->
+		<tr>
+			<td class="<!--{ ? .index_ % 2 == 1 }-->even<!--{ / }-->">
+				<div class="couponNm">{=.couponNm}</div>
+				<div class="info">
+					<div>{=__('사용 기간')} : <span class="font-date">{=.expireEdt}</span></div>
+					<div><!--{ ? .benefitMethod == 'dc' }-->{=__('할인 금액')}<!--{ : }-->{=__('적립')} {=mileage['unit']}<!--{ / }--> : <span class="price">{=number_format(.benefitPrice)}</span></div>
+				</div>
+			</td>
+			<td class="btn_width <!--{ ? .index_ % 2 == 1 }-->even<!--{ / }-->">
+				<!--{ ? .applyPossible == 'y' }-->
+				<div><img src="../../img/common/btn_apply.gif"  alt="{=__('적용')}" title="{=__('적용')}" class="middle hand" onclick="coupon_process(\"apply\", \"{=.sno}\", \"{=.benefitPrice}\", \"<!--{ ? .benefitMethod == 'dc' }-->{=__('원 할인')}<!--{ : }-->{=mileage['unit']} {=__('적립')}<!--{ / }-->\", \"{=.payMethodFl}\");" /></div>
+				<!--{ : }-->
+				<div><img src="../../img/common/btn_apply_no.gif"  alt="{=__('적용불가')}" title="{=__('적용불가')}" class="middle"  /></div>
+				<!--{ / }-->
+				<!--{ ? .applyPossible == 'y' }-->
+				<div><img src="../../img/common/btn_apply_cancel.gif"  alt="{=__('적용취소')}" title="{=__('적용취소')}" class="middle hand" onclick="coupon_process('cancel');" /></div>
+				<!--{ / }-->
+			</td>
+		</tr>
+			<!--{ / }-->
+		<!--{ : }-->
+		<tr>
+			<td class="no-data" colspan="2">{=__('적용 가능한 쿠폰이 없습니다.')}</td>
+		</tr>
+		<!--{ / }-->
+		</tbody>
+		</table>
+	</div>
+
+	<div class="btn_close"><img src="../../img/common/btn_close_popup.gif" alt="{=__('닫기')}" class="middle hand" onclick="close_popup();" /></div>
+</div>

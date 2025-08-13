@@ -1,0 +1,38 @@
+{*** 플러스리뷰 상품기준 리뷰 게시판 | board/plus_review_goods.php ***}
+<div class="plusreview-goods-review" style="display:none">
+    <div class="content-container plus-review-goods-list">
+        <!--{@data.list}-->
+        <div class="item" data-goodsno="{.goodsNo}">
+            <div>
+                <img src="{=.goodsImageSrc}" class="js-pr-btn-link-goods">
+            </div>
+            <div class="goodsname js-pr-btn-link-goods">{=.goodsNm}</div>
+            <div class="contents">
+                <ul class="list">
+                    <!--{ @ .article}-->
+                    <li><span <!--{ ? ..isNew == 'y' }-->class="new"<!--{/}-->>{..contents}</span></li>
+                    <!--{/}-->
+                </ul>
+            </div>
+            <div class="bottom"><span class="content-title">{=__('평가')} </span><span class="content-content">{.avgGoodsPt}</span><span
+                    class="content-title">{=__('리뷰')} </span><span
+                    class="content-container">{.countArticle}</span></div>
+        </div>
+        <!--{/}-->
+        <div class="jscroll-next-parent" style="display: none;">
+            <a href="plus_review_goods.php?page={=req.page+1}&type=scroll">next page</a>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(new function () {
+        var totalCnt = {=data.cnt.search};
+        if(totalCnt <= $('.plus-review-goods-list .item').length) {
+            $('.jscroll-next-parent').remove();
+        }
+
+        var pureDomain = window.location.href.split('?')[0];
+        window.history.pushState("object or string", "Title", pureDomain+'?page={req.page}&pageMode=auto');
+    });
+</script>
+

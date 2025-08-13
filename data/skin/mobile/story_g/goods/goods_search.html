@@ -1,0 +1,148 @@
+{*** 상품 검색 | goods/goods_search.php ***}
+{#header}
+<p class="srch_tit">
+    <strong class="elp2">{=keyword} </strong>
+    <span class="lst">{=__('상품 수')} <em class="js-search-total-cnt"> {=number_format(page->recode['total'])}</em></span>
+    <!--{ ? paycosearchUse }-->
+    <span class="paycosearch-banner"><img src="../img/etc/payco_search.png" alt="Powered by PAYCO Search" /></span>
+    <!--{ / }-->
+</p>
+<section id="goodslist" class="content">
+
+    <div class="goods-sort-area">
+        <div class="goods-sort">
+            <div class="inp_sel">
+                <select name="goods_sort" onchange="get_list(1,true);">
+                    <option value="">{=__('상품정렬')}</option>
+                    <option value="date">{=__('등록순')}</option>
+                    <option value="price_asc">{=__('낮은가격순')}</option>
+                    <option value="price_dsc">{=__('높은가격순')}</option>
+                </select>
+            </div>
+        </div>
+        <div class="goods-view-type">
+            <input type="hidden" name="displayType" value="{themeInfo.displayType}" >
+            <!-- 리스트형식 -->
+            <div class="view-list   <!--{ ? themeInfo.displayType =='02' }-->view-on<!--{ / }-->" data-key="02" ><span class="sprite-icon icon-list"></span></div>
+
+            <!-- 하나씩 크게 -->
+            <div class="view-gallery1 <!--{ ? themeInfo.displayType =='09' }-->view-on<!--{ / }-->" data-key="09"><span class="sprite-icon icon-one"></span></div>
+
+            <!-- 두개씩 -->
+            <div class="view-gallery2 <!--{ ? themeInfo.displayType =='01' }-->view-on<!--{ / }-->" data-key="01"><span class="sprite-icon icon-grid1"></span></div>
+            <!-- <div class="view-gallery" onClick="javascript:setViewType('gallery');"><span class="sprite-icon icon-grid2"></span></div> -->
+        </div>
+    </div>
+    <div class="goods-area">
+
+        <div class="goods-content">
+            {=includeFile('goods/list/list_' + themeInfo.displayType + '.html')}
+        </div>
+
+        <div class="more-btn">
+            <button type="button" class="more-btn btn-gray btn-w btn" data-page="2" >{=__('더보기')}</button>
+        </div>
+        <div class="loading-img"></div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    <!--
+    var key{gGlobal.locale} = [];
+    key{gGlobal.locale}['{keyword}'] = {
+        html: 'html{gGlobal.locale}{keyword}',
+        page: 'page{gGlobal.locale}{keyword}',
+        viewType: 'viewType{gGlobal.locale}{keyword}',
+        sortType: 'sortType{gGlobal.locale}{keyword}',
+        endFlag: 'endflag{gGlobal.locale}{keyword}',
+    };
+
+    var gdStorage = loadSession(key{gGlobal.locale}['{keyword}'].html);
+    var gdPage = loadSession(key{gGlobal.locale}['{keyword}'].page);
+    var gdViewType = loadSession(key{gGlobal.locale}['{keyword}'].viewType);
+    var gdSortType = loadSession(key{gGlobal.locale}['{keyword}'].sortType);
+    var endFlag = loadSession(key{gGlobal.locale}['{keyword}'].endFlag);
+
+    $(document).ready(function(){
+        if (gdStorage) {
+            $(".goods-content").html(gdStorage);
+            $('.more-btn button').data('page',parseInt(gdPage)+1);
+            $('.goods-view-type>div[data-key!="' + gdViewType + '"]').removeClass('view-on');
+            $('.goods-view-type>div[data-key="' + gdViewType + '"]').addClass('view-on');
+            $('input[name="displayType"]').val(gdViewType);
+            $('select[name="goods_sort"]>option[value="' + gdSortType + '"]').prop('selected', true);
+        }
+
+        $('.more-btn button').on('click', function(e){
+            get_list($(this).data('page'), false);
+        });
+
+        $('.goods-view-type div').on('click', function(e){
+            $(".goods-view-type div").removeClass('view-on');
+            $('input[name="displayType"]').val($(this).data('key'));
+            $(this).addClass('view-on');
+            get_list('1',true);
+        });
+
+    });
+
+    function set_display_type() {
+
+    }
+
+    function before_more_btn() {
+        $('.goods-list-item').on('click', function(){return false;})
+        $('.more-btn button').hide();
+        $('.loading-img').append('<img src="../img/icon/icon_loading.gif">');
+    }
+
+    function after_more_btn() {
+        $('.goods-list-item').off('click');
+        $('.more-btn button').show();
+        $('.loading-img img').remove();
+    }
+
+    var endflag = false;
+    function get_list(page, reloadFl){
+        var displayType = $('input[name="displayType"]').val();
+        var sort =  $('select[name="goods_sort"]').val();
+
+        $.ajax({
+            method          : 'GET',
+            url             : './goods_search.php',
+            data            : {'mode' : 'get_search_list', 'keyword' : '{keyword}', 'displayType' : displayType, 'page' : page, 'sort' : sort},
+            beforeSend     : function (){
+                before_more_btn();
+            },
+            success         : function (data) {
+                after_more_btn();
+
+                if($(data).filter("div.no_bx").length) {
+                    if(page =='1' && endflag == false) {
+                        $(".goods-content").append(data);
+                        saveSession(key{gGlobal.locale}['{keyword}'].endFlag, true);
+                        saveSession(key{gGlobal.locale}['{keyword}'].html, $('.goods-content').html());
+                        endflag = true;
+                    } else {
+                        alert("{=__('더이상 상품이 없습니다.')}");
+                    }
+
+                } else {
+                    if(reloadFl === true) $(".goods-content").html(data);
+                    else  $(".goods-content").append(data);
+
+                    $('.more-btn button').data('page',parseInt(page)+1);
+                    saveSession(key{gGlobal.locale}['{keyword}'].html, $('.goods-content').html());
+                    saveSession(key{gGlobal.locale}['{keyword}'].page, parseInt(page));
+                }
+            }
+        });
+        saveSession(key{gGlobal.locale}['{keyword}'].sortType, sort);
+        saveSession(key{gGlobal.locale}['{keyword}'].viewType, displayType);
+    }
+
+
+    //-->
+</script>
+{=fbSearchScript}
+{#footer}

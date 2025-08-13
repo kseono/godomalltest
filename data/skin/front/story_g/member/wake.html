@@ -1,0 +1,217 @@
+{*** 휴면회원 해제 선택 | member/wake.php ***}
+{ # header }
+<div class="member dormancy"><h2>{=__('휴면 회원')}</h2>
+    <div class="box">
+        <p class="msg">{=__('장기 미 접속으로 인해
+            %s휴면회원%s
+            전환 상태입니다.', '<span>', '</span>')}
+        </p>
+        <ul class="date">
+            <li>{=__('최초가입일')} :
+                <strong>{memberInfo['entryDt']}</strong>
+            </li>
+            <li>{=__('휴면처리일')} :
+                <strong class="dormancy-start">{memberInfo['sleepDt']}</strong>
+            </li>
+        </ul>
+        <p class="guide">{=__('정보통신망법 이용촉진 및 정보보호 등에 관한 법률에 의거하여, 장기간 접속하지 않으신 <br>회원님들의 개인정보가 휴면처리 상태입니다.')} <br>
+            <!-- {? (sleepPolicy['wakeType'] == 'info' || sleepPolicy['wakeType'] == 'auth') && result == '' // 회원정보에 등록된 정보 입력 후 해제} -->
+            <strong>{=__('휴면 처리 해제를 원하실 경우 아래 방법에 따라 휴면상태를 해제하시기 바랍니다.')}</strong>
+            <!-- {: result == ''} -->
+            <strong>{=__('휴면 처리 해제를 원하실 경우 아래 버튼을 클릭해 해제하시기 바랍니다.')}</strong>
+            <!-- {/} -->
+        </p>
+        <!-- {? result == 'ERROR' // 명의인증 실패(가입 시 명의인증을 안한경우에도 해당)} -->
+        <p class="msg no-info">
+            <span>{=__('본인확인을 위한 회원정보가 존재하지 않습니다.')}</span>
+            <br>{=__('관리자에게 문의하시기 바랍니다.')}
+        </p>
+        <!-- {: result == 'AUTH' // 명의인증 성공} -->
+        <p class="msg no-info">
+            <span>{=__('본인인증이 정상적으로 완료되었습니다.')}</span>
+        </p>
+        <!-- {/} -->
+        <!-- {? sleepPolicy['wakeType'] == 'info' && result == '' // 회원정보에 등록된 정보 입력 후 해제} -->
+        <div class="cite-input">
+            <p class="tip">{=__('본인 확인을 위해 가입시 등록하신 정보를 입력해 주시기 바랍니다.')}</p>
+            <select class="tune" style="width: 105px;" id="selectWakeInfo" name="selectWakeInfo">
+                <!-- {? sleepPolicy['checkPhone'] == 'y'} -->
+                <option value="cellPhone">{=__('휴대폰')}</option><!-- {/} -->
+                <!-- {? sleepPolicy['checkEmail'] == 'y'} -->
+                <option value="email">{=__('이메일')}</option><!-- {/} -->
+            </select>
+            <!-- {? sleepPolicy['checkPhone'] == 'y' // 회원정보에 등록된 휴대폰 정보 입력} -->
+            <strong class="wake_info_phone">{maskCellphone}</strong>
+            <div class="wake_info_phone">
+                <span class="txt-field" style="width:276px;">
+                    <input type="text" id="cellPhone" name="cellPhone" class="text" placeholder="- {=__('-없이 입력하세요')}">
+                </span>
+            </div>
+            <!-- {/ // checkPhone end} -->
+            <!-- {? sleepPolicy['checkEmail'] == 'y' // 회원정보에 등록된 이메일 정보 입력} -->
+            <strong class="wake_info_email">{maskEmail}</strong>
+            <div class="wake_info_email">
+                <span class="txt-field" style="width:188px;">
+                    <input type="text" id="email" name="email" class="text" placeholder="{=__('이메일 주소를 입력하세요.')}"/>
+                </span>
+                <select class="tune" style="width:105px;" name="emailDomain" id="emailDomain">
+                    <!-- {@ mailDomain} -->
+                    <option value="{.key_}">{.value_}</option>
+                    <!-- {/} -->
+                </select>
+            </div>
+            <!-- {/ // checkEmail end} -->
+        </div>
+        <!-- {: sleepPolicy['wakeType'] == 'auth' && result == '' // else wakeType auth} -->
+        <div class="certify">
+            <form name="formAuth" action="" method="post">
+                <fieldset>
+                    <legend>{=__('본인 인증방법 선택폼')}</legend>
+                    <p>{=__('본인 인증방법을 선택해 주세요.')}</p>
+                    <!--{? sleepPolicy['authEmail'] == 'y'}-->
+                    <div class="form-element">
+                        <input type="radio" class="radio" id="authEmail" name="authType">
+                        <label for="authEmail" class="choice">{=__('이메일 인증')}</label>
+                        <strong>({maskEmail})</strong>
+                    </div>
+                    <!--{/}-->
+                    <!--{? sleepPolicy['authSms'] == 'y'}-->
+                    <div class="form-element">
+                        <input type="radio" class="radio" id="authSms" name="authType">
+                        <label for="authSms" class="choice">SMS {=__('인증')}</label>
+                        <span>({maskCellphone})</span>
+                    </div>
+                    <!--{/}-->
+                    <!--{? sleepPolicy['authIpin'] == 'y'}-->
+                    <div class="form-element">
+                        <input type="radio" class="radio" id="authIpin" name="authType">
+                        <label for="authIpin" class="choice">{=__('아이핀 본인인증')}</label>
+                    </div>
+                    <!--{/}-->
+                    <!--{? sleepPolicy['authRealName'] == 'y'}-->
+                    <div class="form-element">
+                        <input type="radio" class="radio" id="authCellPhone" name="authType">
+                        <label for="authCellPhone" class="choice">{=__('휴대폰 본인인증')}</label>
+                    </div>
+                    <!--{/}-->
+                </fieldset>
+            </form>
+        </div>
+        <!-- {/ // end wakeType} -->
+
+        <!-- {? sleepPolicy['wakeType'] == 'auth' && result == ''} -->
+        <div class="btn">
+            <button class="skinbtn point2 ja-next" type="button" id="btnNextStep"><em>{=__('다음')}</em></button>
+        </div>
+        <!-- {: result == 'ERROR'} -->
+        <div class="btn">
+            <button class="skinbtn point2 ja-next" type="button" id="btnPrevStep"><em>{=__('확인')}</em></button>
+        </div>
+        <!-- {: result == 'AUTH'} -->
+        <div class="btn">
+            <button class="skinbtn point1 ja-prev" type="button" id="btnPrevStep"><em>{=__('이전')}</em></button>
+            <button class="skinbtn point2 ja-next" type="button" id="btnNextStep"><em>{=__('휴면 해제하기')}</em></button>
+        </div>
+        <!-- {:} -->
+        <div class="btn">
+            <button class="skinbtn point1 ja-prev" type="button" id="btnPrevStep"><em>{=__('취소')}</em></button>
+            <button class="skinbtn point2 ja-next" type="button" id="btnNextStep"><em>{=__('휴면 해제하기')}</em></button>
+        </div>
+        <!-- {/} -->
+    </div>
+</div>
+
+<script type="text/javascript">
+    (function ($, window, document, undefined) {
+        var $selectWakeInfo, $wakeInfoEmail, $wakeInfoPhone, wakeType, checkPhone, checkEmail;
+        wakeType = "{sleepPolicy['wakeType']}";
+        checkPhone = "{sleepPolicy['checkPhone']}";
+        checkEmail = "{sleepPolicy['checkEmail']}";
+
+        function change_wake_info() {
+            $wakeInfoPhone.toggleClass('dn');
+            $wakeInfoEmail.toggleClass('dn');
+        }
+
+        function init_info() {
+            if (wakeType == 'info') {
+                $wakeInfoEmail = $('.wake_info_email');
+                $wakeInfoPhone = $('.wake_info_phone');
+                $selectWakeInfo = $('#selectWakeInfo');
+
+                $selectWakeInfo.change(change_wake_info);
+
+                if (checkPhone == 'y' && checkEmail == 'y') {
+                    $wakeInfoEmail.addClass('dn');
+                } else {
+                    if (checkPhone != 'y') $wakeInfoPhone.addClass('dn');
+                    if (checkEmail != 'y') $wakeInfoEmail.addClass('dn');
+                }
+            }
+        }
+
+        function wake() {
+            var authType;
+            var url = '../member/wake_ps.php';
+            var params = {mode: wakeType};
+
+            if (wakeType == 'info') {
+                params.selectWakeInfo = $selectWakeInfo.find('option:selected').val();
+                if (params.selectWakeInfo == 'email') {
+                    params.wakeCheckInfo = $('#email').val();
+                } else {
+                    params.wakeCheckInfo = $('#cellPhone').val();
+                }
+                if (params.wakeCheckInfo.length < 1) {
+                    alert("{=__('회원 가입 시 입력하신 정보를 입력해주시기 바랍니다.')}");
+                    return;
+                }
+            } else if (wakeType == 'auth') {
+                authType = $(':radio[name="authType"]:checked').attr('id');
+                switch (authType) {
+                    case 'authSms':
+                    case 'authEmail':
+                        params.mode = authType;
+                        break;
+                    case 'authIpin':
+                        var popupWindow = window.open("/member/ipin/ipin_main.php?callType=wakeMember", "popupCertKey", "top=100, left=200, status=0, width=417, height=490");
+                        break;
+                    case 'authCellPhone':
+                        var protocol = location.protocol;
+                        var callbackUrl = "{=domainUrl}/member/authcellphone/dreamsecurity_result.php";
+                        window.open(protocol + "//hpauthdream.godo.co.kr/module/Mobile_hpauthDream_Main.php?callType=wakeMember&shopUrl=" + callbackUrl + "&cpid={=authDataCpCode}&i=1", "auth_popup", "top=30, left=50, status=0, width=425, height=650");
+                        break;
+                }
+            }
+            console.log(params, authType);
+            if (authType != 'authIpin' && authType != 'authCellPhone') {
+                var $ajax = $.ajax(url, {
+                    method: "POST",
+                    data: params
+                });
+                $ajax.done(function (data, textStatus, jqXHR) {
+                    console.log('gd_member ajax', data, textStatus, jqXHR);
+                    var code = data.code;
+                    var message = data.message;
+                    if (_.isUndefined(code) && _.isUndefined(message)) {
+                        window.location.href = data;
+                    } else {
+                        alert(message);
+                    }
+                });
+            }
+        }
+
+        function cancel() {
+            window.location.href = '../member/login.php';
+        }
+
+        $(document).ready(function () {
+            init_info();
+            select_email_domain('email');
+            $('#btnNextStep').click(wake);
+            $('#btnPrevStep').click(cancel);
+        });
+    })($, window, document);
+</script>
+{ # footer }

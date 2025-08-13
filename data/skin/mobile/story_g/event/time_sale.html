@@ -1,0 +1,162 @@
+{*** 타임세일 | event/time_sale.php ***}
+{ # header }
+<div class="time-sale">
+    <div class="tit-term">
+        <h2>{timeSaleInfo.timeSaleTitle}</h2>
+        <strong>{=__('기간')} : {timeSaleInfo.startDt} ~ {timeSaleInfo.endDt}</strong>
+    </div>
+    <!--{? strlen(str_replace('<p>&nbsp;</p>', '', timeSaleInfo.mobileDescription)) != 0}-->
+    <div class="ctt">
+        {=timeSaleInfo.mobileDescription}
+    </div>
+    <!--{ / }-->
+    <div class="event">
+        <div class="count" id="displayTimeSale">
+            <strong>{=__('남은시간')}</strong>
+            <div id="timSaleDate" class="timesaledate">
+                <span id="timeViewDay"></span>
+                <span class="time-day-view-tail"></span>
+                <span id="timeViewTime">
+                    <strong class="time"></strong>
+                    <strong class="time"></strong>
+                    <span>:</span>
+                    <strong class="time"></strong>
+                    <strong class="time"></strong>
+                    <span>:</span>
+                    <strong class="time"></strong>
+                    <strong class="time"></strong>
+                </span>
+            </div>
+        </div>
+
+    </div>
+    <div class="goods-sort-area">
+        <div class="goods-sort">
+            <div class="inp_sel">
+                <select name="goods_sort" onchange="get_list(1,true);">
+                    <option value="">{=__('상품정렬')}</option>
+                    <option value="date">{=__('등록순')}</option>
+                    <option value="price_asc">{=__('낮은가격순')}</option>
+                    <option value="price_dsc">{=__('높은가격순')}</option>
+                </select>
+            </div>
+        </div>
+        <div class="goods-view-type">
+            <input type="hidden" name="displayType" value="{themeInfo.displayType}" >
+            <!-- 리스트형식 -->
+            <div class="view-list   <!--{ ? themeInfo.displayType =='02' }-->view-on<!--{ / }-->" data-key="02" ><span class="sprite-icon icon-list"></span></div>
+
+            <!-- 하나씩 크게 -->
+            <div class="view-gallery1 <!--{ ? themeInfo.displayType =='09' }-->view-on<!--{ / }-->" data-key="09"><span class="sprite-icon icon-one"></span></div>
+
+            <!-- 두개씩 -->
+            <div class="view-gallery2 <!--{ ? themeInfo.displayType =='01' }-->view-on<!--{ / }-->" data-key="01"><span class="sprite-icon icon-grid1"></span></div>
+            <!-- <div class="view-gallery" onClick="javascript:setViewType('gallery');"><span class="sprite-icon icon-grid2"></span></div> -->
+        </div>
+    </div>
+    <div class="goods-area">
+        <div class="goods-content">
+
+        </div>
+    </div>
+</div>
+{ # footer }
+
+
+
+<script type="text/javascript">
+    <!--
+    $(document).ready(function(){
+
+        $("#displayTimeSale").hide();
+        gd_dailyMissionTimer('{=timeSaleDuration}');
+
+        get_list();
+
+        $('.goods-view-type div').on('click', function(e){
+            $(".goods-view-type div").removeClass('view-on');
+            $('input[name="displayType"]').val($(this).data('key'));
+            $(this).addClass('view-on');
+            get_list();
+        });
+
+        <!--{ ? themeInfo.displayType == '11' }-->
+        $('body').on('click', '.js-option-layer', function(e){
+            var params = {
+                type : $(this).data('type'),
+                sno: $(this).data('sno'),
+                goodsNo: $(this).data('goodsno')
+            };
+
+            $('#popup-option').modal({
+                remote: '../goods/layer_option.php',
+                cache: false,
+                params: params,
+                type : 'POST',
+                show: true
+            });
+        });
+        <!--{ / }-->
+    });
+
+    function get_list() {
+        var displayType = $('input[name="displayType"]').val();
+        var sort = $('select[name="goods_sort"]').val();
+
+        $.post('./time_sale_ps.php', {'mode' : 'get_time_sale_list', 'displayType' : displayType, 'sno' : '{timeSaleSno}','sort' : sort}, function (data) {
+            $(".goods-content").html(data);
+        });
+    }
+
+    /**
+     * 시간간격 카운트
+     * @returns {String}
+     */
+    function gd_dailyMissionTimer(duration) {
+
+        var timer = duration;
+        var days,hours, minutes, seconds;
+
+        var interval = setInterval(function(){
+            days	= parseInt(timer / 86400, 10);
+            hours	= parseInt(((timer % 86400 ) / 3600), 10);
+            minutes = parseInt(((timer % 3600 ) / 60), 10);
+            seconds = parseInt(timer % 60, 10);
+
+            if(days <= 0) {
+                $('.time-day-view').hide();
+            } else {
+
+                $('#timeViewDay').html("");
+
+                days 	= days < 10 ? "0" + days : days;
+                for(i = 0; i < days.toString().length; i++) {
+                    $('#timeViewDay').append("<strong class='time-day-view'>"+days.toString().substr(i,1)+"</strong>");
+                }
+                $('.time-day-view-tail').text("{=__('일')}");
+            }
+
+            hours 	= hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            $('#timeViewTime strong').eq(0).text(hours.toString().substr(0,1));
+            $('#timeViewTime strong').eq(1).text(hours.toString().substr(1,1));
+
+            $('#timeViewTime strong').eq(2).text(minutes.toString().substr(0,1));
+            $('#timeViewTime strong').eq(3).text(minutes.toString().substr(1,1));
+
+            $('#timeViewTime strong').eq(4).text(seconds.toString().substr(0,1));
+            $('#timeViewTime strong').eq(5).text(seconds.toString().substr(1,1));
+
+            $("#displayTimeSale").show();
+
+            if (--timer < 0) {
+                timer = 0;
+                clearInterval(interval);
+            }
+        }, 1000);
+    }
+
+    //-->
+</script>

@@ -1,0 +1,28 @@
+<script src="js/moment.min.js"></script>
+<script src="js/snowfall.js"></script>
+<script src="js/snowfallWrapper.js"></script>
+<script src="js/popcorn.js"></script>
+<script src="js/popcornWrapper.js"></script>
+<script src="js/block.js"></script>
+
+<script>
+$(document).ready(function() {
+    $(window).load(function () {
+        BlockDefault.run({
+            effectName: "{item.effect_name}",
+            effectStartDate: "{item.effect_start_date}",
+            effectStartTime: "{item.effect_start_time}",
+            effectEndDate: "{item.effect_end_date}",
+            effectEndTime: "{item.effect_end_time}",
+            effectType: "{item.effect_type}",
+            effectImage:"{item.effect_image}",
+            effectSpeed: "{item.effect_speed}",
+            effectAmount: "{item.effect_amount}",
+            effectLimited: "{item.effect_limited}",
+            effectTypeTwinkle: "{item.effect_type_twinkle}",
+            effectOpacity: "{item.effect_opacity}",
+            commonImages: "{IMAGE_PATH}"
+        });
+    });
+});
+</script>

@@ -1,0 +1,168 @@
+{*** 구매확정 레이어 | mypage/layer_order_settle.php ***}
+<style>
+    .settle-layer{height:auto;}
+</style>
+<div class="box settle-layer">
+    <div class="view">
+        <h2>
+            {=__('구매확정')}
+        </h2>
+        <form name="frmSettleRegist" id="frmSettleRegist" method="post" action="../mypage/order_ps.php">
+            <div class="table1 type1">
+                <input type="hidden" name="orderNo" value="{orderNo}">
+                <input type="hidden" name="mode" value="settleRegistAll">
+                <table class="goods-board">
+                    <colgroup>
+                        <col style="width:5%">  <!-- 체크박스 -->
+                        <col style="width:30%"> <!-- 상품명/옵션 -->
+                        <col style="width:15%"> <!-- 주문상태 -->
+                        <col style="width:20%"> <!-- 상품금액/수량 -->
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>
+                            <span class="form-element">
+                                <input type="checkbox" id="allCheck" class="checkbox gd_checkbox_all" data-target-id="goodsno_" data-target-form="#frmSettleRegist" />
+                                <label for="allCheck" class="check-s">{=__('전체선택')}</label>
+                            </span>
+                        </th>
+                        <th>{=__('상품명/옵션')}</th>
+                        <th>{=__('주문상태')}</th>
+                        <th>{=__('상품금액/수량')}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <!--{ ? orderData }-->
+                    <!--{ @ orderData }-->
+                    <!--{ @ .goods }-->
+                    <tr>
+                        <td class="ta-c{ ? .orderGoodsCnt > 0 && (..index_ + 1 != .orderGoodsCnt || empty(..addGoods) === false) } line{ / }">
+                            <span class="form-element">
+                                <input type="checkbox" name="orderGoodsNo[]" value="{..sno}" id="goodsno_{..sno}" class="checkbox" data-order-status="{..orderStatus}"/>
+                                <label for="goodsno_{..sno}" class="check-s">{=__('선택')}</label>
+                            </span>
+                        </td>
+                        <td class="order-title">
+                            <div class="img">
+                                <!--{ ? ..goodsType === 'addGoods' }-->
+                                {..goodsImage}
+                                <!--{ : }-->
+                                <a href="../goods/goods_view.php?goodsNo={..goodsNo}">{..goodsImage}</a>
+                                <!--{ / }-->
+                            </div>
+                            <div class="goods-info">
+                                <div class="goods-name">
+                                    <!--{ ? ..goodsType === 'addGoods' }-->
+                                    <a href="../goods/goods_view.php?goodsNo={..parentGoodsNo}">
+                                        <div><img src="../img/etc/icon-add.png" alt="{=__('추가')}" class="va-m"></div>
+                                        {..goodsNm}
+                                    </a>
+                                    <!--{ : }-->
+                                    <a href="../goods/goods_view.php?goodsNo={..goodsNo}">{..goodsNm}</a>
+                                    <!--{ / }-->
+                                </div>
+
+                                <!--{ @ ..optionInfo }-->
+                                <div class="goods-option">{...value_.optionName} : {...value_.optionValue}
+                                    <!--{ ? ...value_.optionRealPrice != 0 && optionPriceFl == 'y' }-->
+                                    (<!--{ ? ...value_.optionRealPrice > 0 }-->+<!--{ / }-->{=gd_global_order_currency_display(...value_.optionRealPrice)})
+                                    <!--{ / }-->
+                                    <!--{ ? ...index_ == ...size_ - 1 }-->
+                                    <!--{ ? empty(...value_.deliveryInfoStr) === false }--> [{...value_.deliveryInfoStr}]<!--{ / }-->
+                                    <!--{ / }-->
+                                </div>
+                                <!--{ / }-->
+                                <!--{ ? ..optionTextInfo }-->
+                                <!--{ @ ..optionTextInfo }-->
+                                <div class="goods-option">{...value_.optionName} : {...value_.optionValue}
+                                    <!--{ ? ...value_.optionTextPrice != 0 && optionPriceFl == 'y' }-->
+                                    (<!--{ ? ...value_.optionTextPrice > 0 }-->+<!--{ / }-->{=gd_global_order_currency_display(...value_.optionTextPrice)})
+                                    <!--{ / }-->
+                                </div>
+                                <!--{ / }-->
+                                <!--{ / }-->
+                            </div>
+                        </td>
+                        <td class="ta-c">
+                            <div class="button ordernum">
+                                <span class="text-type">
+                                <!--{ ? ..orderStatus == 'd2' }-->
+                                <strong>{eachOrderStatus.d2.name}</strong>
+                                <!--{ : ..orderStatus == 'b4' }-->
+                                <strong>{eachOrderStatus.b4.name}</strong>
+                                <!--{ : ..orderStatus == 'e5' }-->
+                                <strong>{eachOrderStatus.e5.name}</strong>
+                                <!--{ : ..orderStatus == 'r3' }-->
+                                <strong>{eachOrderStatus.r3.name}</strong>
+                                <!--{ : }-->
+                                {..orderStatusStr}
+                                <!--{ ?  ..naverpayStatus.code == 'DelayProductOrder'}-->
+                                ({=..naverpayStatus.notice})
+                                <!--{ / }-->
+                                <!--{ / }-->
+                                </span>
+                            </div>
+                        </td>
+                        <td class="ta-c"><b>{=gd_global_order_currency_display(..goodsPrice,.exchangeRate, .currencyPolicy)}</b> / {..goodsCnt}{=__('개')}</td>
+                    </tr>
+                    <!--{ / }-->
+                    <!--{ / }-->
+                    <!--{ : }-->
+                    <tr>
+                        <td colspan="6"><p class="no_data">{=__('조회내역이 없습니다.')}</p></td>
+                    </tr>
+                    <!--{ / }-->
+                    </tbody>
+                </table>
+
+                <div class="btn">
+                    <button class="skinbtn point1 layerboard-close btn-close"><strong>{=__('취소')}</strong></button>
+                    <button type="submit" class="skinbtn point2 layerboard-save"><strong>{=__('확인')}</strong></button>
+                </div>
+            </div>
+        </form>
+        <!-- //ly_cont -->
+        <button title="닫기" class="close" type="button">닫기</button>
+    </div>
+</div>
+<!-- //layer_wrap_cont -->
+<script type="text/javascript">
+    $(function(){
+        gd_checkbox_all();
+
+        $('#frmSettleRegist').validate({
+            submitHandler: function (form) {
+                if (!$('input[name*="orderGoodsNo"]:checkbox:checked').length) {
+                    alert("{=__('구매확정 할 상품을 선택하세요.')}");
+                    return false;
+                }
+
+                if (confirm("{=__('구매확정 처리를 하시겠습니까?')}")) {
+                    form.target = 'ifrmProcess';
+                    form.submit();
+                }
+            }
+        });
+    });
+
+    function gd_checkbox_all() {
+        // 체크박스 전체 선택 이벤트
+        if ($(':checkbox.gd_checkbox_all').length > 0) {
+            // 이벤트 중복 실행을 막아준다.
+            $(':checkbox.gd_checkbox_all').off('click');
+            $(':checkbox.gd_checkbox_all').click(function (e) {
+                var $target = $(e.target);
+                var targetName = $target.data('target-name');
+                var targetId = $target.data('target-id');
+                var targetFormName = $target.data('target-form');
+                if (typeof targetFormName == 'undefined') targetFormName = "";
+                if (_.isUndefined(targetId)) {
+                    $(targetFormName + ' :checkbox[name="' + targetName + '"]').prop('checked', !$target.prop('checked')).trigger('click');
+                } else {
+                    $(targetFormName + ' :checkbox[id*="' + targetId + '"]').prop('checked', !$target.prop('checked')).trigger('click');
+                }
+            });
+        }
+    }
+</script>

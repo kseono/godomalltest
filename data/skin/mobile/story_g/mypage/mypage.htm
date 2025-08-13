@@ -1,0 +1,43 @@
+{*** 회원정보 변경 | mypage/mypage.htm ***}
+<article>
+	<h1>{=__('마이페이지')}</h1>
+
+	<nav class="mypageList">
+		<ul>
+			<li>
+				<a href="{=url(c.PATH_MOBILE_RELATIVE+"mypage/order_list.php")}">
+				<dl>
+					<dt><span class="mTitle">{=__('주문내역')}</span></dt>
+					<dd><span class="mDesc"><span class="font-num">{=number_format(orderCnt)}</span> <span class="unit">{=__('건')}</span></span></dd>
+				</dl>
+				</a>
+			</li>
+			<li>
+				<a href="{=url(c.PATH_MOBILE_RELATIVE+"mypage/wish_list.php")}">
+				<dl>
+					<dt><span class="mTitle">{=__('찜리스트')}</span></dt>
+					<dd><span class="mDesc"><span class="font-num">{=number_format(wishCnt)}</span> <span class="unit">{=__('건')}</span></span></dd>
+				</dl>
+				</a>
+			</li>
+			<!--{ ? mileage['useFl'] == 'y' }-->
+			<li>
+				<a href="{=url(c.PATH_MOBILE_RELATIVE+"mypage/mileage.php")}">
+				<dl>
+					<dt><span class="mTitle">{=mileage['name']} {=__('내역')}</span></dt>
+					<dd><span class="mDesc"><span class="font-num">{=number_format(memInfo['mileage'])}</span> <span class="unit">{=mileage['unit']}</span></span></dd>
+				</dl>
+				</a>
+			</li>
+			<!--{ / }-->
+			<li>
+				<a href="{=url(c.PATH_MOBILE_RELATIVE+"mypage/coupon.php")}">
+				<dl>
+					<dt><span class="mTitle">{=__('쿠폰내역')}</span></dt>
+					<dd><span class="mDesc"><span class="font-num">{=number_format(couponCnt)}</span> <span class="unit">{=__('건')}</span></span></dd>
+				</dl>
+				</a>
+			</li>
+		</ul>
+	</nav>
+</article>

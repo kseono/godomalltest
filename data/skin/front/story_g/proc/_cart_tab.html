@@ -1,0 +1,532 @@
+{*** 쇼핑 카트탭 | proc/_cart_tab.php ***}
+<!--{ ? cartTabUseFl =='y' }-->
+<!-- 카트탭 레이어 -->
+<div class="cart-tab">
+    <div class="bar-bg">&nbsp;</div>
+    <div class="btn-wrap">
+        <div class="container">
+            <div class="left">
+                <a href="#cart-tab-today" >{=__('오늘 본 상품')}<span>&nbsp;</span></a>
+                <a href="#cart-tab-wish" <!--{ ? gd_is_login() === false }-->class="btn-alert-login"<!--{ / }-->>{=__('찜리스트')}<span>&nbsp;</span></a>
+                <a href="#cart-tab-cart">{=__('장바구니')}<span>&nbsp;</span></a>
+            </div>
+            <div class="right">
+                <!--{ ? goodsView['goodsNo'] !='' }--><a href="#cart-tab-option" class="btn-option">{=__('옵션선택')}<span>&nbsp;</span></a><!--{ / }-->
+                <a href="#cart-tab-option" class="btn-carttab" title="{=__('카트탭열기')}">{=__('카트탭열기')}</a>
+            </div>
+        </div>
+    </div>
+    <div class="view-wrap">
+        <div class="container" id="cartTabContainer">
+
+        </div>
+
+
+        <div class="container" id="cartTabOptionContainer">
+            <!--{ ? goodsView['goodsNo'] !='' }-->
+
+            <div id="cart-tab-option" class="cart-tab-option view">
+
+                <form name=frmCartTabViewLayer id='frmCartTabViewLayer' method=post data-form="cart">
+                    <input type="hidden" name="scmNo" value="{=goodsView['scmNo']}" />
+                    <input type="hidden" name="cartMode" value="" />
+                    <input type="hidden" name="set_goods_price"  id="set_goods_price" value="{=gd_global_money_format(gd_isset(goodsView['goodsPrice'],0),false)}" />
+                    <input type="hidden" name="set_goods_fixedPrice"  id="set_goods_fixedPrice" value="{=gd_isset(goodsView['fixedPrice'],0)}" />
+                    <input type="hidden" name="set_goods_mileage" value="{=gd_isset(goodsView['goodsMileageBasic'],0)}" />
+                    <input type="hidden" name="set_goods_stock" value="{=gd_isset(goodsView['stockCnt'],0)}" />
+                    <input type="hidden" name="set_coupon_dc_price" value="{=gd_isset(goodsView['goodsPrice'],0)}" />
+
+                    <input type="hidden" name="set_goods_total_price" id="set_goods_total_price" value="0" />
+                    <input type="hidden" name="set_option_price"  id="set_option_price" value="0" />
+                    <input type="hidden" name="set_option_text_price" id="set_option_text_price" value="0" />
+                    <input type="hidden" name="set_add_goods_price"  id="set_add_goods_price" value="0" />
+                    <input type="hidden" id="set_total_price" value="0" />
+
+
+                    <input type="hidden" name="mileageFl" value="{=goodsView['mileageFl']}" />
+                    <input type="hidden" name="mileageGoods" value="{=goodsView['mileageGoods']}" />
+                    <input type="hidden" name="mileageGoodsUnit" value="{=goodsView['mileageGoodsUnit']}" />
+                    <input type="hidden" name="goodsDiscountFl" value="{=goodsView['goodsDiscountFl']}" />
+                    <input type="hidden" name="goodsDiscount" value="{=goodsView['goodsDiscount']}" />
+                    <input type="hidden" name="goodsDiscountUnit" value="{=goodsView['goodsDiscountUnit']}" />
+
+                    <input type="hidden" name="taxFreeFl" value="{=goodsView['taxFreeFl']}" />
+                    <input type="hidden" name="taxPercent" value="{=goodsView['taxPercent']}" />
+
+                    <input type="hidden" name="scmNo" value="{=goodsView['scmNo']}" />
+                    <input type="hidden" name="brandCd" value="{=goodsView['brandCd']}" />
+                    <input type="hidden" name="cateCd" value="{=goodsView['cateCd']}" />
+
+
+                    <input type="hidden" id="set_dc_price" value="0" />
+
+                    <input type="hidden" id="goodsOptionCnt" value="1" />
+                    <input type="hidden" name="useBundleGoods" value="1" />
+                    <div class="check">
+                        <strong>  {=gd_isset(goodsView['goodsNmDetail'])}</strong>
+                        <div class="cost">
+                            <!--{ ? goodsView['goodsPriceString'] !='' }-->
+                            <strong>{goodsView['goodsPriceString']}</strong>
+                            <!--{ : }-->
+                            <strong>{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['goodsPrice'])}{=gd_global_currency_string()}</strong>
+                            <!--{ / }-->
+
+
+                            <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) == 'free'  }-->
+                            <span>{=__('무료')}</span>
+                            <!--{ : gd_isset(goodsView['delivery']['basic']['fixFl']) == 'fixed'  }-->
+                            <span>{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['delivery']['charge']['0']['price'])}{=gd_global_currency_string()}</span>
+                            <!--{ : }-->
+                            <span>{=gd_global_currency_symbol()}{=gd_global_money_format(goodsView['delivery']['charge']['0']['price'])}{=gd_global_currency_string()}</span>
+
+                            <!--{ / }-->
+
+                            <!--{ ? gd_isset(goodsView['delivery']['basic']['fixFl']) != 'free' }-->
+
+                            <!--{ ? gd_isset(goodsView['delivery']['basic']['collectFl']) == 'pre'  }-->
+                            <span><input type="hidden" name="deliveryFixFl" value="pre" /></span>
+                            {=__('주문시결제')}({=__('선결제')})
+                            <!--{ : gd_isset(goodsView['delivery']['basic']['collectFl']) == 'later'  }-->
+                            <span><input type="hidden" name="deliveryFixFl" value="later" /></span>
+                            {=__('상품수령시결제')}({=__('착불')})
+                            <!--{ : }-->
+                            <span class="st-hs">
+                                    <select name="deliveryFixFl" style="width:155px">
+                                        <option value="pre">{=__('주문시결제')}({=__('선결제')})</option>
+                                        <option value="later">{=__('상품수령시결제')}({=__('착불')})</option>
+                                    </select>
+                                    </span>
+                            <!--{ / }-->
+
+                            <!--{ / }-->
+                        </div>
+                        <div class="detail">
+                            <div class="option">
+
+
+
+                                <!-- 옵션 있을때시작 -->
+                                <!--{ ? goodsView['optionFl'] == 'y' }-->
+
+                                <!--{ ? goodsView['optionDisplayFl'] == 's' }-->
+
+                                <dl>
+                                    <dt><!--{ ? goodsView['optionEachCntFl'] == 'one' && empty(goodsView['optionName']) === false }-->{=goodsView['optionName']}<!--{ : }-->{=__('옵션 선택')}<!--{ / }-->  </dt>
+                                    <dd>
+                                        <select name="optionSnoInput"  style="width:100%" onchange="carttab_option_price_display();"<!--{ ? goodsView['orderPossible'] != 'y' }--> disabled="disabled"<!--{ / }-->>
+                                            <option value="">=
+                                                <!--{ ? goodsView['optionEachCntFl'] == 'many' && empty(goodsView['optionName']) === false }-->{=goodsView['optionName']}
+                                                <!--{ : }-->{=__('옵션')}
+                                                <!--{ / }-->: {=__('가격')}
+                                                <!--{ ? in_array('optionStock', displayAddField) }-->: {=__('재고')}<!--{ / }-->
+                                                =
+                                            </option>
+                                            <!--{ @ goodsView['option'] }-->
+                                            <!--{ ? .optionViewFl =='y' }-->
+                                            <option value="{=.sno}{=c.INT_DIVISION}{=gd_global_money_format(.optionPrice,false)}{=c.INT_DIVISION}{=.mileage}{=c.INT_DIVISION}{=.stockCnt}{=c.STR_DIVISION}{.optionValue}<!--{ ? (goodsView['stockFl'] == 'y' && .optionSellFl == 't') }-->{=c.STR_DIVISION}<!--{=optionSoldOutCode[.optionSellCode]}--><!--{ / }--><!--{ ? .optionDeliveryFl == 't' && optionDeliveryDelayCode[.optionDeliveryCode] != '' }-->{=c.STR_DIVISION}<!--{=optionDeliveryDelayCode[.optionDeliveryCode]}--><!--{ / }-->"<!--{ ? (goodsView['stockFl'] == 'y' && goodsView['stockCnt'] <  goodsView['minOrderCnt']) || (goodsView['stockFl'] == 'y' && goodsView['fixedOrderCnt'] == 'option' && .stockCnt < goodsView['minOrderCnt']) || (goodsView['stockFl'] == 'y' && .stockCnt == '0') || .optionSellFl =='n' || .optionSellFl =='t' }-->disabled="disabled"
+                                            <!--{ / }-->> {=.optionValue}
+                                            : {=gd_global_currency_symbol()}<!--{ ? gd_isset(.optionPrice) > 0   }-->+<!--{ / }-->{=gd_global_money_format(.optionPrice)}{=gd_global_currency_string()}
+                                            <!--{ ? .optionSellFl == 't' }-->[<!--{=optionSoldOutCode[.optionSellCode]}-->]
+                                            <!--{ : (goodsView['stockFl'] == 'y' && .stockCnt == '0') || .optionSellFl ==  'n' }-->[<!--{=optionSoldOutCode['n']}-->]
+                                            <!--{ : }--><!--{ ? in_array('optionStock',displayAddField)  && goodsView['stockFl'] == 'y' }--> : {=number_format(.stockCnt)}{=__('개')}
+                                            <!--{ / }--><!--{ / }-->
+                                            <!--{ ? .optionDeliveryFl == 't' && optionDeliveryDelayCode[.optionDeliveryCode] != '' }-->[<!--{=optionDeliveryDelayCode[.optionDeliveryCode]}-->]
+                                            <!--{ / }-->
+                                        </option>
+                                            <!--{ / }-->
+                                            <!--{ / }-->
+                                        </select>
+                                    </dd>
+                                </dl>
+
+
+                                <!--{ : goodsView['optionDisplayFl'] == 'd' }-->
+
+                                <!--{ @ goodsView['optionName'] }-->
+                                <!--{ ? .index_ == 0 }-->
+                                <input type="hidden" name="optionSnoInput" value="" />
+                                <input type="hidden" name="optionCntInput" value="{=.size_}" />
+                                <!--{ / }-->
+
+                                <dl >
+                                    <dt>{=.value_}</dt>
+                                    <dd>
+                                        <select name="optionNo_{=.index_}"  style="width:100%;"  onchange="goodsViewController.option_select(this,'{=.index_}', '{=gd_isset(goodsView['optionName'][(.index_ + 1)])}', '<!--{ ? in_array('optionStock', displayAddField) }-->y<!--{ : }-->n<!--{ / }-->');"
+                                        <!--{ ? .index_ > 0 || goodsView['orderPossible'] != 'y' }--> disabled="disabled"
+                                        <!--{ / }-->>
+                                        <option value="">=
+                                            <!--{ ? .index_ == 0 }-->{=.value_} {=__('선택')}
+                                            <!--{ : }-->{=__('%s을 먼저 선택해 주세요', goodsView['optionName'][(.index_ - 1)])}
+                                            <!--{ / }--> =
+                                        </option>
+                                        <!--{ ? .index_ == 0 }-->
+                                        <!--{ @ goodsView['optionDivision'] }-->
+                                        <option value="{=..value_}" <!--{ ? (goodsView['stockFl'] == 'y' && goodsView['stockCnt'] < goodsView['minOrderCnt']) || (goodsView['stockFl'] == 'y' && goodsView['fixedOrderCnt'] == 'option' && isset(goodsView['optionDivisionStock']) && isset(goodsView['optionDivisionStock'][..key_]['stockCnt']) && goodsView['optionDivisionStock'][..key_]['stockCnt'] < goodsView['minOrderCnt']) || (goodsView['stockFl'] == 'y' && goodsView['optionDivisionStock'][..key_]['stockCnt'] == '0') || goodsView['optionDivisionStock'][..key_]['optionSellFl'] ==  'n' || goodsView['optionDivisionStock'][..key_]['optionSellFl'] ==  't' }--> disabled="disabled"<!--{ / }-->>
+                                            {=..value_}
+                                            <!--{ ? (goodsView['optionDivisionStock'][..key_]['optionSellFl'] == 't') }-->[<!--{=optionSoldOutCode[goodsView['optionDivisionStock'][..key_]['optionSellCode']]}-->]
+                                            <!--{ : (goodsView['stockFl'] == 'y' && goodsView['optionDivisionStock'][..key_]['stockCnt'] == '0') || goodsView['optionDivisionStock'][..key_]['optionSellFl'] ==  'n' }-->[<!--{=optionSoldOutCode['n']}-->]
+                                            <!--{ / }-->
+                                        </option>
+                                        <!--{ / }-->
+                                        <!--{ / }-->
+                                        </select></dd>
+                                </dl>
+                                <div id="iconImage_{=.index_}" class="option_icon"></div>
+                                <!--{ / }-->
+                                <!--{ / }-->
+
+                                <!--{ / }-->
+                                <!--  옵션 끝 -->
+
+
+
+                                <!--{ ? goodsView['optionTextFl'] == 'y' }-->
+
+                                <!-- 추가 옵션 입력형 시작-->
+                                <!--{ @ goodsView['optionText'] }-->
+                                <dl class="list">
+                                    <!--{ ? .index_ == 0 }-->
+                                    <input type="hidden" id="optionTextCnt" value="{=.size_}" />
+                                    <!--{ / }-->
+                                    <dt><span class="optionTextNm_{=.index_}">{=.optionName}<!--{ ? .mustFl == 'y' }--><em>({=__('필수')})</em><!--{ / }--></span> <input type="hidden" name="optionTextMust_{=.index_}" value="{=.mustFl}" /> <input type="hidden" name="optionTextLimit_{=.index_}" value="{=.inputLimit}" /></dt>
+
+                                    <dd class="option_input optionTextDisplay{=.sno}">
+                                        <span class="txt-field<!--{ ? goodsView['orderPossible'] != 'y' }--> disabled<!--{ / }-->">
+                                        <input type="hidden" name="optionTextSno_{=.index_}" value="{=.sno}"/>
+                                        <input type="text" name="optionTextInput_{=.index_}" value="" size="30" class="text" data-sno ="{=.sno}" onchange="carttab_option_text_select(this)" placeholder="{=__('%s글자를 입력하세요.', .inputLimit)}" maxlength="{=.inputLimit}"<!--{ ? goodsView['orderPossible'] != 'y' }--> disabled="disabled"<!--{ / }-->/>
+                                        <input type="hidden"  value="{=.addPrice}"/>
+                                        </span>
+                                        <!--{ ? .addPrice != 0 }-->
+                                        <span class="msg">※ {=__('작성시')} {=gd_global_currency_symbol()}{=gd_global_money_format(.addPrice)}{=gd_global_currency_string()} {=__('추가')}</span>
+                                        <!--{ / }-->
+                                    </dd>
+                                </dl>
+                                <!--{ / }-->
+
+                                <!--{ / }-->
+                                <!-- 추가 옵션 입력형 종료 -->
+
+                                <!--{ ? goodsView['addGoods'] }-->
+                                <!--{ @ goodsView['addGoods'] }-->
+
+                                <dl class="list">
+                                    <dt>{=.title}  <!--{ ? .mustFl =='y' }--><em>({=__('필수')})</em><input type="hidden" name="addGoodsInputMustFl[]" value="{.key_}"><!--{ / }--></dt>
+                                    <dd>
+                                        <select name="addGoodsInput{.key_}"   data-key="{.key_}" style="width:477px;" onchange="carttab_add_goods_select(this)"<!--{ ? goodsView['orderPossible'] != 'y' }--> disabled="disabled"<!--{ / }-->>
+                                            <option value="">{=__('추가상품')}</option>
+                                            <!--{ @ .addGoodsList }-->
+                                            <option value="{=..addGoodsNo}{=c.INT_DIVISION}{=..goodsPrice}{=c.STR_DIVISION}{=..goodsNm}({=..optionNm}){=c.STR_DIVISION}{=rawurlencode(gd_html_add_goods_image(..addGoodsNo, ..imageNm, ..imagePath, ..imageStorage, 30, ..goodsNm, '_blank'))}{=c.STR_DIVISION}{=.key_}{=c.STR_DIVISION}{=..stockUseFl}{=c.STR_DIVISION}{=..stockCnt}" <!--{ ? ..soldOutFl =='y' || (..stockUseFl =='1' && ..stockCnt == '0')  }--> disabled="disabled" <!--{ / }-->>{=..goodsNm}  ({=..optionNm}<!--{ ? gd_isset(..goodsPrice) != '0'  }-->  / {=gd_global_currency_symbol()}<!--{ ? gd_isset(..goodsPrice) > 0   }-->+<!--{ / }-->{=gd_global_money_format(..goodsPrice)}{=gd_global_currency_string()} <!--{ / }--> <!--{ ? ..soldOutFl =='y' || (..stockUseFl =='1' && ..stockCnt == '0')  }--> / {=__('품절')} <!--{ / }-->)</option>
+                                            <!--{ / }-->
+                                        </select>
+                                    </dd>
+                                </dl>
+
+                                <!--{ / }-->
+                                <!--{ / }-->
+
+
+
+                            </div>
+
+                            <!--{ ? goodsView['optionFl'] == 'y' }-->
+                            <div class="option_total_display_area" style="display:none">
+                                <div class="order-goods option_display_area" ></div>
+                            </div>
+                            <!--{ : }-->
+                            <div class="order-goods option_display_area">
+                                <div class="option_display_item_0">
+                                    <div class="optionKey_0 this">
+                                        <input type="hidden" name="goodsNo[]" value="{=goodsView['goodsNo']}">
+                                        <input type="hidden" name="optionSno[]" value="{=gd_isset(goodsView['option'][0]['sno'])}">
+                                        <input type="hidden" name="goodsPriceSum[]" value="0">
+                                        <input type="hidden" name="addGoodsPriceSum[]" value="0">
+                                        <input type="hidden" name="displayOptionkey[]" value="0">
+                                        <!--{ ? couponUse == 'y' }-->
+                                        <input type="hidden" name="couponApplyNo[]" value="">
+                                        <input type="hidden" name="couponSalePriceSum[]" value="">
+                                        <input type="hidden" name="couponAddPriceSum[]" value="">
+                                        <!--{ / }-->
+                                        <span class="name"><strong>{=gd_isset(goodsView['goodsNmDetail'])}</strong>
+                                            <!--{ ? couponUse == 'y' }-->
+                                            <!--{ ? gd_is_login() === false }-->
+                                            <button type="button" class="btn-alert-login"><img src="../img/btn/coupon-apply.png" alt="{=__('쿠폰적용')}"/></button>
+                                            <!--{ : }-->
+                                            <span id="cart_tab_coupon_apply_0"><a href="#couponApplyLayer" class="btn-open-layer" data-key="0"><img src="../img/btn/coupon-apply.png" alt="{=__('쿠폰적용')}"/></a></span>
+                                            <!--{ / }-->
+                                            <!--{ / }-->
+                                            <span class="option_text_display_0"></span>
+                                        </span>
+
+                                        <span class="price"></span>
+                                        <!--{ ?goodsView['orderPossible'] == 'y' }-->
+                                            <span class="count">
+                                                <span class="goods-qty">
+                                            <input type="text" class="text goodsCnt_0" title="{=__('수량')}" name="goodsCnt[]" value="{=gd_isset(goodsView['defaultGoodsCnt'])}" data-value="{=gd_isset(goodsView['defaultGoodsCnt'])}"  data-key="0" onchange="carttab_input_count_change(this,1);return false;">
+                                            <span>
+                                            <button type="button" class="up goods-cnt" title="{=__('증가')}"  value="up{=c.STR_DIVISION}0">{=__('증가')}</button>
+                                            <button type="button" class="down goods-cnt" title="{=__('감소')}"  value="dn{=c.STR_DIVISION}0">{=__('감소')}</button>
+                                            </span>
+                                            </span>
+                                            </span>
+                                        <!--{ / }-->
+                                        <span class="calculation"><input type="hidden" value="{=gd_isset(goodsView['option'][0]['optionPrice'],0)}" name="option_price_0"><input type="hidden" value="{=gd_isset(goodsView['option'][0]['optionPrice'],0)}" name="optionPriceSum[]" >{=gd_global_currency_symbol()}<strong class="option_price_display_0">{=gd_global_money_format(gd_isset(goodsView['option'][0]['optionPrice'],0),false)}</strong>{=gd_global_currency_string()}</span>
+                                        <span class="choice-del">
+                                        <button type="button" class="del" title="{=__('삭제')}" >{=__('삭제')}</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--{ / }-->
+
+                        </div>
+                    </div>
+                    <div class="estimate" >
+                        <!--{ ?goodsView['orderPossible'] == 'n' }-->
+                        <div class="btn_cart_box">
+                            <button class="skinbtn point2 ctc-buy"><em>{=__('구매 불가')}</em></button>
+                        </div>
+                        <!--{ : }-->
+                        <ul class="carttab-goods-price">
+                            <li>
+                                <span>{=__('상품가격')}</span>
+                                <strong class="goods_total_price">{=gd_global_currency_display(0)}</strong>
+                            </li>
+                            <li>
+                                <span>{=__('할인금액')}</span>
+                                <strong class="total_benefit_price">{=gd_global_currency_display(0)}</strong>
+                            </li>
+                            <li class="total">
+                                <span>{=__('총 결제 예정금액')}</span>
+                                <strong class="total_price">{=gd_global_currency_display(0)}</strong>
+                            </li>
+                        </ul>
+                        <button class="skinbtn point1 ctc-cart btn-cart btn-carttab-add-cart"><em>{=__('장바구니')}</em></button>
+                        <button class="skinbtn point2 ctc-buy btn-buy btn-carttab-add-order"><em>{=__('바로구매')}</em></button>
+                        <!--{ / }-->
+                    </div>
+                </form>
+            </div>
+
+
+
+            <!--{ / }-->
+        </div>
+
+    </div>
+</div>
+
+<div id="addLayer"></div>
+
+
+<!-- //카트탭 레이어 -->
+
+<script type="text/javascript">
+    <!--
+    $(document).ready(function(){
+        <!--{ ? goodsView['goodsNo'] !='' }-->
+        goodsViewController.initCartTab('y');
+
+        $('.btn-carttab-add-order').on('click', function(e){
+            goods_order('d');
+            return false;
+        });
+
+
+        $('.btn-carttab-add-cart').on('click', function(e){
+            goods_order();
+            return false;
+        });
+
+        <!--{ ? goodsView['optionFl']== 'n' && goodsView['orderPossible'] == 'y'}-->
+        goodsViewController.goods_calculate('#frmCartTabViewLayer',1,0,'{=gd_isset(goodsView["defaultGoodsCnt"])}');
+        <!--{ / }-->
+
+
+        $('#frmCartTabViewLayer button.goods-cnt').on('click', function(e){
+            var datakey = $(this).val().split('{c.STR_DIVISION}');
+            $('#option_display_item_'+datakey[1]).find('button[class="'+$(this).attr('class')+'"]').click();
+        });
+
+        $('#frmCartTabViewLayer  button.add-goods-cnt').on('click', function(e){
+            $('#frmView #'+$(this).data('key')+'  button.delete-goods').click();
+        });
+
+        <!--{ / }-->
+
+        if($("ViewLayer").length =='0') {
+            $( "#addLayer" ).append( "<div id='optionViewLayer' class='layer-wrap dn'></div>" );
+        }
+
+        if($("#couponApplyLayer").length =='0') {
+            $( "#addLayer" ).append( "<div id='couponApplyLayer' class='layer-wrap dn'></div>" );
+        }
+
+        $('#frmCartTabViewLayer select[name="deliveryFixFl"]').change(function(){
+            $('#frmView select[name="deliveryCollectFl"]').val(this.value).trigger('chosen:updated');
+        });
+
+    });
+
+
+    function cart_tab_action(mode) {
+
+        if (mode == '#option') {
+
+            if($("#frmView input[name='set_total_price']").val().trim() == '0') {
+                $("#cart-tab-option .total_benefit_price").html("0{=__('원')}");
+                $("#cart-tab-option .total_price").html("0{=__('원')}");
+            }
+
+
+            $("#cartTabContainer").hide();
+            $("#cartTabOptionContainer").show();
+
+        } else {
+
+            $("#cartTabOptionContainer").hide();
+            $("#cartTabContainer").show();
+
+            var url = "";
+            if (mode == '#cart-tab-today') {
+                url = "../goods/cart_tab_today.php"
+            } else if (mode == '#cart-tab-wish') {
+                url = "../goods/cart_tab_wish.php"
+            } else if (mode == '#cart-tab-cart') {
+                url = "../goods/cart_tab_cart.php"
+            }
+
+            $.ajax({
+                method: "POST",
+                cache: false,
+                <!--{ ? goodsView['goodsNo']  }-->data: "goodsNo=" + {goodsView['goodsNo']}, <!--{ / }-->
+                url: url,
+                success: function (data) {
+
+                    $('#cartTabContainer').empty().append(data);
+
+                },
+                error: function (data) {
+                    alert(data.message);
+                }
+            });
+        }
+    }
+
+    <!--{ ? goodsView['goodsNo'] !='' }-->
+    function carttab_option_price_display() {
+        <!--{ ? goodsView['optionDisplayFl'] == 's' }-->
+        $('#frmView select[name="optionSnoInput"]').val($('#frmCartTabViewLayer select[name="optionSnoInput"]').val());
+        goodsViewController.option_price_display('#frmView');
+        <!--{ : goodsView['optionDisplayFl'] == 'd' }-->
+
+        $('#frmView input[name=\'optionSnoInput\']').val($('#frmCartTabViewLayer input[name=\'optionSnoInput\']').val());
+        // 옵션에 따른 가격 출력
+        goodsViewController.option_price_display($('#frmView input[name=\'optionSnoInput\']'));
+        <!--{ / }-->
+    }
+
+    function carttab_option_text_select(textOption) {
+        $("#frmView input[name='"+$(textOption).attr('name')+"']").val($(textOption).val());
+        goodsViewController.option_text_select($("#frmView input[name*='optionTextInput_']"));
+    }
+
+    function carttab_add_goods_select(addGoods) {
+        $('#frmView select[name="'+$(addGoods).attr('name')+'"] option:eq(' + addGoods.selectedIndex + ')').prop('selected', true);
+        goodsViewController.add_goods_select($('#frmView select[name="'+$(addGoods).attr('name')+'"]'));
+    }
+
+    function carttab_input_count_change(val,goodsFl) {
+        if(goodsFl) {
+            $("#frmView input.goodsCnt_"+$(val).data('key')).val($(val).val());
+            $("#frmView input.goodsCnt_"+$(val).data('key')).change();
+        } else {
+            var dataKey =$(val).data('key').replace("{=c.INT_DIVISION}","_");
+            $("#frmView input.addGoodsCnt_"+dataKey).val($(val).val());
+            $("#frmView input.addGoodsCnt_"+dataKey).change();
+        }
+
+    }
+    <!--{ / }-->
+
+    //-->
+</script>
+
+<!--{ ? goodsView['goodsNo'] !='' }-->
+
+<script type="text/html" id="optionTemplateCartTab">
+
+    <div class="option_display_item_<%=displayOptionkey%>">
+        <div class="optionKey_<%=optionSno%> this">
+            <input type="hidden" name="goodsNo[]" value="{=goodsView['goodsNo']}">
+            <input type="hidden" name="optionSno[]" value="<%=optionSno%>">
+            <input type="hidden" name="goodsPriceSum[]" value="0">
+            <input type="hidden" name="addGoodsPriceSum[]" value="0">
+            <input type="hidden" name="displayOptionkey[]" value="<%=displayOptionkey%>">
+            <!--{ ? couponUse == 'y' }-->
+            <input type="hidden" name="couponApplyNo[]" value="">
+            <input type="hidden" name="couponSalePriceSum[]" value="">
+            <input type="hidden" name="couponAddPriceSum[]" value="">
+            <!--{ / }-->
+            <span class="name"><strong><%=optionName%><%=optionSellCodeValue%><%=optionDeliveryCodeValue%></strong>
+                <!--{ ? couponUse == 'y' }-->
+                <!--{ ? gd_is_login() === false }-->
+                <button type="button" class="btn-alert-login"><img src="../img/btn/coupon-apply.png" alt="{=__('쿠폰적용')}"/></button>
+                <!--{ : }-->
+                <span id="cart_tab_coupon_apply_<%=displayOptionkey%>"><a href="#couponApplyLayer" class="btn-open-layer" data-key="<%=displayOptionkey%>"><img src="../img/btn/coupon-apply.png" alt="{=__('쿠폰적용')}"/></a></span>
+                <!--{ / }-->
+                <!--{ / }-->
+                <span class="option_text_display_<%=displayOptionkey%>"></span>
+            </span>
+
+            <span class="price"></span>
+            <span class="count">
+                    <span class="goods-qty">
+                <input type="text" class="text goodsCnt_<%=displayOptionkey%>" title="{=__('수량')}" name="goodsCnt[]" value="{=gd_isset(goodsView['defaultGoodsCnt'])}" data-value="{=gd_isset(goodsView['defaultGoodsCnt'])}"  data-key="<%=displayOptionkey%>" onchange="carttab_input_count_change(this,1);return false;">
+                <span>
+                <button type="button" class="up goods-cnt" title="{=__('증가')}"  value="up{=c.STR_DIVISION}<%=displayOptionkey%>">{=__('증가')}</button>
+                <button type="button" class="down goods-cnt"  title="{=__('감소')}"  value="dn{=c.STR_DIVISION}<%=displayOptionkey%>">{=__('감소')}</button>
+                </span>
+                </span>
+                </span>
+            <span class="calculation"><input type="hidden" value="<%=optionPrice%>" name="option_price_<%=displayOptionkey%>"><input type="hidden" value="0" name="optionPriceSum[]" >{=gd_global_currency_symbol()}<strong class="option_price_display_<%=displayOptionkey%>"><%=optionPrice%></strong>{=gd_global_currency_string()}</span>
+
+            <span class="choice-del">
+                <button type="button" class="del delete-goods" title="{=__('삭제')}" data-key="option_display_item_<%=displayOptionkey%>" >{=__('삭제')}</button>
+            </span>
+        </div>
+    </div>
+
+
+
+</script>
+
+<script type="text/html" id="addGoodsTemplateCartTab">
+
+    <div class="add_goods_display_item_<%=displayOptionkey%>_<%=displayAddGoodsKey%> add">
+    <span class="name">
+    <input type="hidden" name="addGoodsNo[<%=optionIndex%>][]" value="<%=optionSno%>" data-group="<%=addGoodsGroup%>">
+    <%=addGoodsName%>
+    </span>
+        <span class="price"></span>
+        <span class="count">
+    <span class="goods-qty">
+    <input type="text" class="text addGoodsCnt_<%=displayOptionkey%>_<%=displayAddGoodsKey%>" title="{=__('수량')}" name="addGoodsCnt[<%=optionIndex%>][]" value="1"  data-key="<%=displayOptionkey%>{=c.INT_DIVISION}<%=displayAddGoodsKey%>" onchange="carttab_input_count_change(this,0);return false;">
+    <span>
+    <button type="button" class="up add-goods-cnt" title="{=__('증가')}"  value="up{=c.STR_DIVISION}<%=displayOptionkey%>{=c.INT_DIVISION}<%=displayAddGoodsKey%>">{=__('증가')}</button>
+    <button type="button" class="down add-goods-cnt" title="{=__('감소')}"   value="dn{=c.STR_DIVISION}<%=displayOptionkey%>{=c.INT_DIVISION}<%=displayAddGoodsKey%>">{=__('감소')}</button>
+    </span>
+    </span>
+            </span>
+        <span class="calculation"><input type="hidden" value="<%=addGoodsPrice%>" name="add_goods_price_<%=displayOptionkey%>_<%=displayAddGoodsKey%>"><input type="hidden" name="add_goods_total_price[<%=optionIndex%>][]" value="" >{=gd_global_currency_symbol()}<strong class="add_goods_price_display_<%=displayOptionkey%>_<%=displayAddGoodsKey%>"></strong>{=gd_global_currency_string()}</span>
+        </span>
+        <span class="choice-del">
+            <button type="button" class="del delete-add-goods"  title="{=__('삭제')}" data-key="<%=displayOptionkey%>-<%=displayAddGoodsKey%>">{=__('삭제')}</button>
+        </span>
+    </div>
+
+
+
+</script>
+<!--{ / }-->
+<!--{ / }-->

@@ -1,0 +1,75 @@
+{*** 상품상세 - 상품 후기 리스트 | goods/goods_board_review_list.php ***}
+<table id="js-review-board-table" class="review-board" cellspacing="0" border="1">
+    <colgroup>
+        <col width="13%">
+        <col>
+        <col width="10%">
+        <col width="10%">
+    </colgroup>
+    <thead>
+    <tr>
+        <th>{=__('평점')}</th>
+        <th>{=__('제목')}</th>
+        <th>{=__('작성자')}</th>
+        <th>{=__('작성일')}</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <!--{? bdList.noticeList }-->
+    <!--{ @ bdList.noticeList }-->
+    <tr class="preview js-data-row" data-bdid="{req.bdId}" data-sno="{.sno}" data-auth="{.auth.view}" data-notice="y">
+        <td><img src="{bdList.cfg.iconImage.notice.url}" /></td>
+        <td class="txt-la">
+            <a href="javascript:void(0)" class="js-btn-view"><strong>{.subject}</strong></a>
+        </td>
+        <td class="txt-la">{.writer}</td>
+        <td>{.regDate}</td>
+    </tr>
+    <tr class="detail js-detail" data-bdid="{req.bdId}" data-sno="{.sno}" data-auth="{.auth.view}" data-notice="y">
+        <td colspan="4"></td>
+    </tr>
+    <!--{/}-->
+    <!--{/}-->
+
+    <!--{? bdList.list }-->
+    <!--{ @ bdList.list }-->
+    <tr class="preview js-data-row" data-bdid="{req.bdId}" data-sno="{.sno}" data-auth="{.auth.view}" data-notice="n">
+        <td><!--{ ? !.groupThread }--><span class="rating"><span style="width:{.goodsPt*20}%;">{=__('별')}</span></span><!--{/}--></td>
+        <td class="txt-la">
+            {.gapReply}
+            <span <!--{ ? .groupThread }-->class="reply" style="padding-left:15px;"  <!--{/}-->>
+            <!--{ ? .isSecret == 'y' }-->
+            <img src="{bdList.cfg.iconImage.secret.url}" align=absmiddle>
+            <!--{ / }-->
+            <!--<a href="javascript:showBoardDetail('{req.bdId}',{.sno},'{.auth.view}')" >{.subject}</a>-->
+            <a href="javascript:void(0)" class="js-btn-view">{.subject}</a>
+            <!--{? bdList.cfg.bdMemoFl == 'y' && .memoCnt>0}-->
+            <span class="c-red js-comment-count">({.memoCnt})</span>
+            <!--{/}-->
+            <!--{ ? .isFile == 'y' }-->
+            <img src="{bdList.cfg.iconImage.attach_file.url}" alt="{=__('파일첨부 있음')}"/>
+            <!--{/}-->
+            <!--{ ? .isImage == 'y' }-->
+            <img src="{bdList.cfg.iconImage.attach_img.url}" alt="{=__('이미지첨부 있음')}"/>
+            <!--{/}-->
+            <!--{ ? .isNew == 'y' }-->
+            <img src="{bdList.cfg.iconImage.new.url}" alt="{=__('신규 등록글')}"/>
+            <!--{/}-->
+            </span>
+        </td>
+        <td class="txt-la">{.writer}</td>
+        <td>{.regDate}</td>
+    </tr>
+    <tr class="detail js-detail" data-bdid="{req.bdId}" data-sno="{.sno}" data-auth="{.auth.view}" data-notice="n">
+        <td colspan="4"></td>
+    </tr>
+    <!--{/}-->
+    <!--{:}-->
+    <tr class="not-record">
+        <td colspan="4" class="no-data">{=__('등록된 상품후기가 없습니다.')}</td>
+    </tr>
+    <!--{/}-->
+    </tbody>
+</table>
+{pagienation}

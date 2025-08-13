@@ -1,0 +1,87 @@
+{*** 상품상세 - 상품 문의 목록 | goods/goods_board_qa_list.php ***}
+<div class="detail_review prd_inquiry" style="display:block">
+    <ul>
+        <!--{? bdList.list }-->
+        <!--{ @ bdList.list }-->
+        <!--{ ? .blockFl =='y' }-->
+        <li class="noclick">
+        <!--{ : }-->
+        <li class="private  <!--{? .replyComplete }-->done<!--{/}-->">
+        <!--{ / }-->
+            <div class="item-list-summary">
+                <strong class="title">
+                    <em class="ico_ans">{.replyStatusText}</em>
+                    {.gapReply}
+                    <span <!--{ ? .groupThread }-->class="reply"  <!--{/}-->>
+                    <!--{ ? .isSecret == 'y' }-->
+                    <!-- <img src="{bdList.cfg.iconImage.secret.url}" align=absmiddle> -->
+                    <!--{ / }-->
+                    <a class="js-board-qa-detail js-{req.bdId}-detail-{.sno}" data-bdid="{req.bdId}" data-sno="{.sno}" data-auth="{.auth.view}" data-goodsno="{.goodsNo}"><!--{ ? .blockFl =='y'}-->차단 한 회원이 작성한 게시물입니다.<!--{ : }-->{.subject}<!--{ / }--></a>
+                    <!--{ ? .isFile == 'y' }-->
+                    <!-- <img src="{bdList.cfg.iconImage.attach_file.url}" alt="{=__('파일첨부 있음')}"/> -->
+                    <!--{/}-->
+                    <!--{ ? .isImage == 'y' }-->
+                    <!-- <img src="{bdList.cfg.iconImage.attach_img.url}" alt="{=__('이미지첨부 있음')}"/> -->
+                    <!--{/}-->
+                    <!--{ ? .isNew == 'y' }-->
+                    <img src="{bdList.cfg.iconImage.new.url}" alt="{=__('신규 등록글')}"/>
+                    <!--{/}-->
+                    </span>
+                </strong>
+                <div class="author-box">
+                    <span class="name">{.writer}</span><span class="bar"></span><span class="date"> {.regDate}</span>
+                </div>
+                <button type="button"  class="btn_more js-board-qa-detail" data-bdid="{req.bdId}" data-sno="{.sno}" data-auth="{.auth.view}" data-goodsno="{.goodsNo}">{=__('상품평 더보기')}</button>
+            </div>
+            <div class="js-goodsqa-{.sno}">
+
+            </div>
+        </li>
+        <!--{/}-->
+        <!--{/}-->
+    </ul>
+</div>
+
+<div class="js-board-goodsqa-more review_more">
+    <button type="button" data-next-page="{pageData.next}">{=__('상품평 더보기')} {pageData.listCount}<span>/</span>{pageData.total}</button>
+</div>
+
+<!--{? pageData.now =='1' }-->
+<script type="text/javascript" src="\{=c.PATH_MOBILE_SKIN}js/gd_board_view.js" charset="utf-8"></script>
+<script type="text/javascript">
+    <!--
+
+    $(document).ready(function () {
+
+        $('.js-board-goodsqa-view').off().on('touchstart', '.js-board-qa-detail', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+
+            if($(".js-goodsqa-"+$(this).data('sno')).html().trim() !='') {
+                $(".js-goodsqa-"+$(this).data('sno')).html('');
+                $(this).closest("li").removeClass("selected");
+            } else {
+                viewGoodsBoard($(this).data('bdid'),$(this).data('sno'),$(this).data('auth'),$(this).data('goodsno'),'');
+            }
+
+        });
+
+        $('.js-board-goodsqa-view').on('click', '.js-board-goodsqa-more button', function (e) {
+
+            if($(this).data('next-page') > 0 ) {
+                loadGoodsBoardList('{req.bdId}','{req.goodsNo}',$(this).data('next-page'));
+            }
+
+        });
+
+        $('.js-board-goodsqa-view').on("DOMSubtreeModified", '.detail_review ul > li > div:last-child',function() {
+            if ($(this).children('#boardContent').length > 0) {
+                if ($(this).data('auth') != 'n') $(this).closest("li").addClass("selected");
+            }
+        });
+    });
+
+
+    //-->
+</script>
+<!--{/}-->

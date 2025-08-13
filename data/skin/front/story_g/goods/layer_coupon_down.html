@@ -1,0 +1,159 @@
+{*** 쿠폰 다운받기 레이어 | goods/layer_coupon_down.php ***}
+<!-- 쿠폰 다운받기 레이어 -->
+<div class="box coupon-down-layer">
+    <div class="view">
+        <h2>{=__('쿠폰 다운받기')}</h2>
+
+        <!--{ ? gd_is_login() === false }-->
+        <p>{=__('로그인하셔야 본 서비스를 이용하실 수 있습니다.')}</p>
+        <div class="btn">
+            <button class="skinbtn point1 layer-close btn-close"><em>{=__('취소')}</em></button>
+        </div>
+        <!--{ : }-->
+        <p>{=__('다운로드 가능한 총')} <strong class="goods-coupon-cnt"><!--{ goodsCouponCnt }-->{=__('개%s의 쿠폰이 있습니다.', '</strong>')}</p>
+
+        <div class="scroll-box">
+            <div class="table1">
+                <table>
+                    <colgroup>
+                        <col style="width:151px"/>
+                        <col/>
+                        <col/>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>{=__('쿠폰')}</th>
+                        <th>{=__('혜택')}</th>
+                        <th>{=__('다운받기')}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--{ @ goodsCouponArrData }-->
+                    <tr>
+                        <td class="ta-c">
+                            <strong>{ .couponNm }</strong>
+                            <!--<span class="coupon-icon">55,000<b>원</b></span>-->
+                        </td>
+                        <td class="guide">
+                            <strong>{ convertCouponArrData[.key_].couponBenefit } { convertCouponArrData[.key_].couponKindType }</strong>
+                            <div class="msg">
+                                <!--{ ? convertCouponArrData[.key_].couponMaxBenefit }-->
+                                <span>- { convertCouponArrData[.key_].couponMaxBenefit }</span>
+                                <!--{ / }-->
+                                <!--{ ? convertCouponArrData[.key_].couponMinOrderPrice }-->
+                                <span>- { convertCouponArrData[.key_].couponMinOrderPrice }</span>
+                                <!--{ / }-->
+                                <span>- <!--{ convertCouponArrData[.key_].couponApplyDuplicateType }--></span>
+                            </div>
+                        </td>
+                        <td class="ta-c">
+                            <!--{ ? .chkMemberCoupon == 'NO_MEMBER_GROUP' }-->
+                            <strong class="completed">{=__('해당 회원등급이 아닙니다.')}</strong>
+                            <!--{ : .chkMemberCoupon == 'DUPLICATE_COUPON' }-->
+                            <strong class="completed">{=__('발급완료')}</strong>
+                            <!--{ : .chkMemberCoupon == 'YES' }-->
+                            <button class="normal-btn small1 btn-coupon-down" data-coupon-no="{ .couponNo }">
+                                <em>{=__('쿠폰 다운받기')}<img class="down" src="../img/etc/down.png" alt="{=__('쿠폰 다운받기')}"/></em></button>
+                            <div class="msg">
+                                <span>(<!--{ convertCouponArrData[.key_].useEndDate }-->)</span>
+                            </div>
+                            <!--{ / }-->
+                        </td>
+                    </tr>
+                    <!--{ / }-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="btn">
+            <button class="skinbtn point1 layer-close btn-close"><em>{=__('취소')}</em></button>
+            <button id="btnAllCouponDown" class="skinbtn point2 lcd-allcoupondown"><em>{=__('쿠폰 전체 다운받기')}</em></button>
+        </div>
+        <!--{ / }-->
+        <button title="{=__('닫기')}" class="close" type="button">{=__('닫기')}</button>
+    </div>
+</div>
+<!--//쿠폰 다운받기 레이어 -->
+<!--{ ? gd_is_login() !== false }-->
+<script type="text/javascript">
+    <!--
+    $(document).ready(function () {
+        $('.btn-coupon-down').click(function (e) {
+            var displayBtn = $(this).parent('td');
+            var couponNo = $(this).data('coupon-no');
+            var params = {
+                couponNo: couponNo,
+                mode: 'coupon_down',
+                goodsNo: '{goodsNo}',
+                scmNo: '{scmNo}',
+                brandCd: '{brandCd}'
+            };
+            $.ajax({
+                method: "POST",
+                cache: false,
+                url: "../goods/layer_coupon_ps.php",
+                data: params,
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    alert(data['message']);
+                    if(data['code'] == 200) {
+                        var textMsg = '<strong class="completed">{=__("발급완료")}</strong>';
+                        displayBtn.html(textMsg);
+                        $('.goods-coupon-cnt').html(__('%1$i개', data['goodsCouponCnt']));
+                    }   else {
+                        var textMsg = '<strong>{=__("발급불가")}</strong>';
+                        displayBtn.find('button').remove();
+                        displayBtn.prepend(textMsg);
+                    }
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        });
+        $('#btnAllCouponDown').click(function (e) {
+            var couponArrData = [];
+            $('.btn-coupon-down').each(function (index,item){
+                couponArrData.push($(item).data('coupon-no'));
+            });
+            var countCoupon = couponArrData.length;
+            if(countCoupon > 0){
+                var params = {
+                    couponNo: couponArrData,
+                    mode: 'coupon_down_all',
+                    goodsNo: '{goodsNo}',
+                    scmNo: '{scmNo}',
+                    brandCd: '{brandCd}'
+                };
+                $.ajax({
+                    method: "POST",
+                    async: false,
+                    cache: false,
+                    url: "../goods/layer_coupon_ps.php",
+                    data: params,
+                    dataType: 'json',
+                    success: function (data) {
+                        alert(data['message']);
+                        $('.goods-coupon-cnt').html(__('%1$i개', data['goodsCouponCnt']));
+                        couponDownLayerClose();
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+            } else {
+                alert("{=__('발급 가능 쿠폰이 없습니다.')}");
+                return false;
+            }
+        });
+    });
+    function couponDownLayerClose() {
+        $('#couponDownLayer').closest('.layer-wrap').addClass('dn');
+        $('#layerDim').addClass('dn');
+        $('html').removeClass('oh-space');
+        $('#scroll-left, #scroll-right').removeClass('dim');
+    }
+    //-->
+</script>
+<!--{ / }-->

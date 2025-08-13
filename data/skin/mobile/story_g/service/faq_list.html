@@ -1,0 +1,166 @@
+{*** FAQ | service/faq_list.php ***}
+{ # header }
+<div class="contents-inner cs-page">
+    <section id="boardlist" class="content boardlist">
+        <form name="frmList" id="frmList" action="faq_list.php" method="get">
+
+            <div class="search">
+                <input type="hidden" name="searchField" value="all">
+                <input type="hidden" name="isBest" value="{req.isBest}">
+                <input type="hidden" name="category" value="{req.category}">
+                <input type="search" name="searchWord" style="height:35px;width:100%;" placeholder="{=__('검색 단어를 입력해 주세요.')}" value="{=req.searchWord}">
+                <div class="search-button">
+                    <button type="submit">{=__('검 색')}</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="select-small-outer inp_sel" style="margin:0px 10px 0 10px;">
+            <select name="category" class="tune select-small">
+                <!--{ @ faqCode }-->
+                <option value="{.key_}" <!--{ ? req.category == .key_ }-->selected<!--{/}-->>{=__(.value_)}</option>
+                <!--{/}-->
+            </select>
+        </div>
+        <!--{ ? req.isBest == 'y'}-->
+        <h2 class="title01" style="padding-left:10px">BEST FAQ</h2>
+        <!--{/}-->
+        <div class="faqtable">
+            <table class="board-table" id="faq-list">
+                <tbody>
+                <!--{ ? faqList.data }-->
+                <!--{ @ faqList.data }-->
+                <tr class="data-row">
+                    <td class="title">
+                        <div class="subject-text js-link-subject" data-sno="{.sno}">
+                            [{.categoryNm}]
+                            {.subject}
+                        </div>
+                    </td>
+                </tr>
+                <!--{/}-->
+                <!--{:}-->
+                <tr class="data-row">
+                    <td class="title">
+                        <div class="subject-text">
+                            {=__('검색결과가 없습니다.')}
+                        </div>
+                    </td>
+                </tr>
+                <!--{/}-->
+                </tbody>
+            </table>
+        </div>
+
+        <!--{ ? faqList.totalCount > 10}-->
+        <div class="block-pd more-btn">
+            <button type="button" class="more-btn btn-gray btn-w btn js-more-btn" data-page="1">{=__('더보기')}</button>
+        </div>
+        <!--{/}-->
+    </section>
+</div>
+{ # footer }
+<script>
+    $(document).ready(function () {
+        var totalCount = {faqList.totalCount};
+        var loaderImg = "<img src='\{=c.PATH_MOBILE_SKIN}js/slider/slick/ajax-loader.gif' class='js-ajax-loader'>";
+        $('.js-more-btn').bind('click', function () {
+            var thisObj = $(this);
+            var currentPage = thisObj.data('page') + 1;
+            params = $("#frmList").serialize() + '&page=' + currentPage;
+            $('#faq-list tbody').append(loaderImg);
+            $.ajax({
+                method: "get",
+                url: "./faq_list.php",
+                data: params,
+                async: true,
+                dataType: 'json'
+            }).success(function (data) {
+                if (data == '') {
+                    alert("{=__('더 이상 FAQ가 없습니다.')}");
+                    return;
+                }
+                thisObj.data('page', currentPage);
+
+                $.each(data, function (key, val) {
+                    var faqRow = _.template($('#faq-row').html())(val);
+                    $('#faq-list tbody').append(faqRow);
+                })
+                $('.js-link-subject').css('cursor','pointer');
+                $('.js-ajax-loader').remove();
+
+                if (parseInt(totalCount / 10) < currentPage) {
+                    $('.js-more-btn').hide();
+                }
+            }).error(function (e) {
+                alert(e.responseText);
+            });
+        })
+
+        $('body').on('click', '.js-link-subject', function () {
+            var thisObj = $(this);
+            var sno = thisObj.data('sno');
+
+            $('.js-link-subject').css('font-weight', 'normal');
+            if (thisObj.closest('.data-row').find('.js-contents').length > 0) {
+                if(thisObj.closest('.data-row').find('.js-contents').is(':visible')){
+                    thisObj.closest('.data-row').find('.js-contents').hide();
+                }
+                else {
+                    thisObj.closest('.data-row').find('.js-contents').show();
+                    thisObj.css('font-weight', 'bold');
+                }
+
+                return;
+            }
+            else {
+                thisObj.after(loaderImg);
+                thisObj.css('font-weight', 'bold');
+            }
+            $.ajax({
+                method: "get",
+                url: "./faq_list.php",
+                data: {mode: 'getAnswer', sno: sno},
+                async: true,
+                dataType: 'json'
+            }).success(function (data) {
+                var faqContents = _.template($('#faq-contents').html())(data);
+                thisObj.after(faqContents);
+                $('.js-smart-img').css('max-width', '100%');
+                $('.js-ajax-loader').remove();
+            }).error(function (e) {
+                alert(e.responseText);
+            });
+        });
+
+        $('.js-link-subject').css('cursor','pointer');
+
+        $('select[name=category]').bind('change', function () {
+            self.location.href='faq_list.php?category='+$(this).val();
+        });
+    })
+</script>
+
+<script type="text/template" id="faq-contents">
+    <div class="contents-text js-contents">
+        <div class="faq-row faq-q">
+            <div class="faqicon qtype">Q</div>
+            <div class="contents"><%=questionContents%></div>
+        </div>
+        <div class="faq-row faq-a">
+            <div class="faqicon atype">A</div>
+            <div class="contents"><%=answerContents%></div>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="faq-row">
+    <tr class="data-row">
+        <td class="title">
+            <div class="subject-text js-link-subject" data-sno="<%=sno%>">
+                [<%=categoryNm%>]
+                <%=subject%>
+            </div>
+        </td>
+    </tr>
+</script>

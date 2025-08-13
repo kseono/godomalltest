@@ -1,0 +1,103 @@
+{*** 플러스리뷰 전체 게시판 | board/plus_review_article.php ***}
+{ # header}
+<form id="searchForm">
+<div class="plus_review_goods_option">
+    <div class="inp_sel">
+        <select name="sort">
+            <option value="regDt desc">최신순</option>
+            <option value="goodsPt desc">평점순</option>
+            <option value="recommend desc">추천순</option>
+        </select>
+    </div>
+    <div class="inp_sel">
+        <select name="cateGoods[]">
+            <option value="">=카테고리선택=</option>
+            <!--{@ category}-->
+            <option value="{=.cateCd}">{=.cateNm}</option>
+            <!--{/}-->
+        </select>
+    </div>
+</div>
+</form>
+<!--{ ? plusReviewConfig.addFormSearchFl == 'y' }-->
+<div class="plus_review_add_search">
+    <a href="javascript:void(0);" onclick="gd_search_layer()"><span>{= plusReviewConfig.addFormSearchTitle}</span><span class="arrow"></span></a>
+</div>
+<!--{ / }-->
+<link type="text/css" rel="stylesheet" href="\{=c.PATH_MOBILE_SKIN}css/gd_plus_review.css?ts={=time()}">
+<div class="plus-review-list">
+    <ul class="js-pr-list">
+
+    </ul>
+    <div class="block-pd more-btn">
+        <button type="button" class="more-btn btn-gray btn js-pr-btn-page-more">{=__('상품후기 더보기')}</button>
+    </div>
+</div>
+{ # footer}
+<script>
+    var page = 1;
+    var isMypage = '{=isMypage}';
+
+    $(document).ready(function () {
+        loadPlusReviewList(1);
+
+        $('.js-pr-btn-page-more').bind('click',function () {
+            page=Number(page)+1;
+            var searchFormData = $("#searchForm").serialize();
+            loadPlusReviewList(page,$labelValueArry,false,searchFormData);
+        })
+
+        $('select[name=\'sort\'], select[name=\'cateGoods[]\']').change(function() {
+            page=1;
+            var searchFormData = $("#searchForm").serialize();
+            loadPlusReviewList(page,$labelValueArry,true,searchFormData);
+        });
+    })
+
+    var loadPlusReviewList = function (page,addForm,reload,searchFormData) {
+        $.ajax({
+            url: '../board/plus_review_article_more_list.php',
+            data: {page: page,isMypage : isMypage,addForm:addForm, searchFormData :searchFormData},
+            method: 'get',
+            type: 'text',
+            cache: false,
+        }).success(function (result) {
+            if(reload){
+                $('.js-pr-list').html(result);
+            }else{
+                $('.js-pr-list').append(result);
+            }
+
+            if ($('.js-pr-list').find('.no-data').length > 0) {
+                $('.js-pr-btn-page-more').hide();
+            } else {
+                $('.js-pr-btn-page-more').show();
+            }
+        }).error(function (e) {
+            console.log(e);
+        });
+    }
+
+    var $labelValueArry = [];
+    var gd_search_layer = function(){
+        var params = {
+            addForm : $labelValueArry,
+        };
+        $('#popupAlikeSearch').modal({
+            remote: '../board/plus_review_search.php',
+            cache: false,
+            params: params,
+            type : 'GET',
+            show: true
+        });
+    }
+    var gd_search_add_form = function(){
+        page=1;
+        var searchFormData = $("#searchForm").serialize();
+        loadPlusReviewList(page,$labelValueArry,true,searchFormData);
+    }
+    function gd_blocked_board() {
+        alert('차단 한 회원의 게시물로 내용을 확인할 수 없습니다.');
+        return false;
+    }
+</script>

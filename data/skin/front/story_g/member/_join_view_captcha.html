@@ -1,0 +1,36 @@
+{*** [위젯] 회원가입/자동등록 방지 | member/_join_view_captcha.html ***}
+<!--{? joinField.captcha.use == 'y'}-->
+<div class="tit">
+    <h3>{=__('자동등록방지')}</h3>
+</div>
+<div class="table1 gd_member_option_table">
+    <table>
+        <colgroup>
+            <col style="width:163px;">
+            <col>
+        </colgroup>
+        <tbody>
+        <tr>
+            <th class="ta-l">{=__('자동등록방지')}</th>
+            <td>
+                <div class="capcha">
+                    <div class="capcha-img">
+                        <img src="./captcha.php" align="absmiddle" id="captchaImg"/>
+                    </div>
+                    <div class="capcha-body">
+                        <div class="capcha-text">
+                            <p class="pre">{=__('보이는 순서대로 %s숫자 및 문자를 모두 입력해 주세요.', '<br/>')}</p>
+                        </div>
+                        <div class="txt-field hs" style="width:105px;">
+                            <input type="text" class="text captcha" name="captchaKey" maxlength="5" onKeyUp="javascript:this.value=this.value.toUpperCase();" onfocus="this.select()" label="{=__('자동등록방지문자')}">
+                        </div>
+                        <button type="button" id="reload_captcha" class="normal-btn small1 captchareload"><em><img src="img/etc/icon-reset.png" alt="" class="va-m"> {=__('이미지 새로고침')}</em>
+                        </button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!--{ / }-->

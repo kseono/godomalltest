@@ -1,0 +1,62 @@
+{*** 주문 선택 레이어 | share/layer_order_select.php ***}
+<div class="box goods-select-layer order layer-size-h-a">
+    <div class="view">
+        <h2> {=__('리뷰 주문내역')}</h2>
+        <div class="scroll-area">
+            <div id="ajaxSearchResult" style="padding:0px">
+            </div>
+        </div>
+        <div class="btn" style="float:none">
+            <button class="skinbtn point1 layer-close btn-close"><em>{=__('취소')}</em></button>
+            <button id="btnAllCouponDown" class="skinbtn point2 btn-m js-select-confirm"><em>{=__('확인')}</em></button>
+        </div>
+        <button title="{=__('닫기')}" class="close" type="button">{=__('닫기')}</button>
+    </div>
+</div>
+<script type="text/javascript" src="\{=c.PATH_SKIN}js/moment/moment.js"></script>
+<script type="text/javascript" src="\{=c.PATH_SKIN}js/moment/locale/ko.js"></script>
+<script>
+
+    $(document).ready(function () {
+        var goodsNo = '{=req.goodsNo}';
+        var mode = '{=req.mode}';
+        params = {goodsNo: goodsNo , mode : mode};
+        $.ajax({
+            method: "get",
+            url: "../share/layer_review_order_search.php",
+            data: params,
+            dataType: 'text'
+        }).success(function (data) {
+            $('#ajaxSearchResult').html(data);
+        }).error(function (e) {
+            console.log(e.responseText);
+        });
+
+        /**
+         * 주문선택
+         */
+        $('.js-select-confirm').bind('click', function () {
+            if ($('#frmSelect input[type=radio][name="orderGoodsNo[]"]:checked').length < 1) {
+                alert("{=__('주문을 선택해주세요.')}");
+                return;
+            }
+            var checkedOrderGoodsNo = $('#frmSelect input[name="orderGoodsNo[]"]:checked').val();
+            setAddOrder(checkedOrderGoodsNo);
+            closeLayer();
+        })
+    })
+
+    function goAjaxPaging(page) {
+        $.ajax({
+            method: "get",
+            url: "../share/layer_review_order_search.php",
+            data: page,
+            dataType: 'text'
+        }).success(function (data) {
+            $('#ajaxSearchResult').html(data);
+            console.log(data);
+        }).error(function (e) {
+            alert(e.responseText);
+        });
+    }
+</script>

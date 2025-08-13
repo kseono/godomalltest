@@ -1,0 +1,214 @@
+{*** [위젯] 회원가입/정보 기본 | member/_join_view.html ***}
+<div class="form-ui account_content">
+{?joinField.businessinfo.use == 'y' && !isMyPage}
+<div class="input_wrap">
+    <div class="input_title">{=__('회원종류')}</div>
+    <div class="input_content">
+        <span class="inp_rdo">
+            <input type="radio" class="radio ignore sp" id="memberFlDefault" name="memberFl" value="personal" checked="checked"/>
+            <label for="memberFlDefault" class="choice on">{=__('개인회원')}</label>
+            <input type="radio" class="radio ignore sp" id="memberFlBusiness" name="memberFl" value="business"/>
+            <label for="memberFlBusiness" class="choice">{=__('사업자회원')}</label>
+        </span>
+   </div>
+</div>
+{/}
+<div class="input_wrap">
+    <div class="input_title">{=__('아이디')}</div>
+    {? isMyPage}
+    <div class="input_content va-m">
+        <input type="hidden" name="memId" value="{data.memId}"/>
+        <span class="input-font-m">{data.memId}</span>
+    </div>
+    {:}
+    <div class="input_content">
+        <label for="memId"></label>
+        <input type="text" name="memId" id="memId" data-pattern="gdMemberId" class="input-text wp100" { ? isGoogleJoin }readonly{ / }/>
+    </div>
+    {/}
+</div>
+<div class="input_wrap { ? isPaycoJoin || isThirdParty || isNaverJoin || isKakaoJoin || isWonderJoin || isAppleJoin || isGoogleJoin }dn{ / }">
+    <div class="input_title">{=__('비밀번호')}</div>
+    {? isMyPage}
+    <div class="input_content">
+        {? useSnsLogin == 'n' }
+        <button class="btn btn_gr btn-passch" id="btnPassword">
+            {=__('비밀번호 변경')}
+        </button>
+        { : }
+        <button class="btn btn_gr btn-passch" id="btnPassword">
+            {=__('비밀번호 설정')}
+        </button>
+        { / }
+        <div class="password-reset m2 dn">
+            <div class="input-item { ? isEmptyPassword } dn { / }">
+                <label for="currentPassword" class="input_title">
+                    {=__('현재 비밀번호')}
+                </label>
+                <input type="password" id="currentPassword" name="oldMemPw" class="input-text wp100"/>
+            </div>
+            <div class="input-block">
+                <label for="newPassword" class="input_title">
+                    {=__('새 비밀번호')}
+                </label>
+                <input type="password" id="newPassword" name="memPw" class="input-text wp100"/>
+            </div>
+            <div class="input-block">
+                <label for="newPasswordCheck" class="input_title">
+                    {=__('새 비밀번호 확인')}
+                </label>
+                <input type="password" id="newPasswordCheck" name="memPwRe" class="input-text wp100"/>
+            </div>
+        </div>
+    </div>
+    {:}
+    <div class="input_content">
+        <input type="password" id="newPassword" name="memPw" class="input-text wp100" autocomplete="off" placeholder="{=__('영문대/소문자, 숫자, 특수문자 중 2가지 이상 조합하세요')}"/>
+    </div>
+    {/}
+</div>
+{? !isMyPage}
+<div class="input_wrap { ? isPaycoJoin || isThirdParty || isNaverJoin || isKakaoJoin || isWonderJoin || isAppleJoin || isGoogleJoin }dn{ / }">
+    <div class="input_title">{=__('비밀번호확인')}</div>
+    <div class="input_content">
+        <label>
+            <input type="password" class="input-text wp100 check-id" name="memPwRe" autocomplete="off">
+        </label>
+    </div>
+</div>
+{/}
+<div class="input_wrap">
+    <div class="input_title">{=__('이름')}</div>
+    <div class="input_content">
+        <label>
+            <input type="text" class="input-text wp100" name="memNm" data-pattern="gdMemberNmGlobal" value="{data.memNm}" maxlength="30" {data.authReadOnly}>
+        </label>
+    </div>
+</div>
+<!--{? joinField.pronounceName.use == 'y'}-->
+<div class="input_wrap">
+    <div class="input_title">{=__('이름')}({=__('발음')})</div>
+    <div class="input_content">
+        <label>
+            <input type="text" class="input-text wp100" name="pronounceName" data-pattern="{? gGlobal['isFront']}gdMemberNmGlobal{:}gdEngKor{/}" value="{data.pronounceName}" maxlength="30">
+        </label>
+    </div>
+</div>
+<!--{/}-->
+<!--{? joinField.nickNm.use == 'y'}-->
+<div class="input_wrap">
+    <div class="input_title">{=__('닉네임')}</div>
+    <div class="input_content">
+        <label></label>
+        <input type="text" class="input-text wp100" name="nickNm" maxlength="30" value="{data.nickNm}">
+    </div>
+</div>
+<!--{/}--><!--{? joinField.email.use == 'y'}-->
+    <div class="input_wrap">
+        <div class="input_title">{=__('이메일')}</div>
+        <div class="input_content">
+            <label for="email"></label>
+            <input type="text" class="input-text wp100 input_email" name="email" id="email" value="{data.email}">
+            <div class="email_select_box">
+                <select id="emailDomain" name="emailDomain" class="email_select">
+                    <!--{@ emailDomain}-->
+                    <option value="{.key_}">{.value_}</option>
+                    <!--{/}-->
+                </select>
+            </div>
+        </div>
+    </div>
+<div class="input_wrap">
+    <div class="input_title"></div>
+    <div class="input_content">
+        <!--{? joinField.maillingFl.use === 'y'}-->
+        <div class="description chk">
+            <span class="inp_chk">
+                <input type="checkbox" class="checkbox sp" id="maillingFl" name="maillingFl" value="y" {? data.maillingFl==
+                'y'}checked="checked"{/}>
+                <label for="maillingFl">{=__('정보/이벤트 메일 수신에 동의합니다.')}</label>
+            </span>
+        </div>
+        <!--{/}-->
+        <div class="description_wrap">
+            <div class="description">※ {=__('아이디 비밀번호 찾기에 활용 되므로 정확하게 입력해 주세요')}</div>
+        </div>
+    </div>
+</div>
+<!--{/}--><!--{? joinField.cellPhone.use == 'y'}-->
+<div class="input_wrap">
+    <div class="input_title">{=__('휴대폰번호')}</div>
+    <div class="input_content">
+        <!--{ ? gGlobal.isFront }-->
+        <div class="select-small-outer input-in-block">
+        <div class="inp_sel">
+            {=gd_select_box('cellPhoneCountryCode', 'cellPhoneCountryCode', countryPhone, null, data.cellPhoneCountryCode, __('국가코드'), null, 'tune select-small')}
+        </div>
+        </div>
+        <!--{ / }-->
+        <div class="input-in-block">
+            <input type="text" id="cellPhone" name="cellPhone" class="input-text" maxlength="11" placeholder="{=__('- 없이 입력하세요')}" data-pattern="gdNum" value="{data.cellPhone}" {data.authReadOnly}>
+        </div>
+        <!--{? isMyPage}-->
+        <!--{ ? data.authReadOnly != '' }-->
+        <div class="input-in-block">
+            <button class="btn post-search" type="button" id="btnAuthPhone" style="width: 180px">
+                <em>휴대폰번호 변경</em>
+            </button>
+        </div>
+        <!--{ / }-->
+        <!--{ / }-->
+        <!--{? joinField.smsFl.use === 'y'}-->
+        <div class="description chk">
+            <span class="inp_chk">
+                <input type="checkbox" class="checkbox sp" id="smsFl" name="smsFl" value="y" {? data.smsFl==
+                'y'}checked="checked"{/}>
+                <label for="smsFl">{=__('정보/이벤트 SMS 수신에 동의합니다.')}</label>
+            </span>
+        </div>
+        <!--{/}-->
+    </div>
+</div>
+<!--{/}--><!--{? joinField.phone.use == 'y'}-->
+<div class="input_wrap">
+    <div class="input_title">{=__('전화번호')}</div>
+    <div class="input_content">
+        <!--{ ? gGlobal.isFront }-->
+        <div class="select-small-outer input-in-block">
+            <div class="inp_sel">
+                {=gd_select_box('phoneCountryCode', 'phoneCountryCode', countryPhone, null, data.phoneCountryCode, __('국가코드'), null, 'tune select-small')}
+            </div>
+        </div>
+        <!--{ / }-->
+        <div class="input-in-block">
+            <input type="text" id="phone" name="phone" class="input-text" maxlength="12" placeholder="{=__('- 없이 입력하세요')}" data-pattern="gdNum" value="{data.phone}">
+        </div>
+    </div>
+</div>
+<!--{/}--><!--{? joinField.address.use == 'y'}-->
+<div class="input_wrap">
+    <div class="input_title">{=__('주소')}</div>
+    <div class="input_content input_address">
+        <div class="zipcode-block">
+            <div class="zipcode-flex">
+                <label class="zipcode">
+                    <input type="text" class="text" name="zonecode" readonly="readonly" value="{? data.zonecode == ''}{data.zipcode}{:}{data.zonecode}{/}">
+                </label>
+                <input type="hidden" name="zipcode" value="{data.zipcode}">
+            </div>
+            <div class="zipcode-fix">
+                <button class="btn btn_gr post-search" type="button" id="btnPostcode">
+                    <em class="h35 arrow">{=__('우편번호')}</em>
+                </button>
+            </div>
+        </div>
+        <div class="zipcode-block">
+            <input type="text" class="input-text wp100" name="address" readonly="readonly" value="{data.address}">
+        </div>
+        <div class="zipcode-block">
+            <input type="text" class="input-text wp100" name="addressSub" value="{data.addressSub}">
+        </div>
+    </div>
+</div>
+<!--{/}-->
+</div>

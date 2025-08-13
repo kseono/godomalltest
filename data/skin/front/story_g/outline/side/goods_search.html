@@ -1,0 +1,94 @@
+{*** 측면 상품검색 | goods/goods_search.php ***}
+
+<!--{ ?  (in_array('keyword',goodsConfig.searchType) && count(goodsConfig.searchType) ==1)  }-->
+<style>
+    #side {width:0px; }
+</style>
+<!--{ : }-->
+<div class="lnb search-lnb" >
+    <form  method="post">
+        <fieldset  id="frmSearchDetail">
+            <!--{ ? search['quickBrandGoods'] }-->
+            <!--{ @ search['quickBrandGoods'] }-->
+            <!--{ ? .value_ }-->
+            <input type="hidden" name="quickBrandGoods[]" value="{=.value_}">
+            <!--{ / }-->
+            <!--{ / }-->
+            <!--{ / }-->
+            <legend>{=__('선택형 검색폼')}</legend>
+            <!--{ ?  in_array('category',goodsConfig.searchType) }-->
+            <div class="category">
+                <h2>{=__('카테고리')}</h2>
+                {=cateDisplay}
+            </div>
+            <!--{ / }-->
+            <!--{ ?  in_array('brand',goodsConfig.searchType)  && goodsData.listSearch.brandSearchList && paycosearchUse == false }-->
+            <div class="brand">
+                <h2>{=__('브랜드')}</h2>
+                <!--{ @ goodsData.listSearch.brandSearchList }-->
+                <!--{ ?  .brandNm && .brandCnt }-->
+                <div class="form-element">
+                    <input type="checkbox" id="brand_{.brandCd}" name="brand[]" class="checkbox" value="{.brandCd}"  <!--{ ?  is_array(search.brand) && in_array(.brandCd,search.brand) }--> checked='checked'   <!--{ / }--> <!--{ ?  .disabledFl }--> disabled='disabled'<!--{ / }-->>
+                    <label for="brand_{.brandCd}" class="check-s <!--{ ?  is_array(search.brand) && in_array(.brandCd,search.brand) }--> on <!--{ / }-->">{.brandNm} ({.brandCnt})</label>
+                </div>
+                <!--{ / }-->
+                <!--{ / }-->
+            </div>
+            <!--{ / }-->
+            <!--{ ?  (in_array('delivery',goodsConfig.searchType)  || in_array('regdt',goodsConfig.searchType)) && paycosearchUse == false  }-->
+            <div class="favor">
+                <h2>{=__('혜택')}/{=__('조건')}</h2>
+				<!--{ ?  in_array('delivery',goodsConfig.searchType)   }-->
+                <div class="form-element">
+                    <input type="checkbox" id="freeDelivery"  name="freeDelivery" value="y" class="checkbox" <!--{ ? search.freeDelivery == 'y'  }--> checked='checked'   <!--{ / }-->>
+                    <label for="freeDelivery" class="check-s  <!--{ ? search.freeDelivery == 'y'  }--> on   <!--{ / }-->">{=__('무료배송')}</label>
+                </div>
+				<!--{ / }-->
+				<!--{ ?  in_array('regdt',goodsConfig.searchType)  }-->
+                <div class="form-element">
+                    <input type="checkbox" id="newGoods"  name="newGoods" value="y" class="checkbox"  <!--{ ? search.newGoods == 'y'  }--> checked='checked'   <!--{ / }-->>
+                    <label for="newGoods" class="check-s   <!--{ ? search.newGoods == 'y'  }--> on <!--{ / }-->">{=__('최근등록상품')}</label>
+                </div>
+				<!--{ / }-->
+            </div>
+			<!--{ / }-->
+            <!--{ ?  in_array('color',goodsConfig.searchType) && paycosearchUse == false }-->
+            <div class="color">
+                <h2>{=__('색상')}</h2>
+						<!--{ @ goodsColorList}-->
+						<span class="form-element">
+							<input type="checkbox" id="searchColor{.value_}"  class="checkbox"  name="goodsColor[]"  value="{.value_}" <!--{ ?  is_array(search.goodsColor) && in_array(.value_,search.goodsColor) }--> checked='checked'   <!--{ / }--> >
+							<label for="searchColor{.value_}" class="check-s <!--{ ?  is_array(search.goodsColor) && in_array(.value_,search.goodsColor) }--> on <!--{ / }--> <!--{ ?  .value_ == 'FFFFFF' }--> color-white  <!--{ / }--> "  <!--{ ?  .value_ != 'FFFFFF' }-->style="background:#{.value_}" <!--{ / }--> title="{.value_}">{.value_}</label>
+						</span>
+						<!--{ / }-->
+            </div>
+			<!--{ / }-->
+			<!--{ ?  in_array('price',goodsConfig.searchType) }-->
+            <div class="price">
+                <h2>{=__('가격')}</h2>
+                <div class="direct">{=gd_global_currency_symbol()}
+                    <span class="txt-field hs"><input type="text" name="goodsPrice[]" class="text" value="{=search.goodsPrice[0]}"></span> ~ <br />
+                    <span class="txt-field hs"><input type="text" name="goodsPrice[]" class="text" value="{=search.goodsPrice[1]}"></span> {=gd_global_currency_string()}
+                </div>
+            </div>
+			<!--{ / }-->
+            <!--{ ?  in_array('icon',goodsConfig.searchType) && paycosearchUse == false }-->
+            <div class="icons">
+                <h2>{=__('아이콘')}</h2>
+                <!--{ @ goodsIconList }-->
+                <!--{ ? .iconImage }-->
+                <span class="form-element icon-side-check">
+                    <input type="checkbox" id="searchIcon{.sno}"  class="checkbox"  name="goodsIcon[{.iconPeriodFl}][]"  value="{.iconCd}" <!--{ ? is_array(search.goodsIcon) && is_array(search.goodsIcon[.iconPeriodFl]) && in_array(.iconCd,search.goodsIcon[.iconPeriodFl]) }--> checked='checked'   <!--{ / }--> >
+                    <label for="searchIcon{.sno}" class="check-s <!--{ ? is_array(search.goodsIcon) && is_array(search.goodsIcon[.iconPeriodFl]) && in_array(.iconCd,search.goodsIcon[.iconPeriodFl]) }--> on <!--{ / }-->" title="{.iconNm}">{=.iconImage}</label>
+                </span>
+                <!--{ / }-->
+                <!--{ / }-->
+            </div>
+            <!--{ / }-->
+            <div class="price">
+            <button type="button" class="skinbtn base2 gs-search" id="btnSearchSubmit"><em>{=__('검색하기')}</em></button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<!--{ / }-->

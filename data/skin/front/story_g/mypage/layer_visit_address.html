@@ -1,0 +1,79 @@
+{*** 방문수령 주소 레이어 | mypage/layer_visit_address.php ***}
+<style>
+    .settle-layer{height:auto;}
+</style>
+<div class="box settle-layer">
+    <div class="view">
+        <h2>
+            {=__('상품별 방문 수령지 주소')}
+        </h2>
+        <form id="frmAddressList" name="frmAddressList">
+            <div class="table1 type1">
+            <table class="table table-rows table-fixed">
+                <colgroup>
+                    <col style="width:10%"/>
+                    <col/>
+                </colgroup>
+                <tbody>
+                <!--{ ? data }-->
+                <!--{ @ data }-->
+                <!--{ @ .value_ }-->
+                <tr>
+                    <td align="center" style="padding:5px;">{..goodsImage}</td>
+                    <td>
+                        {..goodsNmStandard}
+                        <!--{ ? ..optionInfo }-->
+                        <span style="color:#999999; font-size:11px;">
+                        <!--{ @ ..optionInfo }-->
+                            <!--{  ? ...key_ > 0}--> / <!--{ / }-->{...optionName } : {...optionValue}
+                        <!--{ / }-->
+                        </span>
+                        <!--{ / }-->
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left">방문 수령지 주소 : {..visitAddress}</th>
+                </tr>
+                <!--{ / }-->
+                <!--{ / }-->
+                <!--{ : }-->
+                <tr>
+                    <td class="center" colspan="3">검색된 페이지가 없습니다.</td>
+                </tr>
+                <!--{ / }-->
+                </tbody>
+            </table>
+            <div id="layerAddressPagination" class="center">{page->getPage()}</div>
+            </div>
+        </form>
+        <div class="btn">
+            <a href="#" class="skinbtn point2 layerboard-save btn-close"><em>{=__('확인')}</em></a>
+        </div>
+        <button title="{=__('닫기')}" class="close" type="button">{=__('닫기')}</button>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+        $('#layerAddressPagination > .pagination > ul > li > a').click(function (e) {
+            e.preventDefault();
+            var href = $(this).attr('href');
+            var page = 1;
+
+            if (href.indexOf('?') !== -1) {
+                page = href.split('?');
+                page = page[1].split('page=');
+                page = page[1].split('&');
+                page = page[0];
+            }
+
+            var params = {orderNo:'{value.orderNo}', goodsSno:'{=json_encode(value.goodsSno)}', page: page};
+
+            $.get('../mypage/layer_visit_address.php', params, function (data) {
+                $('#visitAddressLayer').html(data).find('>div').center();
+                return false;
+            });
+        });
+    });
+</script>
+
+

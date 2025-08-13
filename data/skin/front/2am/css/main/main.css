@@ -1,0 +1,22 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+#contents .sub_content{width:100%; margin:0; padding:0;}/* 메인 */
+.main_visual{overflow:hidden; width:100%;  margin:0 0 70px 0; background:#8917f3;}
+.main_slide_ban, .main_ban1, .main_ban2, .main_ban3, .main_ban4{overflow:hidden; width:1200px; margin:0 auto;}
+
+.main_ban2{margin-top:20px;}
+.main_ban2 > div{width:590px;}
+.main_ban2 > div > div{margin-top:20px;}
+.main_ban2 > div > div:first-child{margin-top:0;}
+.main_ban2 .main_ban_left{float:left;}
+.main_ban2 .main_ban_right{float:right;}
+.main_ban3{margin-top:70px;}
+.main_ban4{margin:70px auto 80px;}
+.main_ban4 > img{margin-left:30px;}
+.main_ban4 > img:first-child{margin-left:0;}
+
+.goods_list_tit{padding-top:100px;}
+
+.scroll_wrap{top:870px;}

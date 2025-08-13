@@ -1,0 +1,30 @@
+<!--{ @list }-->
+<ul class="board my_goods" data-goodsno="{.goodsNo}">
+    <li>
+        <div class="info">
+            <div class="itemhead">
+                <div class="thmb img"><img src="{.goodsImageSrc}" height="90" alt="{.goodsNm}" title="{.goodsNm}" class="middle">
+                </div>
+            </div>
+            <div class="itembody" style="height:110px;">
+                <span class="elp2">{.goodsNm}</span>
+                <strong class="prc">{=__('상품금액')} : <span class="goods-price">
+                    <!--{ ? .soldOut =='y' && soldoutDisplay.soldout_price == 'text'}-->
+                   {=soldoutDisplay.soldout_price_text}
+                    <!--{ : }-->
+                    <!--{ ? .goodsPriceString !='' }-->
+                       {.goodsPriceString}
+                    <!--{ : }-->
+                        {=gd_global_currency_symbol()}{=gd_global_money_format(.oriGoodsPrice)}{=gd_global_currency_string()}
+                    <!--{ / }-->
+                    <!--{ / }-->
+                    </span></strong>
+            </div>
+            <ul class="btn_bx">
+                <li><a href="javascript:void(0)" class="btn btn_w js-select-confirm">{=__('선택')}</a></li>
+            </ul>
+        </div>
+    </li>
+</ul>
+<!--{/}-->
+

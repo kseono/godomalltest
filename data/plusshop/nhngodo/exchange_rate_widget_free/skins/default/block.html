@@ -1,0 +1,100 @@
+<!-- plusshop dom 영역 start-->
+<link rel="stylesheet" type="text/css" href="css/block.css">
+<script src="js/block.js"></script>
+<div class="{prefix}wrap" id="{prefix}{id}" > <!-- N: 펼침형으로 설정시 {prefix}type2 클래스 추가 -->
+    <!--{? setting.widget_icon_type == 'basic_icon'}-->
+    <div class="{prefix}btn"><img src="../images/pc/icon_exchange.png" alt="환율계산기 팝업 버튼" /></div>
+    <!--{:}-->
+    <div class="{prefix}btn"><img src="{APP_SKIN_PATH}../images/custom/{pc_icon}" alt="환율계산기 커스텀 팝업 버튼" /></div>
+    <!--{/}-->
+    <div class="{prefix}layer">
+        <span class="{prefix}title">Exchange Rate<span class="{prefix}layer_close"><img src="../images/pc/icon_close.png" alt="닫기"/></span></span>
+        <div class="{prefix}select_opt_box">
+            <div class="{prefix}select_opt">
+                <!--<div class="{prefix}f_opt"><span>{ setting.base_cur_type}</span> <em class="cur"></em> <em class="{prefix}sym"></em></div>-->
+                <div class="{prefix}f_opt">
+                    <span>
+                        {? setting.base_cur_type == 'KRW'}
+                            {? global_mall === true}South Korea{:}대한민국{/}
+                        </span> <span class="{prefix}cur">KRW
+                        {: setting.base_cur_type == 'USD'}
+                            {? global_mall === true}United States{:}미국{/}
+                        </span> <span class="{prefix}cur">USD
+                        {: setting.base_cur_type == 'CNY'}
+                            {? global_mall === true}China{:}중국{/}
+                        </span> <span class="{prefix}cur">CNY
+                        {: setting.base_cur_type == 'JPY'}
+                            {? global_mall === true}Japan{:}일본{/}
+                        </span> <span class="{prefix}cur">JPY
+                        {: setting.base_cur_type == 'EUR'}
+                            {? global_mall === true}Europe{:}유럽{/}
+                        </span> <span class="{prefix}cur">EUR
+                        {/}
+                    </span> <span class="{prefix}sym">\</span></div><!-- 2018-03-13 수정 -->
+                <select class="{prefix}ps_ex_base_cur_type">
+                    <option data-value="KRW" {? setting.base_cur_type == 'KRW' }selected{/}>
+                    {? global_mall === true}South Korea KRW (￦){:}대한민국 KRW (￦){/}</option>
+                    <option data-value="USD" {? setting.base_cur_type == 'USD' }selected{/}>
+                    {? global_mall === true}United States USD ($){:}미국 USD ($){/}</option>
+                    <option data-value="CNH" {? setting.base_cur_type == 'CNY' }selected{/}>
+                    {? global_mall === true}China CNY (￥){:}중국 CNY (￥){/}</option>
+                    <option data-value="JPY" {? setting.base_cur_type == 'JPY' }selected{/}>
+                    {? global_mall === true}Japan JPY (￥){:}일본 JPY (￥){/}</option>
+                    <option data-value="EUR" {? setting.base_cur_type == 'EUR' }selected{/}>
+                    {? global_mall === true}Europe EUR (€){:}유럽 EUR (€){/}</option>
+                </select>
+                <input type="text" onchange="" class="{prefix}input_txt {prefix}exh_input {prefix}ps_ex_widget_cost" maxlength="10" placeholder="1.0"/><span class="{prefix}btn_del">삭제</span><!-- 2018-03-13 수정 -->
+                <!--<input type="text" id="ps_ex_widget_cost" class="{prefix}input_txt {prefix}exh_input" maxlength="10"/><em class="{prefix}btn_del">삭제</em>-->
+            </div>
+            <div class="{prefix}select_opt">
+                <div class="{prefix}f_opt">
+                    <span>
+                        {? setting.exchange_cur_type == 'KRW'}
+                            {? global_mall === true}South Korea{:}대한민국{/}
+                        </span> <span class="{prefix}cur">KRW
+                        {: setting.exchange_cur_type == 'USD'}
+                            {? global_mall === true}United States{:}미국{/}
+                        </span> <span class="{prefix}cur">USD
+                        {: setting.exchange_cur_type == 'CNY'}
+                            {? global_mall === true}China{:}중국{/}
+                        </span> <span class="{prefix}cur">CNY
+                        {: setting.exchange_cur_type == 'JPY'}
+                            {? global_mall === true}Japan{:}일본{/}
+                        </span> <span class="{prefix}cur">JPY
+                        {: setting.exchange_cur_type == 'EUR'}
+                            {? global_mall === true}Europe{:}유럽{/}
+                        </span> <span class="{prefix}cur">EUR
+                        {/}
+                </span> <span class="{prefix}sym">\</span></div><!-- 2018-03-13 수정 -->
+                <!--<div class="{prefix}f_opt"><span>{ setting.exchange_cur_type}</span> <em class="cur">KRW</em> <em class="{prefix}sym">\</em></div>-->
+                <select class="{prefix}ps_ex_exchange_cur_type">
+                    <option data-value="KRW" {? setting.exchange_cur_type == 'KRW' }selected{/}>
+                    {? global_mall === true}South Korea KRW (￦){:}대한민국 KRW (￦){/}</option>
+                    <option data-value="USD" {? setting.exchange_cur_type == 'USD' }selected{/}>
+                    {? global_mall === true}United States USD ($){:}미국 USD ($){/}</option>
+                    <option data-value="CNH" {? setting.exchange_cur_type == 'CNY' }selected{/}>
+                    {? global_mall === true}China CNY (￥){:}중국 CNY (￥){/}</option>
+                    <option data-value="JPY" {? setting.exchange_cur_type == 'JPY' }selected{/}>
+                    {? global_mall === true}Japan JPY (￥){:}일본 JPY (￥){/}</option>
+                    <option data-value="EUR" {? setting.exchange_cur_type == 'EUR' }selected{/}>
+                    {? global_mall === true}Europe EUR (€){:}유럽 EUR (€){/}</option>
+                </select>
+                <input type="text" class="{prefix}input_txt {prefix}exchange_currency" readonly="readonly" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+  var id = "{prefix}{id}"+Math.floor(Math.random()*1000);
+  $('#{prefix}{id}').attr('id', id);
+  id = '#'+id;
+  exchangeRateBlockVar.init({
+    data : {data},
+    setting : {setting_json},
+    id : id
+  });
+  exchangeRateBlockVar.bind(id);
+});
+</script>

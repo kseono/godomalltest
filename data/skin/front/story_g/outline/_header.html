@@ -1,0 +1,167 @@
+{*** 상단 레이아웃 | main/index.php ***}
+<!doctype html>
+<html lang="ko">
+<head>
+    <title>{=gMall.mallTitle}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="author" content="{=gMall.mallAuthor}" />
+    <meta name="description" content="{=gMall.mallDescription}" />
+    <meta name="keywords" content="{=gMall.mallKeyword}" />
+    <meta name="csrf-token" content="{=token}" />
+    <!--{ ? gMall.robotsFl == 'n' }-->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="robots" content="noarchive" />
+    <!--{ / }-->
+
+    <!--{ ? is_array(gd_isset(headerMeta)) }-->
+    <!-- Add Meta : start -->
+        <!--{ @ headerMeta }-->
+            <!--{ .value_ }-->
+        <!--{ / }-->
+    <!-- Add Meta : end -->
+    <!--{ / }-->
+
+    <!--{ @ snsShareMetaTag }-->
+    {.value_}
+    <!--{ / }-->
+
+    <!--{ ? gMall.mallFavicon }-->
+    <link rel="icon" href="/data/common/favicon.ico" type="image/x-icon" />
+    <!--{ / }-->
+
+    <link type="text/css" rel="stylesheet" href="{=setBrowserCache('../css/gd_reset.css')}" />
+    <link type="text/css" rel="stylesheet" href="{=setBrowserCache('../js/jquery/chosen/chosen.css')}" />
+    <link type="text/css" rel="stylesheet" href="{=setBrowserCache('../css/gd_layout.css')}" />
+    <link type="text/css" rel="stylesheet" href="{=setBrowserCache('../css/gd_common.css')}" />
+    <link type="text/css" rel="stylesheet" href="{=setBrowserCache('../css/gd_item-display.css')}" />
+    <link type="text/css" rel="stylesheet" href="{=setBrowserCache('../css/gd_goods-view.css')}" />
+    <link type="text/css" rel="stylesheet" href="{=setBrowserCache('../css/gd_contents.css')}" />
+    <link type="text/css" rel="stylesheet" href="{=setBrowserCache('../css/gd_share.css')}" />
+    <link type="text/css" rel="stylesheet" href="{=setBrowserCache('../css/gd_custom.css')}" />
+    <!--[if lte ie 8]><link type="text/css" rel="stylesheet" href="{=setBrowserCache('../css/gd_old-ie.css')}" /><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <!--{ ? is_array(gd_isset(headerStyle)) }-->
+    <!-- Add style : start -->
+        <!--{ @ headerStyle }-->
+    <link type="text/css" rel="stylesheet" href="{=.value_}" />
+        <!--{ / }-->
+    <!-- Add style : end -->
+    <!--{ / }-->
+
+    <script type="text/javascript">
+        <!--{=includeFile(gGlobal.languageJson)}-->
+    </script>
+    <script type="text/javascript" src="{=setBrowserCache('../js/gd_gettext.js')}"></script>
+    <script type="text/javascript" src="{=setBrowserCache('../js/jquery/jquery.min.js')}"></script>
+    <script type="text/javascript" src="{=setBrowserCache('../js/underscore/underscore-min.js')}"></script>
+    <script type="text/javascript" src="{=setBrowserCache('../js/jquery/validation/jquery.validate.min.js')}"></script>
+    <script type="text/javascript" src="{=setBrowserCache('../js/jquery/validation/additional-methods.min.js')}"></script>
+    <script type="text/javascript" src="{=setBrowserCache('../js/numeral/numeral.min.js')}"></script>
+    <script type="text/javascript" src="{=setBrowserCache('../js/global/accounting.min.js')}"></script>
+    <script type="text/javascript" src="{=setBrowserCache('../js/global/money.min.js')}"></script>
+    <script type="text/javascript" src="{=setBrowserCache('../js/jquery/chosen/chosen.jquery.min.js')}"></script>
+    <script type="text/javascript" src="{=setBrowserCache('../js/jquery/placeholder/placeholders.jquery.min.js')}"></script>
+    <![if gt IE 8]>
+    <script type="text/javascript" src="{=setBrowserCache('../js/copyclipboard/clipboard.min.js')}"></script>
+    <![endif]>
+    <script type="text/javascript" src="{=setBrowserCache('../js/jquery/vticker/jquery.vticker.js')}"></script>
+    <script type="text/javascript" src="{=setBrowserCache('../js/gd_ui.js')}"></script>
+    <script type="text/javascript">
+        // 고도몰5 통화정책
+        var gdCurrencyDecimal = {gGlobalCurrency.decimal};
+        var gdCurrencyDecimalFormat = '{gGlobalCurrency.decimalFormat}';
+        var gdCurrencyCode = '{gGlobalCurrency.code}';
+        var gdCurrencyAddDecimal = {=gd_isset(gGlobalCurrency.addDecimal,0)};
+        var gdCurrencyAddDecimalFormat = '{gGlobalCurrency.addDecimalFormat}';
+        var gdCurrencyAddCode = '{gGlobalCurrency.addCode}';
+        var gdLocale = '{gGlobal.locale}';
+        var gdCurrencySymbol = '{=gd_global_currency_symbol()}';
+        var gdCurrencyString = '{=gd_global_currency_string()}';
+
+        // 환율변환 정책
+        fx.base = "KRW";
+        fx.settings = {
+            from : "KRW",
+            to : gdCurrencyCode
+        };
+        fx.rates = {
+            "KRW" : 1,
+            <!--{ @ gGlobalCurrency.perRate }-->
+            "{=.key_}" : {=.value_},
+            <!--{ / }-->
+        }
+    </script>
+    <script type="text/javascript" src="{=setBrowserCache('../js/gd_common.js')}"></script>
+
+    <!--{ ? is_array(gd_isset(headerScript)) }-->
+    <!-- Add script : start -->
+        <!--{ @ headerScript }-->
+    <script type="text/javascript" src="{=.value_}"></script>
+        <!--{ / }-->
+    <!-- Add script : end -->
+    <!--{ / }-->
+
+    {=pgScript}
+
+    <!--{ ? }-->
+
+    <style type="text/css">
+    body {
+        <!--{ ? layout.outbg_img }-->background: url("{=layout.outbg_img}") repeat left top;<!--{ / }-->
+        <!--{ ? layout.outbg_color }-->background-color: #{=str_replace('#', '', layout.outbg_color)};<!--{ / }-->
+    }
+
+    /* body > #wrap > #top : 상단 영역 */
+    #top {
+        <!--{ ? layout.topbg_img }-->background: url("{=layout.topbg_img}") repeat 0 0;<!--{ / }-->
+    }
+
+    /* body > #wrap > #container : 메인 영역 */
+    #container {
+        <!--{ ? layout.inbg_img }-->background: url("{=layout.inbg_img}") repeat 0 0;<!--{ / }-->
+        <!--{ ? layout.inbg_color }-->background-color: {=layout.inbg_color};<!--{ / }-->
+    }
+
+    /* body > #wrap > #footer : 하단 영역 */
+    #footer {
+    }
+    </style>
+
+    {=customHeader}
+</head>
+
+<body class="{userBodyClass}" <!--{=gd_copy_protect()}--> >
+<div class="top-area"></div>
+<div id="wrap">
+    <!--{ ? tpls.header_inc }-->
+    <div id="top" class="header">
+        { # header_inc // 상단디자인 }
+    </div>
+    <!--{ / }-->
+
+    <!--{ ? layout.current_page == 'y' && layout.page_name }-->
+    <div id="route">
+        <div>
+            <span><a href="#">Home</a></span>
+            <span>{=layout.page_name}</span>
+        </div>
+    </div>
+    <!--{ / }-->
+
+    <div id="container">
+
+        <!--{ ? tpls.side_inc && layout.outline_sidefloat == 'left' }-->
+        <div id="side">
+            { # side_inc // 측면디자인 }
+        </div>
+        <!--{ / }-->
+
+        <!-- 본문 시작 : start -->
+        <div id="content">

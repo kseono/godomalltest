@@ -1,0 +1,151 @@
+{*** 상세 | board/view.php ***}
+<section id="boardContent">
+    <input type="hidden" name="referer" value="{=gReferer}">
+    <h2 class="my_tit">
+        <!--{ ? bdView.cfg.bdCategoryFl == 'y' && bdView.data.category}-->
+        [{bdView.data.category}]
+        <!--{/}-->
+        {bdView.data.subject}
+    </h2>
+    <!--{ ? bdView.cfg.bdGoodsPtFl == 'y' }-->
+    <div>
+        <span class="rating"><span style="width:{bdView.data.goodsPt*20}%;">{=__('별')}</span></span>
+    </div>
+    <!--{/}-->
+    <div class="sub-info ty2">
+        <div class="board-info">
+            <span class="writer">{bdView.data.writer}</span>  <span class="date">{bdView.data.regDt}</span>
+            <!--{? bdView.cfg.bdRecommendFl == 'y' }-->
+            |&nbsp;<span id="recommendCount">{=__('추천')} : <strong>{=bdView.data.recommend}</strong></span>
+            <a href="javascript:recommend('{req.bdId}',{req.sno})" class="btn-ff4c2e-bg"><em class="w64-h20">{=__('추천하기')}</em></a>
+            <!--{/}-->
+        </div>
+        <!--{ ? bdView.cfg.bdReplyStatusFl == 'y'}-->
+        <div class="board-result"><button type="button" class="btn btn_p2">{bdView.data.replyStatusText}</button></div>
+        <!--{/}-->
+    </div>
+    <!--{ ? bdView.data.isFile == 'y' }-->
+    <div class="js-data-comment-row ty2">
+        <div class="board-view-info">
+            <img src="img/etc/icon-clip.png" alt="" class="va-m fileTitle"/>
+            <strong>{=__('첨부파일')}</strong>
+            <!--{ @ bdView.data.uploadedFile }-->
+            <a href="./download.php?bdId={=bdView.cfg.bdId}&sno={req.sno}&fid={=.fid}" class="filename fz11 ">&nbsp;&nbsp;{.name}</a>
+            <!--{ / }-->
+        </div>
+    </div>
+    <!--{ / }-->
+    <!--{? bdView.cfg.bdLinkFl == 'y' && bdView.data.urlLink}-->
+    <div>
+        {=__('링크')}&nbsp;:&nbsp;<a href="{=gd_isset(bdView.data.urlLink)}" target="_blank">{=bdView.data.urlLink}</a>
+    </div>
+    <!--{/}-->
+    <div class="board-view-body ty2">
+        <!--{? bdView.data.isViewGoodsInfo == 'y' }-->
+        <div class="selected-goods-wrap bgtype2">
+            <div class="selected-goods">
+                <div class="goods-item-cell cell-img">
+                    <div class="goods-img">
+                        <a href="../goods/goods_view.php?goodsNo={bdView.data.goodsNo}" target="_blank">
+                        <img src="{bdView.data.viewListImage}" alt="">
+                        </a>
+                    </div>
+                </div>
+                <div class="goods-item-cell cell-info">
+                    {bdView.data.goodsData.goodsNm}
+                </div>
+                <div class="goods-item-cell cell-price">
+                    <!--{? bdView.data.goodsData.goodsPriceString}-->
+                    {=bdView.data.goodsData.goodsPriceString}
+                    <!--{:}-->
+                    {=gd_global_currency_symbol()}{=gd_global_money_format(bdView.data.goodsData.goodsPrice)}{=gd_global_currency_string()}
+                    <!--{/}-->
+                </div>
+
+            </div>
+        </div>
+        <!--{ / }-->
+        <!--{? bdView.data.isViewOrderInfo == 'y'}-->
+        <!--{@ bdView.data.extraData.arrOrderGoodsData}-->
+        <div class="selected-goods-wrap bgtype2">
+            <div class="selected-goods">
+                <div class="goods-item-cell cell-img">
+                    <div class="goods-img">
+                        <a href="../goods/goods_view.php?goodsNo={.goodsNo}" target="_blank">
+                        <img src="{.goodsImageSrc}" alt="">
+                        </a>
+                    </div>
+                </div>
+                <div class="goods-item-cell cell-info">
+                    <b class="goods-titlename">{.goodsNm}</b>
+                    <span class="goods-optionname"> {.optionName}</span>
+                </div>
+                <div class="goods-item-cell cell-price">
+                    {=gd_global_currency_symbol()}{=gd_global_money_format(.totalGoodsPrice)}{=gd_global_currency_string()}
+                </div>
+            </div>
+        </div>
+        <!--{/}-->
+        <!--{/}-->
+        <div class="question">
+            <div class="q">
+                <strong class="item">Q.</strong>
+                <div>
+                    <p><!--{ ? bdView.data.workedContents }-->{bdView.data.workedContents}<!--{ : }-->&nbsp;<!--{ / }--></p>
+                </div>
+            </div>
+            <!--{ ? bdView.cfg.bdReplyStatusFl == 'y' && bdView.data.replyStatus>1 && bdView.data.workedAnswerContents}-->
+            <div class="a">
+                <strong class="item">A.</strong>
+
+                <div class="admin-info">
+                    <div class="info">
+                        <strong>{bdView.data.answerSubject}</strong>
+                    </div>
+                    <p>{bdView.data.workedAnswerContents}</p>
+                    <div>
+                        <strong>{bdView.data.answerManagerNm}</strong>
+                        <span>{bdView.data.answerModDt}</span>
+                    </div>
+                </div>
+            </div>
+            <!--{/}-->
+        </div>
+    </div>
+
+    <div class="btn_wish_bx">
+        <ul class="btn_bx">
+            <!--{? bdView.data.auth.modify : 'y' : 'c'}-->
+            <li><button type="button" class="btn btn_g btn-wish-delete" onclick="btnModifyWrite('{req.bdId}',{req.sno},'{bdView.data.auth.modify}')">{=__('수정')}</button></li>
+            <!--{/}-->
+            <!--{? bdView.data.auth.delete : 'y' : 'c'}-->
+            <li><button type="button" class="btn cart-order-btn" onclick="btnDelete('{req.bdId}',{req.sno},'{bdView.data.auth.delete}')">{=__('삭제')}</button></li>
+            <!--{/}-->
+        </ul>
+    </div>
+</section>
+
+<!-- 레이어 호출시 딤처리 -->
+<div id="layerDim" class="dn">&nbsp;</div>
+<!-- //레이어 호출시 딤처리 -->
+<!-- 비밀글 클릭시 인증 레이어 -->
+<div class="cite-layer dn js-password-layer">
+    <div class="wrap">
+        <h4>{=__('비밀번호 인증')}</h4>
+
+        <div>
+            <p>{=__('글 작성시 설정한 비밀번호를 입력해 주세요.')}</p>
+            <input type="password" name="writerPw" class="text">
+            <a href="javascript:void(0)" class="btn btn_gr layer-close-btn js-submit"><em class="w70-h28">{=__('확인')}</em></a>
+        </div>
+        <button type="button" class="close" title="{=__('닫기')}">{=__('닫기')}</button>
+    </div>
+</div>
+<script type="text/javascript" src="\{=c.PATH_MOBILE_SKIN}js/gd_board_view.js" charset="utf-8"></script>
+<script>
+    $(document).ready(function(){
+        if ($('input[name="referer"]').val().indexOf('mypage_qa') != -1) {
+            $('.list-btn').attr('href', '/mypage/mypage_qa.php');
+        }
+    });
+</script>

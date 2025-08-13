@@ -1,0 +1,104 @@
+<!--{ ? config.mobileDisplayFl == 'y' }-->
+<div class="search_bx" data-type="recom"><h3>{=__('추천상품')}</h3></div>
+<div class="srlst_bx_area dn">
+    <div class="srlst_bx recom_list">
+        <div class="recom-goods-info">
+            <!--{ ? in_array('img', config.displayField) && data.img }-->
+            <div class="recom-goods-image">
+                <a href="../goods/goods_view.php?goodsNo={=data.goodsNo}">
+                    <img src="{=data.img}" style="max-width:150px;">
+                    <!--{ ? data.soldOutFl == 'y' || (data.stockFl == 'y' && data.totalStock == 0 ) }-->
+                    <span class="soldout-img" title="{=__('품절상품입니다.')}" style="background-image:url('{soldoutDisplay.soldout_overlay_img}');">{=__('품절')}</span>
+                    <!--{ / }-->
+                </a>
+            </div>
+            <!--{ ? in_array('goodsColor', config.displayField) }-->
+            {data.goodsColor}
+            <!--{ / }-->
+            <!--{ / }-->
+            <!--{ ? in_array('brandCd', config.displayField) && data.cateNm }-->
+            <div class="brand"><strong>[{=data.cateNm}] <!--{ ? in_array('makerNm', config.displayField) && data.makerNm }-->{data.makerNm}<!--{ / }--></strong></div>
+            <!--{ : }-->
+            <!--{ ? in_array('makerNm', config.displayField) && data.makerNm }-->
+            <div class="maker"><strong>{data.makerNm}</strong></div>
+            <!--{ / }-->
+            <!--{ / }-->
+            <!--{ ? in_array('goodsNm', config.displayField) && data.goodsNm }-->
+            <div><a href="../goods/goods_view.php?goodsNo={=data.goodsNo}">{=data.goodsNm}</a></div>
+            <!--{ / }-->
+            <!--{ ? in_array('shortDescription', config.displayField) && data.shortDescription }-->
+            <div>{=data.shortDescription}</div>
+            <!--{ / }-->
+            <!--{ ? in_array('goodsPrice', config.displayField) }-->
+            <!--{ ? data.goodsPriceString }-->
+            <div>{=data.goodsPriceString}</div>
+            <!--{ : }-->
+            <!--{ ? data.soldOutFl == 'y' || (data.stockFl == 'y' && data.totalStock == 0 ) }-->
+            <div>{=__('품절')}</div>
+            <!--{ : }-->
+            <!--{ ? data.goodsPrice }-->
+            <div style="<!--{ ? data.timeSaleFl }--><!--{ : }--><!--{ ? in_array('goodsPrice', config.priceStrike) && ((in_array('coupon', config.displayField) && data.couponPrice != '' && data.goodsPriceDisplayFl =='y') || (in_array('goodsDiscount', config.displayField) && data.dcPrice > 0)) }-->text-decoration:line-through<!--{ / }--><!--{ / }-->">{=__('판매가')}: {=gd_currency_symbol()}{=gd_money_format(data.goodsPrice)}{=gd_currency_string()}</div>
+            <!--{ / }-->
+            <!--{ / }-->
+            <!--{ / }-->
+            <!--{ / }-->
+            <!--{ ? in_array('goodsDiscount', config.displayField) && data.dcPrice > 0 }-->
+            <div>
+                {=__('할인가')} : {=gd_currency_symbol()}{=gd_global_money_format(data.goodsPrice - data.dcPrice)}{=gd_currency_string()} {=gd_global_add_currency_display(data.goodsPrice - data.dcPrice)}<!--{ ? in_array('dcRate', config.displayAddField) && gd_isset(data.goodsDcRate) }--> <span>({=data.goodsDcRate}%)</span><!--{ / }-->
+            </div>
+            <!--{ / }-->
+            <!--{ ? in_array('fixedPrice', config.displayField) && data.fixedPrice > 0 && data.goodsPriceDisplayFl =='y'}-->
+            <div style="<!--{ ? in_array('fixedPrice', config.priceStrike)}-->text-decoration:line-through;<!--{ / }-->">{=__('정가')}: {=gd_currency_symbol()}{=gd_money_format(data.fixedPrice)}{=gd_currency_string()}</div>
+            <!--{ / }-->
+            <!--{ ? in_array('coupon', config.displayField) && data.couponPrice && data.goodsPriceDisplayFl =='y'}-->
+            <div>
+                {=__('쿠폰가')}: {=gd_currency_symbol()}{=gd_money_format(data.couponPrice)}{=gd_currency_string()}
+                <!--{ ? in_array('dcRate', config.displayAddField) && gd_isset(data.couponDcRate) }--> <span class="recom_number_box">({=data.couponDcRate}%)</span><!--{ / }-->
+            </div>
+            <!--{ / }-->
+            <!--{ ? in_array('mileage', config.displayField) && data.mileage && data.goodsPriceDisplayFl =='y'}-->
+            <div>{=__('마일리지')}: {=data.mileage}</div>
+            <!--{ / }-->
+            <!--{ ? in_array('goodsModelNo', config.displayField) && data.goodsModelNo }-->
+            <div>{=__('모델번호')}: {=data.goodsModelNo}</div>
+            <!--{ / }-->
+            <!--{ ? in_array('goodsNo', config.displayField) && data.goodsNo }-->
+            <div>{=__('상품코드')} : {=data.goodsNo}</div>
+            <!--{ / }-->
+        </div>
+    </div>
+</div>
+
+<style>
+    .recom-goods-info { width:150px !important; margin:5% auto !important; }
+    .recom-goods-image { padding-bottom:5px; }
+    .recom-goods-image a { padding:5px; border:1px solid #000; }
+    .search_bx_area { float:left; width:100%; background:#f2f2f2; box-shadow:inset 0 0 1px #a6a6a6; }
+    .search_bx_area .search_bx { width:99%; padding:5px 0; border:1px solid #e7e7e7; background:#a6a6a6; color:#fff; }
+    .search_bx_area .search_bx h3 {padding-left:5px;}
+    .search_bx_area .on { background:#fff; color:#000; }
+    .srlst_bx_area { position:absolute; top:39px; width:99%; background:#fff; }
+    .recom-goods-info a { display:table-cell; position:relative; }
+    .recom-goods-info a span.soldout-img { display:block; position:absolute; top:0; left:0; z-index:10; width:100%; height:100%; background-size:100%; background-position:center; background-repeat:no-repeat; text-indent:-9999px; }
+    .recom-goods-info .color_chip{margin:3px 0 7px; padding:0; overflow:hidden;}
+    .recom-goods-info .color_chip > div{width:8px; height:8px; text-indent:-9999px; border:#dfdfdf 1px solid; float:left; margin:3px 4px 0 0;}
+</style>
+
+<script type="text/javascript">
+    $(function(){
+        var len = $(".search_bx").length;
+        $('.search_bx_area').removeClass('dn');
+        if (len >= 2) {
+            var width = $('body').width();
+            <!--{ ? isMobile === false }-->
+            if ($('#popup-search').is(':visible') === true) width = width - 17;
+            <!--{ / }-->
+            width = Math.floor(width - (width / 100) - 6);
+            $(".search_bx").css({"width": Math.floor(width / len) + "px", "float": "left"});
+        } else if (len == 1) {
+            $(".search_bx").addClass("on");
+            $(".recom_list").removeClass("dn");
+        }
+    });
+</script>
+<!--{ / }-->

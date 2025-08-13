@@ -1,0 +1,68 @@
+{*** [위젯] 레이어형 측면 카테고리 | proc/category_side.htm ***}
+
+<ul class="{cateType} type-{type} dep2" style="display: block;">
+    <!--{ @ data }-->
+    <li >
+        <button type="button" class="btn-reset gnb-arr"  <!--{ ? .divisionFl =='n' }-->data-key="{.cateCd}" <!--{ / }-->><span class="sprite-icon icon-arr-b-white"></span></button>
+        <!--{ ? .children }-->
+        <a class="sub-icon" data-depth="1"><span class="sprite-icon icon-plus1"></span>{.cateNm}</a>
+        <ul class="dep3">
+            <!--{ @ .children }-->
+            <li>
+                <button type="button" class="btn-reset gnb-arr"  <!--{ ? ..divisionFl =='n' }-->data-key="{..cateCd}"<!--{ / }--> ><span class="sprite-icon icon-arr-b-white"></span></button>
+                <!--{ ? ..children }-->
+                <a class="sub-icon"><span class="sprite-icon icon-plus1"></span>{..cateNm}</a>
+                <ul class="dep4">
+                    <!--{ @ ..children }-->
+                    <li>
+                        <button type="button" class="btn-reset gnb-arr"  <!--{ ? ...divisionFl =='n' }-->data-key="{...cateCd}"<!--{ / }-->><span class="sprite-icon icon-arr-b-white"></span></button>
+                        <!--{ ? ...children }-->
+                        <a class="sub-icon"><span class="sprite-icon icon-plus1"></span>{...cateNm}</a>
+                        <ul class="dep5" >
+                            <!--{ @ ...children }-->
+                            <li>
+                                <button type="button" class="btn-reset gnb-arr"  <!--{ ? ....divisionFl =='n' }-->data-key="{....cateCd}"<!--{ / }--> ><span class="sprite-icon icon-arr-b-white"></span></button>
+                                <!--{ ? ..divisionFl =='n' }-->
+                                <a href="../goods/goods_list.php?{=cateCd}={....cateCd}">{....cateNm}</a>
+                                <!--{ : }-->
+                                <a>{....cateNm}</a>
+                                <!--{ / }-->
+                            </li>
+                            <!--{ / }-->
+                        </ul>
+                        <!--{ : }-->
+
+                        <!--{ ? ...divisionFl =='n' }-->
+                        <a href="../goods/goods_list.php?{=cateCd}={...cateCd}" class="sub-icon"><span class="sprite-icon icon-plus1"></span>{...cateNm}</a>
+                        <!--{ : }-->
+                        <a class="sub-icon"><span class="sprite-icon icon-plus1"></span>{...cateNm}</a>
+                        <!--{ / }-->
+
+                        <!--{ / }-->
+                    </li>
+                    <!--{ / }-->
+                </ul>
+                <!--{ : }-->
+
+                <!--{ ? ..divisionFl =='n' }-->
+                <a href="../goods/goods_list.php?{=cateCd}={..cateCd}" class="sub-icon"><span class="sprite-icon icon-plus1"></span>{..cateNm}</a>
+                <!--{ : }-->
+                <a class="sub-icon"><span class="sprite-icon icon-plus1"></span>{..cateNm}</a>
+                <!--{ / }-->
+
+                <!--{ / }-->
+            </li>
+            <!--{ / }-->
+        </ul>
+        <!--{ : }-->
+        <!--{ ? .divisionFl =='n' }-->
+        <a href="../goods/goods_list.php?{=cateCd}={.cateCd}" class="sub-icon"><span class="sprite-icon icon-plus1"></span>{.cateNm}</a>
+        <!--{ : }-->
+        <a  class="sub-icon"><span class="sprite-icon icon-plus1"></span>{.cateNm}</a>
+        <!--{ / }-->
+
+        <!--{ / }-->
+    </li>
+    <!--{ / }-->
+</ul>
+<hr/>

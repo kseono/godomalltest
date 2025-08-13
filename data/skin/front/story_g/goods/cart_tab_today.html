@@ -1,0 +1,90 @@
+{*** 쇼핑 카트탭 - 오늘 본 상품 | goods/cart_tab_today.php ***}
+<div id="cart-tab-today" class="cart-tab-today view">
+    <div class="item-display type-horizontal">
+        <div class="list">
+            <div class="wrap">
+
+                <ul class="swiper_today_goods" style="width:942px;">
+                    <!--{ @ dataTodayGoods(5) }-->
+                    <!--{ @ .value_ }-->
+                    <li class="swiper-slide" >
+                        <div class="space">
+                            <div class="thumbnail">
+                                <a class="hand">
+                                   {..goodsImage}
+                                    <button type="button"  data-goods-no="{..goodsNo}"  title="{=__('삭제')}">{=__('삭제')}</button>
+                                </a>
+                            </div>
+                            <div class="txt">
+                                <a href="../goods/goods_view.php?goodsNo={..goodsNo}">{=gd_html_cut(gd_remove_tag(..goodsNm),30,'..')}</a>
+                            </div>
+                            <div class="price">
+                                <!--{ ? ..goodsPriceString !='' }-->
+                                <span  class="cost">{..goodsPriceString}</span>
+                                <!--{ : }-->
+                                <span class="cost"><strong>{=gd_global_currency_symbol()}{=gd_global_money_format(..goodsPrice)}</strong>{=gd_global_currency_string()}</span>
+                                <!--{ / }-->
+                            </div>
+                        </div>
+                    </li>
+                    <!--{ / }-->
+                    <!--{ / }-->
+                </ul>
+            </div>
+            <div class="prev swiper_today_goods_button_prev" title="{=__('이전상품 보기')}"></div>
+            <div class="next swiper_today_goods_button_next" title="{=__('다음상품 보기')}"></div>
+        </div>
+    </div>
+</div>
+<!--{ ? is_array(gd_isset(headerScript)) }-->
+<!-- Add script : start -->
+<!--{ @ headerScript }-->
+<script type="text/javascript" src="{=.value_}"></script>
+<!--{ / }-->
+<!-- Add script : end -->
+<!--{ / }-->
+<script type="text/javascript">
+    <!--
+    $(document).ready(function(){
+
+        $("#cart-tab-today .thumbnail img").on('click', function(e){
+
+            var goodsNo = $(this).next().data('goods-no');
+            document.location.href="../goods/goods_view.php?goodsNo="+goodsNo;
+
+        });
+
+
+        $('.swiper_today_goods').slick({
+            draggable : false,
+            speed: 500,
+            infinite: true,
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            prevArrow: $('.swiper_today_goods_button_prev'),
+            nextArrow: $('.swiper_today_goods_button_next'),
+        });
+
+
+        $(".cart-tab-today .type-horizontal button").on('click', function(e){
+            $.post('../goods/goods_ps.php', {
+                'mode': 'delete_today_goods',
+                'goodsNo': $(this).data('goods-no')
+            }, function (data, status) {
+                // 값이 없는 경우 성공
+                if (status == 'success' && data == '') {
+                    cart_tab_action('#cart-tab-today');
+                }
+                else {
+                    console.log('request fail. ajax status (' + status + ')');
+                }
+            });
+        });
+
+
+    });
+
+
+
+    //-->
+</script>

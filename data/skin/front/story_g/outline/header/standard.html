@@ -1,0 +1,80 @@
+{*** 상단 기본파일 | main/index.php ***}
+<div class="head">
+    <div class="container">
+        <div class="main-logo"><!--{ @dataBanner('3793079315') }-->{.tag}<!--{ / }--></div>
+
+        <!-- 검색 폼 -->
+        {=includeWidget('proc/_header_search.html')}
+        <!-- 검색 폼 -->
+
+        <div class="ad">
+            <strong class="dn">{=__('이벤트 배너')}</strong>
+            <!--{ @dataBanner('3373105465') }-->{.tag}<!--{ / }-->
+        </div>
+    </div>
+</div>
+
+<div class="navi">
+    <!-- 퀵 검색 폼 -->
+    <!--{ ? tpls.quick_search }-->
+    {=includeWidget('proc/_quick_search.html')}
+    <!--{ / }-->
+    <!-- 퀵 검색 폼 -->
+    <div class="container">
+        <h2 class="dn">{=__('상단 글로벌 메뉴')}</h2>
+
+        <!-- 멀티상점 선택 -->
+        {=includeWidget('proc/_global_select.html')}
+        <!-- 멀티상점 선택 -->
+
+        <ul>
+            <!--{ ? gd_is_login() === false }-->
+            <li><a href="../member/login.php">{=__('로그인')}</a></li>
+            <li><a href="../member/join_method.php">{=__('회원가입')}</a></li>
+            <!--{ : }-->
+            <li><a href="../member/logout.php?returnUrl={=logoutReturnUrl}">{=__('로그아웃')}</a></li>
+            <!--{ / }-->
+            <li class="mypage">
+                <a href="../mypage/index.php">{=__('마이페이지')}</a>
+
+                <div>
+                    <a href="../mypage/order_list.php">{=__('주문조회')}</a>
+                    <a href="../mypage/my_page_password.php">{=__('내정보수정')}</a>
+                    <a href="../mypage/wish_list.php">{=__('찜 리스트')}</a>
+                    <a href="../mypage/mypage_qa.php">1:1 {=__('문의')}</a>
+                </div>
+            </li>
+            <li><a href="../service/index.php">{=__('고객센터')}</a></li>
+            <li>
+                <a href="../order/cart.php">{=__('장바구니')}</a>
+                <span>
+                    <em class="dn">{=__('담긴상품')}</em>
+                    <strong>{=dataCartGoodsCnt()}</strong>
+                </span>
+            </li>
+        </ul>
+    </div>
+</div>
+<hr/>
+<div class="top-service">
+    <div class="container">
+        <!-- 전체 카테고리 출력 레이어 시작 -->
+        <h2 class="dn">{=__('전체 카테고리')}</h2>
+        {=includeWidget("proc/category_all.html")}
+        <!-- 전체 카테고리 출력 레이어 끝 -->
+
+        <h2 class="dn">{=__('추천 메뉴')}</h2>
+        <ul class="link">
+            <li><a href="../goods/brand.php">{=__('브랜드')}</a></li>
+            <li><a href="#">{=__('상단메뉴')}1</a></li>
+            <li><a href="#">{=__('상단메뉴')}2</a></li>
+            <li><a href="#">{=__('상단메뉴')}3</a></li>
+        </ul>
+        <!--스크롤 게시글 시작-->
+        <div class="notice">
+        {=includeWidget('board/board_article_scrolling', 'bdId', noticeBdId, 'listCount', 10, 'strCut', 15)}
+        </div>
+        <!--스크롤 게시글 끝-->
+    </div>
+</div>
+<hr/>

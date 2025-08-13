@@ -1,0 +1,656 @@
+{*** 플러스 리뷰 상세보기 | board/plus_review_view.php ***}
+
+
+<!--{ ? isLayer != 'y'}-->
+{ #header}
+<!--{/}-->
+<link type="text/css" rel="stylesheet" href="\{=c.PATH_MOBILE_SKIN}css/gd_plus_review.css?ts={=time()}">
+
+<div class="plus-review-view">
+    <!--{ ? isLayer == 'y'}-->
+    <div class="head sub">
+        <button class="bn_cls v2 ly_btn_close" style="left:0px;"><span class="sp">{=__('이전')}</span></button>
+        <h1 class="h_tit elp">{=__('플러스리뷰')}</h1>
+    </div>
+    <!--{/}-->
+    <div class="plus-review-title">
+        <div class="plus-review-title-area">
+            <span class="eval-title title">{=__('평가')}</span>
+            <span class="eval-point point">{=data.goodsInfo.goodsPt.avg}</span>
+            <span class="review-title title">{=__('리뷰')}</span>
+            <span class="review-point point">{=data.goodsInfo.reviewCount}</span>
+        </div>
+    </div>
+    <div class="plus-review-contents js-pr-row" data-sno="{=req.sno}">
+        <div class="ratings">
+            <span class="rating"><span style="width:{=data.goodsPtPer}%">{=__('평가')}</span></span>
+            <div class="info">
+                <span class="writer">{=data.writer}</span><span class="date">{=data.regDt}</span>
+            </div>
+        </div>
+        <div class="contents">
+            <div class="image"><img src="{=data.goodsImageSrc}" style="border:1px solid #ccc"/></div>
+            <div class="info">
+                <div class="goods-name">{=data.goodsNm}</div>
+                <div class="price">{=gd_currency_symbol()}{=gd_money_format(data.goodsPrice)}{=gd_currency_string()}</div>
+            </div>
+        </div>
+        <div class="inform">
+            <!--{ ? plusReviewConfig.addFormFl == 'y' || plusReviewConfig.displayOptionFl == 'y'}-->
+            <!--{ ? data.addFormData || data.option}-->
+            <div class="plus-info">
+                <table summary="{=__('플러스 리뷰 구매자 정보')}">
+                    <caption>{=__('구매자 정보')}</caption>
+                    <colgroup>
+                        <col width="40%">
+                        <col width="*">
+                    </colgroup>
+                    <!--{ @ data.addFormData}-->
+                    <tr>
+                        <th>{.key_}</th>
+                        <td>{.value_}</td>
+                    </tr>
+                    <!--{/}-->
+                    <!--{ @ data.option}-->
+                    <tr>
+                        <th>{.name}</th>
+                        <td>{.value}</td>
+                    </tr>
+                    <!--{/}-->
+                </table>
+            </div>
+            <!--{/}-->
+            <!--{/}-->
+            <!--{@ data.uploadedFile}-->
+            <div class="image"><img src="{.src}" style="border:1px solid #ccc"/></div>
+            <!--{/}-->
+
+            <div class="text">
+                {=data.viewContents}
+            </div>
+        </div>
+
+        <div class="comments">
+            <div class="title">
+                <!--{ ? plusReviewConfig.memoFl == 'y'}-->
+                <span class="comment-count">{=__('%s 개의 댓글이 있습니다.','<span class="count js-pr-comment-cnt">'+data.memoCnt+'</span>')}</span>
+                <!--{/}-->
+                <!--{ ? plusReviewConfig.recommendFl == 'y'}-->
+                <span class="recommend-inline">{=__('추천')} : <span  class="recommend-count js-pr-recommend-cnt" >{=data.recommend}</span> </span>
+                <!--{/}-->
+                <!--{ ? data.auth.report != 'n'}-->
+                <span class="report"><button type="button" class="js_btn_report" data-bdsno="{=req.sno}" data-bdid="plusReview" data-goodsno="{=data.goodsNo}">{=__('신고 및 차단')}</button></span>
+                <!--{/}-->
+                <!--{ ? plusReviewConfig.recommendFl == 'y'}-->
+                <span class="write"><button type="button" class="js-pr-btn-recommend">{=__('추천하기')}</button></span>
+                <!--{/}-->
+            </div>
+            <!--{ ? plusReviewConfig.memoFl == 'y'}-->
+            <div class="comment-list js-pr-comment-list">
+                <ul>
+                </ul>
+            </div>
+            <div class="comment-write">
+                <!--{ ? data.auth.canWriteMemo == 'y'}-->
+                <form>
+                    <input type="hidden" name="mode" value="addMemo">
+                    <input type="hidden" name="goodsNo" value="{=data.goodsNo}">
+                    <!--{ ? gd_is_login() === false}-->
+                    <div class="non-member">
+                <span>
+                     <input type="text" name="writerNm" class="text" placeholder="이름"/>
+                </span>
+                        <span>
+                     <input type="password" name="writerPw" class="text" placeholder="비밀번호"/>
+                </span>
+                        <span class="inp_chk">
+                    <input type="checkbox" name="agreeFl" value="y" id="temp-id" class="sp">
+                    <label for="temp-id" class="check-s"><strong>{=__('비회원 글작성에 대한 개인정보 수집 및 이용동의')}</strong></label>
+                    <a href="../service/private.php" target="_blank" class="c-red fz11 td-u">{=__('전체보기')}&gt;</a>
+                </span>
+                        <div class="private-div">
+                    <textarea class="">{=__('- 수집항목: 이름, 전화번호, 이메일주소')}
+{=__('- 수집/이용목적: 게시글 접수 및 결과 회신')}
+{=__('- 이용기간: 원칙적으로 개인정보 수집 및 이용목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다.
+               단, 관계법령의 규정에 의하여 보전할 필요가 있는 경우 일정기간 동안 개인정보를 보관할 수 있습니다.
+그 밖의 사항은 (주) 000 개인정보처리방침을 준수합니다.')}
+                    </textarea>
+                        </div>
+                    </div>
+                    <!--{/}-->
+                    <div class="comment-contents">
+                        <div class="comment-box"><textarea name="memo" placeholder="{=__('댓글을 작성하세요.')}"></textarea></div>
+                        <div class="comment-button">
+                            <button type="button" class="js-pr-btn-comment-save">{=__('완료')}</button>
+                        </div>
+                    </div>
+                </form>
+                <!--{:}-->
+                {=__('댓글작성 권한이 없습니다.')}
+                <!--{/}-->
+            </div>
+            <!--{/}-->
+        </div>
+        <div class="review-buttons">
+            <!--{ ? data.auth.modifyAndRemove != 'n' && isLayer == 'y' && req.isMypage !='y'}-->
+            <ul>
+                <li>
+                    <button type="button" class="more-btn btn-gray btn js-pr-btn-row-modify" data-auth="{=data.auth.modifyAndRemove}">{=__('수정')}</button>
+                </li>
+                <li>
+                    <button type="button" class="more-btn btn-gray btn js-pr-btn-row-remove" data-auth="{=data.auth.modifyAndRemove}">{=__('삭제')}</button>
+                </li>
+            </ul>
+            <!--{/}-->
+        </div>
+    </div>
+
+
+    <script id="plusPlusReviewCommentList" type="text/html">
+        <li class="list js-pr-comment-row" data-sno="<%=sno%>">
+            <div class="text">
+                <% if (blockFl == 'y') { %>
+                차단 한 회원이 작성한 게시물입니다.
+                <% } %>
+                <% if (blockFl == 'n') { %>
+                <%=viewMemo%>
+                <% } %>
+            </div>
+            <div class="info">
+                <span class="writer"><%=writer%></span><span class="date"><%=regDt%></span>
+                <% if (auth.report == 'y') { %>
+                <button class="report js_btn_report" data-bdsno="<%=articleSno%>" data-bdid="plusReview" data-memosno="<%=sno%>">{=__('신고 및 차단')}</button>
+                <% } %>
+            </div>
+            <% if (auth.modifyAndRemove != 'n') {%>
+            <div class="buttons">
+                <button type="button" class="icon-button modify js-pr-btn-comment-modify" data-auth="<%=auth.modifyAndRemove%>">수정</button>
+                <button type="button" class="icon-button delete js-pr-btn-comment-remove" data-auth="<%=auth.modifyAndRemove%>">삭제</button>
+            </div>
+            <% } %>
+            <div class="comment-write js-pr-comment-modify-form" style="display:none">
+                <form>
+                    <input type="hidden" name="mode" value="modifyMemo">
+                    <% if(memNo == 0) {%>
+                    <div class="non-member">
+                            <span>
+                                 <input type="text" class="text" name="writerNm" placeholder="{=__('이름')}" required/>
+                            </span>
+                        <span>
+                                 <input type="password" class="text" name="writerPw" placeholder="{=__('비밀번호')}" required/>
+                            </span>
+                        <span class="inp_chk">
+                                <input type="checkbox" name="agreeFl" value="y" id="temp-id1" class="sp">
+                                <label for="temp-id1" class="check-s"><strong>{=__('비회원 글작성에 대한 개인정보 수집 및 이용동의')}</strong>
+                                </label>
+                                <a href="../service/private.php" target="_blank" class="c-red fz11 td-u">{=__('전체보기')}&gt;</a>
+                            </span>
+                        <div class="private-div">
+                                <textarea class="">{=__('- 수집항목: 이름, 전화번호, 이메일주소')}
+            {=__('- 수집/이용목적: 게시글 접수 및 결과 회신')}
+            {=__('- 이용기간: 원칙적으로 개인정보 수집 및 이용목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다.
+                           단, 관계법령의 규정에 의하여 보전할 필요가 있는 경우 일정기간 동안 개인정보를 보관할 수 있습니다.
+            그 밖의 사항은 (주) 000 개인정보처리방침을 준수합니다.')}
+                                </textarea>
+                        </div>
+                    </div>
+                    <% } %>
+                    <div class="comment-contents">
+                        <div class="comment-box"><textarea placeholder="{=__('댓글을 작성하세요.')}" name="memo"><%=memo%></textarea></div>
+                        <div class="comment-button">
+                            <button type="button" class="js-pr-btn-comment-modify-save">{=__('완료')}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </li>
+    </script>
+    <script>
+        $(document).ready(function () {
+            var sno = { = req.sno};
+
+            $('#plusPlusReviewForm textarea[name=contents]').bind('click', function (e) {
+                e.stopPropagation();
+                <!--{ ? plusReview.writeErrorMsg }-->
+                $(this).attr('readonly', 'true');
+                alert('{=plusReview.writeErrorMsg}');
+                return false;
+                <!--{/}-->
+            })
+
+            $('.btn-open-layer').bind('click', function (e) {
+                if ($(this).attr('href') == '#addPlusReviewOrderLayer') {
+                    var params = {
+                        goodsNo: goodsNo,
+                    };
+                    $.ajax({
+                        method: "POST",
+                        data: params,
+                        cache: false,
+                        url: "../share/layer_review_order_select.php",
+                        success: function (data) {
+                            $('#addPlusReviewOrderLayer').empty().append(data);
+                            $('#addPlusReviewOrderLayer').find('>div').center();
+                        },
+                        error: function (data) {
+                            alert(data.message);
+                            closeLayer();
+                        }
+                    });
+                }
+            });
+
+            var formCheckMinLength = '{=plusReviewConfig.formCheckMinLength}';
+            var uploadRequiredFl = '{=plusReviewConfig.uploadRequiredFl}';
+            $("#plusPlusReviewForm").validate({
+                ignore: ':hidden',
+                submitHandler: function (form) {
+                    <!--{ ? plusReview.writeErrorMsg }-->
+                    alert('{=plusReview.writeErrorMsg}');
+                    return false;
+                    <!--{/}-->
+
+                    if (uploadRequiredFl == 'y') {
+                        if ($('#plusPlusReviewForm').find('[name^="uploadFileNm"]').length < 1) {
+                            alert(__('파일첨부는 필수 입니다.'));
+                            return false;
+                        }
+                    }
+
+                    form.mode.value = 'add';
+                    form.submit();
+                },
+
+                rules: {
+                    'contents': {
+                        required: true,
+                        minlength: formCheckMinLength,
+                    }
+                },
+                messages: {
+                    'contents': {
+                        required: __('내용을 입력해주세요.'),
+                        minlength: __('{0}자 이상 입력해주세요.'),
+                    }
+                },
+            });
+
+            /**
+             * 원글삭제
+             * **/
+            $('.js-pr-btn-row-remove').bind('click', function (e) {
+                e.stopPropagation();
+
+                var auth = $(this).data('auth');
+                var sno = $(this).closest('.js-pr-row').data('sno');
+
+                if (auth == 'y') {
+                    if (confirm(__('정말로 삭제하시겠습니까?'))) {
+                        removeRow(sno);
+                    }
+                }
+                else if (auth == 'c') {
+                    passwordLayer.show();
+                    passwordLayer.btn.unbind('click').bind('click', function () {
+                        removeRow(sno, passwordLayer.value());
+                    })
+                }
+                else {
+                    alert(__('삭제권한이 없습니다.'));
+                }
+            })
+
+
+            var removeRow = function (sno, password) {
+                $.ajax({
+                    url: '../board/plus_review_ps.php',
+                    data: {mode: 'delete', sno: sno, writerPw: password},
+                    method: 'POST',
+                    type: 'json',
+                    cache: false,
+                }).success(function (data) {
+                    alert(data.msg);
+                    if (data.result == 'ok') {
+                        passwordLayer.close();
+                    }
+                    location.href = '../goods/goods_view.php?goodsNo={=data.goodsNo}&mode=plusreview';
+                }).error(function (e) {
+                    console.log(e);
+                });
+            }
+
+            /**
+             * 원글수정버튼클릭
+             * **/
+            $('.js-pr-btn-row-modify').bind('click', function (e) {
+                e.stopPropagation();
+                var auth = $(this).data('auth');
+                var sno = $(this).closest('.js-pr-row').data('sno');
+                if (auth == 'y') {
+                    modifyRow(sno);
+                }
+                else if (auth == 'c') {
+                    passwordLayer.show();
+                    passwordLayer.btn.unbind('click').bind('click', function () {
+                        modifyRow(sno, passwordLayer.value());
+                    })
+                }
+                else {
+                    alert(__('수정권한이 없습니다.'));
+                }
+            })
+
+            /**
+             * 원글수정
+             * **/
+            var modifyRow = function (sno, writerPw) {
+                $.ajax({
+                    method: "POST",
+                    data: {mode: 'modifyCheck', sno: sno, writerPw: writerPw},
+                    cache: false,
+                    url: "../board/plus_review_ps.php",
+                    success: function (data) {
+                        if (data.result == 'ok') {
+                            $.ajax({
+                                method: "get",
+                                url: "../board/plus_review_popup_write.php",
+                                data: {mode: 'modify', sno: sno, oldWriterPw: writerPw},
+                                async: false,
+                                dataType: 'text'
+                            }).success(function (data) {
+                                passwordLayer.close();
+//                                console.log(data);
+                                $('#popup-board-write').css('background-color','#ffffff').css('overflow','scroll').css('z-index','9999').empty().append(data).show();
+
+                            }).error(function (e) {
+                                alert(e.responseText);
+                            });
+
+                        }
+                        else {
+                            alert(data.msg);
+                        }
+                    },
+                    error: function (data) {
+                        alert(data.message);
+                    }
+                });
+            }
+
+            var modifyLayer = {
+                show: function (data) {
+                    $('#popup-board').modal({
+                        remote: '../board/write.php',
+                        cache: false,
+                        type: 'get',
+                        params: params,
+                        show: true
+                    });
+                }
+                ,
+                close: function () {
+                    $('#writePop').find('.close').trigger('click');
+                }
+            }
+
+
+            /**
+             *댓글 수정하기 버튼 클릭
+             **/
+            $('.plus-review-view').on('click', '.js-pr-btn-comment-modify', function (e) {
+                e.stopPropagation();
+                var row = $(this).closest('.js-pr-comment-row');
+                row.find('.js-pr-comment-modify-form').show();
+            })
+
+            /**
+             * 댓글수정 저장하기 버튼 클릭
+             * */
+            $('.plus-review-view').on('click', '.js-pr-btn-comment-modify-save', function (e) {
+                e.stopPropagation();
+                var row = $(this).closest('.js-pr-comment-row');
+                var articleSno = row.closest('.js-pr-row').data('sno');
+                var sno = row.data('sno');
+                var params = row.find('form').serialize();
+                params = params + '&sno=' + sno;
+//                console.log(params);
+                $.ajax({
+                    method: "POST",
+                    data: params,
+                    cache: false,
+                    url: "../board/plus_review_ps.php",
+                    success: function (data) {
+                        alert(data.msg);
+                        if (data.result == 'ok') {
+                            loadListComment(articleSno);
+                        }
+                    },
+                    error: function (data) {
+//                        alert(data.message);
+                    }
+                });
+            })
+
+            /**
+             * 댓글삭제버튼 클릭
+             * **/
+//            $('body').on('click', '.js-pr-btn-comment-remove', function () {
+            $('.plus-review-view').on('click', '.js-pr-btn-comment-remove', function () {
+                var auth = $(this).data('auth');
+                var row = $(this).closest('.js-pr-comment-row');
+                var articleSno = row.closest('.js-pr-row').data('sno');
+                var sno = row.data('sno');
+
+                if (auth == 'y') {
+                    if (confirm(__('정말로 삭제하시겠습니까?'))) {
+                        removeComment(articleSno, sno);
+                    }
+                }
+                else if (auth == 'c') {
+                    passwordLayer.show();
+                    passwordLayer.btn.unbind('click').bind('click', function () {
+                        removeComment(articleSno, sno, passwordLayer.value());
+                    })
+                }
+                else {
+                    alert(__('삭제권한이 없습니다.'));
+                }
+            })
+            /**
+             * 댓글삭제 처리
+             * **/
+            var removeComment = function (articleSno, sno, writerPw) {
+                $.ajax({
+                    method: "POST",
+                    data: {mode: 'deleteMemo', sno: sno, writerPw: writerPw},
+                    cache: false,
+                    url: "../board/plus_review_ps.php",
+                    success: function (data) {
+                        alert(data.msg);
+                        if (data.result == 'ok') {
+                            {
+                                loadListComment(articleSno);
+                                passwordLayer.close();
+                            }
+                        }
+                    },
+                    error: function (data) {
+                        alert(data.message);
+                    }
+                });
+            }
+
+            /**
+             * 댓글 출력
+             * */
+            var loadListComment = function (sno) {
+                var row = $('.js-pr-row[data-sno="' + sno + '"]');
+                row.find('.js-pr-comment').show();
+                $.ajax({
+                    method: "POST",
+                    data: {mode: 'getMemo', sno: sno},
+                    cache: false,
+                    url: "../board/plus_review_ps.php",
+                    success: function (data) {
+                        var commentList = row.find('.js-pr-comment-list');
+                        commentList.empty();
+                        $.each(data.data, function (key, val) {
+//                            console.log(val);
+                            val.blockFl = (val.blockFl != 'y') ? 'n' : val.blockFl;
+                            var commentRow = _.template($('#plusPlusReviewCommentList').html());
+                            commentList.append(commentRow(val));
+                        });
+                        row.find('.js-pr-comment-cnt').text(data.data.length);
+                    },
+                    error: function (data) {
+                    }
+
+                });
+            }
+
+            loadListComment(sno);
+
+            /**
+             * 댓글저장
+             * */
+            $('.js-pr-btn-comment-save').on('click', function (e) {
+                e.stopPropagation();
+                var form = $(this).closest('form');
+                var sno = $(this).closest('.js-pr-row').data('sno');
+                var params = form.serialize();
+                params = params + '&articleSno=' + sno;
+                $.ajax({
+                    method: "POST",
+                    data: params,
+                    cache: false,
+                    url: "../board/plus_review_ps.php",
+                    success: function (data) {
+                        alert(data.msg);
+                        if (data.result == 'ok') {
+                            loadListComment(sno);
+                            form.find('[name=memo]').val('');
+                            form.find('[name=writerNm]').val('');
+                            form.find('[name=writerPw]').val('');
+                            $('[name=agreeFl]').prop('checked',false);
+
+                        }
+                    },
+                    error: function (data) {
+                        alert(data.message);
+                    }
+                });
+            })
+
+            $('.js-pr-btn-recommend').unbind('click').bind('click', function (e) {
+                e.stopPropagation();
+                var row = $(this).closest('.js-pr-row');
+                var sno = row.data('sno');
+                $.ajax({
+                    method: "POST",
+                    data: {mode: 'recommend', sno: sno},
+                    cache: false,
+                    url: "../board/plus_review_ps.php",
+                    success: function (data) {
+                        alert(data.msg);
+                        if (data.result == 'ok') {
+                            row.find('.js-pr-recommend-cnt').text(data.cnt);
+                        }
+                    },
+                    error: function (data) {
+                        alert(data.message);
+                    }
+                })
+            })
+
+            $('.js-password-layer .close').bind('click',function () {
+                $('#layerDim').addClass('dn');
+                $('.js-password-layer').addClass('dn');
+            })
+
+            $(document).mousedown(function(e){
+                $('.js-password-layer').each(function(){
+                    if( $(this).css('display') == 'block' )
+                    {
+                        var l_position = $(this).offset();
+                        l_position.right = parseInt(l_position.left) + ($(this).width());
+                        l_position.bottom = parseInt(l_position.top) + parseInt($(this).height());
+
+                        if( ( l_position.left <= e.pageX && e.pageX <= l_position.right )
+                            && ( l_position.top <= e.pageY && e.pageY <= l_position.bottom ) )
+                        {
+                        }
+                        else
+                        {
+                            $(this).find('.close').trigger('click');
+                        }
+                    }
+                });
+            });
+
+
+            //패스워드입력 레이어 창
+            var passwordLayer = {
+                element: $('.js-password-layer'),
+                btn: $('.js-password-layer').find('.js-submit'),
+                value: function () {
+                    return $('.js-password-layer').find('input[name=writerPw]').val();
+                },
+                show: function () {
+                    this.element.css('z-index',3000);
+                    $('#layerDim').css('z-index',20);
+                    this.element.removeClass('dn');
+                    $('#layerDim').removeClass('dn');
+                    this.element.find('input').focus();
+                },
+                close: function () {
+                    $('.js-password-layer .close').trigger('click');
+                }
+            }
+
+            $(document).on('click', '.js_btn_report', function () {
+                var bdId = $(this).data('bdid');
+                var bdSno = $(this).data('bdsno');
+                var memoSno = $(this).data('memosno');
+                var goodsNo = $(this).data('goodsno');
+
+                if(_.isUndefined(memoSno)){
+                    memoSno = 0;
+                }
+                if (_.isUndefined(goodsNo)) {
+                    goodsNo = 0;
+                }
+                var history_back = location.href.split('#')[0];
+                var url = "../board/report.php?mode=report&bdId=" + bdId + "&bdSno=" + bdSno + "&memoSno=" + memoSno + "&goodsNo=" + goodsNo + '&returnUrl=' + encodeURIComponent(history_back);
+                location.href = url;
+            });
+        })
+
+    </script>
+
+    <!--<div id="popup-board-view"></div>-->
+</div>
+<!--{ ? isLayer != 'y'}-->
+{ #footer}
+<!--{/}-->
+<style>
+    /*.cite-layer{
+        z-index: 3000;
+    }
+
+    #layerDim{
+        z-index:2000 !important;
+    }*/
+</style>
+
+<div class="cite-layer dn js-password-layer zidx120">
+    <div class="wrap">
+        <h4>비밀번호 인증</h4>
+        <div>
+            <p>비밀번호를 입력해 주세요.</p>
+            <input type="password" name="writerPw" class="text"/>
+            <a href="javascript:void(0)" class="btn btn_gr layer-close-btn js-submit"><em class="w70-h28">확인</em></a>
+        </div>
+        <button type="button" class="close" title="닫기">닫기</button>
+    </div>
+</div>
+<div id="layerDim" class="dn">&nbsp;</div>

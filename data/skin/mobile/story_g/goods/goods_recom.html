@@ -1,0 +1,92 @@
+{*** 상품리스트 | goods/goods_list.php ***}
+{#header}
+<!--{ ? themeInfo.cateHtml2 }--><div class="user-tune">{=stripslashes(str_replace('&nbsp;', ' ', themeInfo.cateHtml2))}</div><!--{ / }-->
+<div class="js-goods-more-list">
+    <div class="goods-sort-area">
+        <div class="goods-sort">
+            <div class="inp_sel">
+                <select name="goods_sort" onchange="get_list(1);">
+                    <option value="">{=__('상품정렬')}</option>
+                    <option value="date">{=__('등록순')}</option>
+                    <option value="price_asc">{=__('낮은가격순')}</option>
+                    <option value="price_dsc">{=__('높은가격순')}</option>
+                </select>
+            </div>
+        </div>
+        <div class="goods-view-type">
+            <input type="hidden" name="displayType" value="{themeInfo.recomTheme.displayType}" >
+            <!-- 리스트형식 -->
+            <div class="view-list   <!--{ ? themeInfo.recomTheme.displayType =='02' }-->view-on<!--{ / }-->" data-key="02" ><span class="sprite-icon icon-list"></span></div>
+
+            <!-- 하나씩 크게 -->
+            <div class="view-gallery1 <!--{ ? themeInfo.recomTheme.displayType =='09' }-->view-on<!--{ / }-->" data-key="09"><span class="sprite-icon icon-one"></span></div>
+
+            <!-- 두개씩 -->
+            <div class="view-gallery2 <!--{ ? themeInfo.recomTheme.displayType =='01' }-->view-on<!--{ / }-->" data-key="01"><span class="sprite-icon icon-grid1"></span></div>
+            <!-- <div class="view-gallery" onClick="javascript:setViewType('gallery');"><span class="sprite-icon icon-grid2"></span></div> -->
+        </div>
+    </div>
+    <div class="goods-content goods-main">
+    </div>
+
+    <div class="block-pd more-btn">
+        <button type="button" class="bn_more btn-main-bottom-more" data-page="2">{=__('더보기')} </button>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    <!--
+    $(document).ready(function(){
+
+        get_list(1);
+        $('.js-goods-more-list .btn-main-bottom-more').on('click', function(e){
+            get_list($(this).data('page'));
+        });
+
+        $('.goods-view-type div').on('click', function(e){
+            $(".goods-view-type div").removeClass('view-on');
+            $('input[name="displayType"]').val($(this).data('key'));
+            $(this).addClass('view-on');
+            get_list('1');
+        });
+        $('body').on('click', '.js-option-layer', function(e){
+            var params = {
+                type : $(this).data('type'),
+                sno: $(this).data('sno'),
+                goodsNo: $(this).data('goodsno')
+            };
+
+            $('#popup-option').modal({
+                remote: '../goods/layer_option.php',
+                cache: false,
+                params: params,
+                type : 'POST',
+                show: true
+            });
+        });
+    });
+
+    function get_list(page){
+
+        var sort =  $('select[name="goods_sort"]').val();
+        var displayType = $('input[name="displayType"]').val();
+
+        $.post('../goods/goods_ps.php', {'mode' : 'get_goods_recom', 'more' : page, 'cateCd' : '{=cateCd}', 'cateType' : '{=cateType}', 'sort' : sort, 'displayType' :displayType}, function (data) {
+
+            $(".goods-main").html(data);
+            console.log($(data).filter("input[name='totalPage']").val());
+
+            if($(data).filter("input[name='totalPage']").val() > 1) {
+                $('.js-goods-more-list .btn-main-bottom-more').show();
+                $('.js-goods-more-list .btn-main-bottom-more').data('page',parseInt(page)+1);
+            } else {
+                $('.js-goods-more-list .btn-main-bottom-more').hide();
+            }
+        });
+    }
+
+    //-->
+</script>
+
+{#footer}

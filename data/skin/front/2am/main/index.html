@@ -1,0 +1,49 @@
+{*** 쇼핑몰 메인본문 | main/index.php ***}
+{ # header }
+
+<div class="main_visual">
+    {=includeWidget('proc/_slider_banner.html', 'bannerCode', '511517418')}
+</div>
+<!-- //main_visual -->
+<div class="main_ban1">
+	<!--{ @dataBanner('378864211') }-->{.tag}<!--{ / }-->
+</div>
+<!-- //main_ban1 -->
+<div class="main_ban2">
+	<div class="main_ban_left">
+		<div>{=includeWidget('proc/_slider_banner.html', 'bannerCode', '2530256889')}</div>
+		<div><!--{ @dataBanner('735864301') }-->{.tag}<!--{ / }--></div>
+	</div>
+	<div class="main_ban_right">
+		<div><!--{ @dataBanner('3959528376') }-->{.tag}<!--{ / }--></div>
+		<div><!--{ @dataBanner('701821562') }-->{.tag}<!--{ / }--></div>
+	</div>
+</div>
+<!-- //main_ban2 -->
+<div class="main_goods_cont">
+<!-- 설문조사 배너 -->{=pollViewBanner()}<!-- 설문조사 배너 -->
+</div>
+<div class="main_goods_cont">
+	<!-- 메인 상품 노출 -->{=includeWidget('goods/_goods_display_main.html', 'sno', '1')}<!-- 메인 상품 노출 -->
+</div>
+<!-- //main_goods_cont -->
+
+<div class="main_ban3">
+	<!--{ @dataBanner('1317624213') }-->{.tag}<!--{ / }-->
+</div>
+<!-- //main_ban3 -->
+
+<div class="main_goods_cont">
+	<!-- 메인 상품 노출 -->{=includeWidget('goods/_goods_display_main.html', 'sno', '2')}<!-- 메인 상품 노출 -->
+</div>
+<!-- //main_goods_cont -->
+
+<div class="main_ban4">
+	<!--{ @dataBanner('1209201645') }-->{.tag}<!--{ / }-->
+	<!--{ @dataBanner('590203955') }-->{.tag}<!--{ / }-->
+	<!--{ @dataBanner('902879848') }-->{.tag}<!--{ / }-->
+</div>
+<!-- //main_ban4 -->
+
+
+{ # footer }

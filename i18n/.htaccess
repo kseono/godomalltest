@@ -1,0 +1,8 @@
+RewriteCond %{REQUEST_URI} \.(php?|htm?|log|cgi|inc|xml|exe|bat|sh|bash|dll|po|mo)$ [NC]
+RewriteRule ^ - [F]
+
+## json만 허용 (테스트 필요하며 json 뒤에 querystring이 들어가는 경우 작동 안됨
+#Order deny,allow
+#Deny from all
+#RewriteCond %{REQUEST_URI} \.(json)(\?ts=[0-9]) [NC]
+#RewriteRule ^ %{REQUEST_URI} [L,R,QSD]

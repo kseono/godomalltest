@@ -1,0 +1,101 @@
+@charset "UTF-8";
+
+/**
+ * ie8 크로스브라우징 css 입니다.
+ */
+
+.header .top-service .notice ul {
+    margin:17px 7px 0 0;
+}
+.header .navi ul li {
+    padding-top:9px;
+}
+.header .navi ul li span {
+    position:relative;
+    top:-2px;
+}
+.header .navi ul li span strong {
+    min-height:16px;
+    padding:0 0 0 5px;
+}
+.header .navi ul li.mypage > a {
+    padding-top:9px;
+    background-position:76px 14px;
+}
+.header .navi ul li.mypage.hover > a {
+    background-position:75px 13px;
+    padding-top:8px;
+}
+.type-cart .choice,
+.type-tab-simple li a .hover {
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+}
+.item-display ul li .thumbnail a .soldout-img {
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99ffffff, endColorstr=#99ffffff);
+}
+.bottom .container > div > ul li .rating {
+    vertical-align:-6px;
+}
+.cg-main .goods-list .align ul li label.on {
+    background:#fff url('../img/icon/sort-check.png') no-repeat left top;
+}
+.lnb > .category.type-tree > li > ul > li > a {
+    position:relative;
+    top:4px;
+}
+.lnb > .category.type-tree > li > ul > li > ul > li > ul > li > a {
+    position:relative;
+    top:4px;
+}
+.lnb > .category.type-layer > li > a {
+    padding-top:11px;
+    padding-bottom:10px;
+}
+.lnb > .category.type-layer > li > a:hover,
+.lnb > .category.type-layer > li > a.has-sub {
+    padding-top:11px;
+    padding-bottom:10px;
+}
+.lnb > .category.type-layer > li > ul > li a {
+    padding-top:7px !important;
+    padding-bottom:5px !important;
+}
+.location .navi .this > a {
+    height:18px;
+    padding-top:3px;
+}
+.location .navi .this div a {
+    height:18px;
+    padding-top:4px;
+}
+.search-page .related-searches span {
+    height:16px;
+    padding-top:2px;
+}
+.caution-msg1 {
+    background-position:left 2px;
+}
+.caution-msg2 {
+    background-position:left 2px;
+}
+.join .top div span,
+.join .top div span.this,
+.step-top div span,
+.step-top div span.this {
+    background-position:right 2px;
+}
+.join .join-form .table1 table tbody td .txt-field label {
+    top:9px;
+}
+.form-element label {
+    padding-top:3px !important;
+}
+.member .box .find-pw .input-id > p {
+    letter-spacing:-1px;
+}
+.cart-tab .bar-bg {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+}
+.cart-tab .bar-bg.opacity {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+}

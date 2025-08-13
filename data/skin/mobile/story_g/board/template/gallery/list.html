@@ -1,0 +1,198 @@
+{*** 목록 | board/skin/gallery/list.php ***}
+<section id="boardlist" class="content boardlist">
+    <form name="frmList" id="frmList" action="../board/list.php" method="get">
+        <input type="hidden" name="bdId" value="{bdList.cfg.bdId}">
+        <input type="hidden" name="memNo" value="{req.memNo}"/>
+        <input type="hidden" name="noheader" value="{req.noheader}"/>
+        <input type="hidden" name="totalPage" value="{bdList.cnt.totalPage}"/>
+        <div class="search">
+            <input type="hidden" name="searchField" value="subject_contents"/>
+            <input type="search" name="searchWord" value="{=req.searchWord}" style="height:35px" placeholder="{=__('검색 단어를 입력해 주세요.')}"/>
+            <div class="search-button">
+                <button type="submit">{=__('검 색')}</button>
+            </div>
+        </div>
+    </form>
+    <div class="goods-area">
+        <div>
+            <!--{ @ bdList.noticeList }-->
+            <ul class="notice-list">
+                <li>
+                    <a href="javascript:btnView('{req.bdId}',{.sno} ,'{.auth.view}')">
+                        <div class="notice-title">
+                            <img src="{bdList.cfg.iconImageMobile.notice.url}" alt="{=__('공지')}" style="float: left; padding:0 5px;"/>
+                            <em class="text">
+                                {.gapReply}
+                                <!--{ ? .groupThread }-->
+                                <img src="{bdList.cfg.iconImageMobile.re.url}" alt="{=__('답변')}" style="padding:0 5px"/>
+                                <!--{ / }-->
+                                <!--{ ? .isSecret == 'y' }-->
+                                <img src="{bdList.cfg.iconImageMobile.secret.url}" align=absmiddle>
+                                <!--{ / }-->
+                                <!--{ ? bdList.cfg.bdCategoryFl == 'y' && .category }-->
+                                [{.category}]&nbsp;
+                                <!--{ / }-->
+                                {.subject}
+                                <!--{ ? bdList.cfg.bdMemoFl == 'y' && .memoCnt > 0 }-->
+                                <span class="c-red">({.memoCnt})</span>
+                                <!--{ / }-->
+                                <!--{ ? .isFile == 'y' }-->
+                                <img src="{bdList.cfg.iconImageMobile.attach_file.url}" alt="{=__('파일첨부 있음')}"/>
+                                <!--{ / }-->
+                                <!--{ ? .isImage == 'y' }-->
+                                <img src="{bdList.cfg.iconImageMobile.attach_img.url}" alt="{=__('이미지첨부 있음')}"/>
+                                <!--{ / }-->
+                                <!--{ ? .isNew == 'y' }-->
+                                <!--{ ? bdList.cfg.iconImageMobile.new.userModify != 1}-->
+                                <span class="icon-new">N</span>
+                                <!--{ : }-->
+                                <img src="{bdList.cfg.iconImageMobile.new.url}" alt="{=__('신규 등록글')}"/>
+                                <!--{ / }-->
+                                <!--{ / }-->
+                                <!--{ ? .isHot == 'y' }-->
+                                <!--{ ? bdList.cfg.iconImageMobile.hot.userModify != 1}-->
+                                <span class="icon-hot">HOT</span>
+                                <!--{ : }-->
+                                <img src="{bdList.cfg.iconImageMobile.hot.url}" alt="{=__('인기글')}"/>
+                                <!--{ / }-->
+                                <!--{ / }-->
+                            </em>
+                        </div>
+                        <div class="notice-bottom">
+                            <span class="notice-data">
+                                <em>{.writer}</em><time>{.regDt}</time>
+                            </span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+            <!--{ / }-->
+        </div>
+        <div class="goods-gallery-num{bdList.cfg.bdListColsCount}">
+            <!--{ ? bdList.list }-->
+            <!--{ @ bdList.list }-->
+            <div class="goods-gallery-item">
+                <div class="goods-gallery-img">
+                    <a href="javascript:btnView('{req.bdId}', {.sno}, '{.auth.view}')">
+                        <img src="{.viewListImage}" width="200" alt="{=__('상품이미지')}" title="{=__('상품이미지')}" class="goodsimg middle">
+                    </a>
+                </div>
+                <div class="goods-gallery-content">
+                    <div class="goods-list-info">
+                        <a href="javascript:btnView('{req.bdId}', {.sno}, '{.auth.view}')">
+                            {.gapReply}
+                            <!--{ ? bdList.cfg.bdGoodsPtFl == 'y' }-->
+                            <span class="goods-assess">
+                                <!--{ ? bdList.cfg.bdListColsCount != '4'}-->
+                                <span class="goods-star"><em style="width:{.goodsPtPer}%;"></em></span>
+                                <!--{ : }-->
+                                <span class="rating"><span style="width:{.goodsPtPer}%;">{=__('별')}</span></span>
+                                <!--{ / }-->
+                            </span>
+                            <!--{ / }-->
+                            <!--{ ? .groupThread }-->
+                            <img src="{bdList.cfg.iconImageMobile.re.url}" alt="{=__('답변')}" style="padding:0 5px"/>
+                            <!--{ / }-->
+                            <!--{ ? .isSecret == 'y' }-->
+                            <img src="{bdList.cfg.iconImage.secret.url}" align=absmiddle>
+                            <!--{ / }-->
+                            <!--{ ? bdList.cfg.bdCategoryFl == 'y' && .category }-->
+                            <span class="category">[{.category}]</span><br/>
+                            <!--{ / }-->
+                            <div class="goods-nm">{.subject}</div>
+                            <!--{ ? bdList.cfg.bdMemoFl == 'y' && .memoCnt > 0 }-->
+                            <b>({.memoCnt})</b>
+                            <!--{ / }-->
+                            <!--{ ? .isFile == 'y' }-->
+                            <img src="{bdList.cfg.iconImageMobile.attach_file.url}" alt="{=__('파일첨부 있음')}"/>
+                            <!--{ / }-->
+                            <!--{ ? .isImage == 'y' }-->
+                            <img src="{bdList.cfg.iconImageMobile.attach_img.url}" alt="{=__('이미지첨부 있음')}"/>
+                            <!--{ / }-->
+                            <!--{ ? .isNew == 'y' }-->
+                            <!--{ ? bdList.cfg.iconImageMobile.new.userModify != 1 }-->
+                            <span class="icon-new">N</span>
+                            <!--{ : }-->
+                            <img src="{bdList.cfg.iconImageMobile.new.url}" alt="{=__('신규 등록글')}"/>
+                            <!--{ / }-->
+                            <!--{ / }-->
+                            <!--{ ? .isHot == 'y' }-->
+                            <!--{ ? bdList.cfg.iconImageMobile.hot.userModify != 1 }-->
+                            <span class="icon-hot">HOT</span>
+                            <!--{ : }-->
+                            <img src="{bdList.cfg.iconImageMobile.hot.url}" alt="{=__('인기글')}"/>
+                            <!--{ / }-->
+                            <!--{ / }-->
+                            <div class="goods-data">
+                                <span class="data">
+                                    <em>{.writer}</em>
+                                    <time>{.regDate}</time>
+                                </span>
+                                <span class="info">
+                                    {=__('추천 수')} : <em>{.recommend}</em>
+                                    <!--{ ? bdList.cfg.bdMobileHitFl == 'y'}-->
+                                    {=__('조회 수')} : <em>{.hit}</em>
+                                    <!--{/}-->
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!--{ / }-->
+            <div class="page-btn-box">
+                <button type="button" class="prev-btn" data-page="{req.page - 1}">{=__('이전')}</button>
+                <span class="page-number"><strong>{req.page}</strong> / <em>{bdList.cnt.totalPage}</em></span>
+                <button type="button" class="next-btn" data-page="{req.page + 1}">{=__('이후')}</button>
+            </div>
+            <!--{ / }-->
+        </div>
+        <!--{ ? !bdList.list }-->
+        <div class="no-list">
+            {=__('게시글이 존재하지 않습니다.')}
+        </div>
+        <!--{ / }-->
+    </div>
+</section>
+<form id="frmWritePassword">
+    <div class="cite-layer dn js-list-password-layer">
+        <div class="wrap">
+            <h4>{=__('비밀번호 인증')}</h4>
+            <div>
+                <p>비밀번호를 입력해 주세요.</p>
+                <input type="password" name="writerPw" class="text"/>
+                <a href="javascript:void(0)" class="btn btn_gr layer-close-btn js-submit"><em class="w70-h28">{=__('확인')}</em></a>
+            </div>
+            <button type="button" class="close" title="{=__('닫기')}">{=__('닫기')}</button>
+        </div>
+    </div>
+</form>
+<div id="layerDim" class="dn">&nbsp;</div>
+<script type="text/javascript" src="\{=c.PATH_MOBILE_SKIN}js/gd_board_list.js" charset="utf-8"></script>
+<script type="text/javascript">
+    <!--
+    $(document).ready(function(){
+        $('.prev-btn').on('click', function() {
+            if ($(this).data('page') > 0) {
+                url = replaceUrlParam(location.href, 'page', $('.prev-btn').data('page'));
+                location.href = url;
+            }
+        });
+
+        $('.next-btn').on('click', function() {
+            if ($(this).data('page') <= $('input[name="totalPage"]').val()) {
+                url = replaceUrlParam(location.href, 'page', $('.next-btn').data('page'));
+                location.href = url;
+            }
+        });
+
+        $('.goods-gallery-img img.goodsimg').error(function () {
+            $(this).attr('src', 'img/etc/noimg.png');
+        })
+
+            .each(function () {
+                $(this).attr("src", $(this).attr("src"));
+            });
+    });
+    //-->
+</script>

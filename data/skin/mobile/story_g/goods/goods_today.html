@@ -1,0 +1,180 @@
+{*** 최근 본 상품 | goods/goods_today.php ***}
+{#header}
+<!--{ ? goodsList }-->
+<form id="frmToday" name="frmToday" method="post" target="ifrmProcess">
+    <div id="goodsToday" class="wish_bx">
+        <input type="hidden"  name="mode" value="">
+            <div class="inp_chk all-check">
+                <input type="checkbox" id="checkAll" class="sp gd_checkbox_all"  data-target-name="sno[]" data-target-form="#frmToday" >
+                <label for="checkAll">{=__('전체선택')}</label>
+            </div>
+
+            <ul class="my_goods v3">
+                <!--{ @ goodsList }-->
+                    <!--{ @ .value_ }-->
+
+                    <li>
+                        <div class="info ">
+                            <a href="../goods/goods_view.php?goodsNo={..goodsNo}">
+                               <div class="itemhead">
+                                <div class="thmb">
+                                   {..goodsImage}
+                                   <!--{ ? gd_isset(..timeSaleFl) }-->
+                                   <span class="timesale-mask">
+                                        <img src="../img/common/icon-timesale.png" alt="" class="icon-timesale">
+                                        <span class="timetext">{=__('타임세일')}</span>
+                                    </span>
+                                    <!--{ / }-->
+                                </div>
+                                </div>
+                                <div class="itembody">
+                                    <!--{ ? ..soldOutFl === 'y' }-->
+                                    <div class="soldout-icon display-soldout">
+                                        <img src="/data/icon/goods_icon/icon_soldout.gif">
+                                    </div>
+                                    <!--{ / }-->
+                                    <span class="elp2">{..goodsNm}</span>
+                                    <!--{ ? gd_isset(..goodsPriceString) }-->
+                                    <strong class="prc">
+                                        {..goodsPriceString}
+                                    </strong>
+                                    <!--{ : }-->
+                                    <strong class="prc">
+                                        {=gd_global_currency_symbol()}{=gd_global_money_format(..goodsPrice)}
+                                        <span class='add_currency'>{=gd_global_currency_string()} {=gd_global_add_currency_display(..goodsPrice)}</span>
+                                    </strong>
+                                    <!--{ ? gd_isset(..goodsDcPrice) }-->
+                                    <strong class="prc">
+                                        {=__('할인가')} : {=gd_global_currency_symbol()}{=gd_global_money_format(..goodsPrice - (..goodsDcPrice))}{=gd_global_currency_string()} {=gd_global_add_currency_display(..goodsPrice - ..dcPrice)}
+                                        <!--{ ? gd_isset(..goodsDcRate) }-->
+                                        <span>({=..goodsDcRate}%)</span>
+                                        <!--{ / }-->
+                                    </strong>
+                                    <!--{ / }-->
+                                    <!--{ / }-->
+                                </div>
+                         </a>
+                        </div>
+                        <button type="button" class="bn_cls btn-wish-delete-one" data-sno="{..goodsNo}"><span class="sp">{=__('삭제')}</span></button>
+                        <span class="inp_chk">
+                            <input type="checkbox" id="toadyGoods{..goodsNo}" class="sp" name="sno[]" data-goodsno="{..goodsNo}" value="{..goodsNo}" data-possible="{..orderPossible}">
+                            <label for="toadyGoods{..goodsNo}" class="blind">{=__('상품선택')}</label>
+                        </span>
+                    </li>
+
+                    <!--{ / }-->
+                <!--{ / }-->
+            </ul>
+
+
+
+
+        <div class="block-pd">
+            <ul class="btn_bx">
+                <li><button type="button" class="btn btn_g js-today-delete">{=__('선택상품 삭제')}</button></li>
+                <li><button type="button" class="btn js-today-cart">{=__('장바구니 담기')}</button></li>
+            </ul>
+        </div>
+    </div>
+</form>
+<!--{ : }-->
+<div class="no_bx">
+    <p><strong>{=__('최근 본 상품이 없습니다')}</strong></p>
+</div>
+<!--{ / }-->
+<div id="optionViewLayer"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // 개별 삭제버튼 클릭
+        $('.btn-wish-delete-one').on('click', function(){
+            $(':checkbox[name="sno[]"]').prop("checked",false);
+            $("#toadyGoods"+$(this).data('sno')).prop("checked",true);
+            goods_today_delete();
+        });
+
+        // 삭제버튼 클릭
+        $('.js-today-delete').on('click', function() {
+            goods_today_delete();
+        });
+
+        $('.js-today-cart').on('click', function() {
+            var checkedGoods = $('input:checkbox[name="sno[]"]:checked');
+
+            if (checkedGoods.length === 0) {
+                alert("{=__('상품을 선택해 주세요.')}");
+                return;
+            } else if (checkedGoods.length > 1) {
+                alert("{=__('한개씩 장바구니에 담아주세요.')}");
+                return;
+            } else if (checkedGoods.data('possible') == 'n') {
+                alert("{=__('구매 불가능한 상품이 존재합니다.%s확인 후 다시 선택해주세요.', '\n')}");
+                return;
+            }
+
+            $('#goodsToday input[name="mode"]').val('today');
+
+            var params = {
+                type : "today",
+                goodsNo: checkedGoods.val()
+            };
+
+            $('#popup-option').modal({
+                remote: '../goods/layer_option.php',
+                cache: true,
+                params: params,
+                type : 'POST',
+                show: true
+            });
+
+        });
+    });
+
+    // 선택된 최근 본 상품 삭제
+    function goods_today_delete() {
+        if ($('input:checkbox[name="sno[]"]:checked').length === 0) {
+            alert("{=__('상품을 선택해 주세요.')}");
+            return;
+        }
+
+        $('#goodsToday input[name="mode"]').val('delete_today_goods');
+
+        var goodsNo = new Array();
+        $('input:checkbox[name="sno[]"]:checked').each(function (){
+            goodsNo.push($(this).val());
+        });
+
+        $.ajax({
+            method : "POST",
+            cache  : false,
+            url    : "../goods/goods_ps.php",
+            data   : {'mode' : $('#goodsToday input[name="mode"]').val(), 'goodsNo' : goodsNo},
+            success: function () {
+                location.reload(true);
+            },
+            error  : function () {
+                console.log('request fail');
+            }
+        });
+    }
+
+    function option_view_result(params,sno) {
+        params += "&mode=cartIn&sno="+sno;
+
+        $.ajax({
+            method: "POST",
+            cache: false,
+            url: "../order/cart_ps.php",
+            data: params,
+            success: function () {
+                location.href = "../order/cart.php";
+            },
+            error: function (data) {
+                alert(data.message);
+            }
+        });
+    }
+</script>
+
+
+
+{#footer}

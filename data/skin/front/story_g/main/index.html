@@ -1,0 +1,21 @@
+{*** 쇼핑몰 메인본문 | main/index.php ***}
+{ # header }
+
+<div class="contents">
+    <div class="big-banner">
+        {=includeWidget('proc/_slider_banner.html', 'bannerCode', '2399462003')}
+    </div>
+
+    <div class="view">
+        <!-- 설문조사 배너 -->{=pollViewBanner()}<!-- 설문조사 배너 -->
+        <!-- 메인 상품 노출 -->{=includeWidget('goods/_goods_display_main.html','sno','1')}<!-- 메인 상품 노출 -->
+        <div class="goad-banner">
+            <!--{ @dataBanner('2073718706') }-->{.tag}<!--{ / }-->
+        </div>
+        <!-- 메인 상품 노출 -->{=includeWidget('goods/_goods_display_main.html','sno','2')}<!-- 메인 상품 노출 -->
+        <!-- 메인 상품 노출 -->{=includeWidget('goods/_goods_display_main.html','sno','3')}<!-- 메인 상품 노출 -->
+    </div>
+</div>
+<hr/>
+
+{ # footer }

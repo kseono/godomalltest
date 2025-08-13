@@ -1,0 +1,37 @@
+{*** 회원가입 > 승인대기 | member/join_wait.php ***}
+{ # header }
+<div class="join wait">
+    <h2>{=__('회원승인대기')}</h2>
+
+    <div class="join-complete">
+        <p class="txt1">{=__('회원가입 승인이 %s대기%s 되었습니다.', '<span>', '</span>')}</p>
+
+        <p class="txt2">{mallNm} {=__('은 회원가입 승인이 필요합니다.')} <br/>{=__('빠른 시일 내에 처리 될 수 있도록 노력 하겠습니다.')}
+            <br/>쇼핑몰 탈퇴를 희망하시는 경우, 고객센터로 문의하여 주시기 바랍니다</p>
+        {? join.under14Fl != 'n' && join.limitAge == '14' && join.appUseFl != 'company'}
+        <div class="child-guide">
+            <p><strong>{=__('14세 미만 회원가입 안내')}</strong>{=__('정보통신망법 제 31조 제 1항에 따라 만 14세 미만의 아동은 법정대리인의 동의 %s를 확인 후 회원가입 할 수 있습니다.', '<br/>')}
+                <a href="#" class="link">[{=__('관련법규 전문보기')}]</a></p>
+            <a class="normal-btn small2 btn" id="btnUnder14Download" href="../member/member_ps.php?mode=under14Download">
+                <em>{=__('14세 미만 회원가입 동의서 다운받기')}<img alt="" src="../img/etc/down.png" class="down"></em>
+            </a>
+        </div>
+        {/}
+        <div class="btn">
+            <a class="skinbtn base3 jw-confirm" href="#" id="btnConfirm"><em>{=__('확인')}</em></a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnConfirm').click(function (e) {
+            e.preventDefault();
+            top.location.href = '../main/index.php';
+        });
+        $('.link', '.join-complete').click(function (e) {
+            e.preventDefault();
+            window.open('http://www.law.go.kr/lsInfoP.do?lsiSeq=111970#0000');
+        });
+    });
+</script>
+{ # footer }

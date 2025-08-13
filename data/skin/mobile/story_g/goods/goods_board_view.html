@@ -1,0 +1,289 @@
+{*** 게시글 상세 | board/view.php ***}
+
+<section id="boardContent" class="item-list-text">
+    <!--{? bdView.cfg.bdLinkFl == 'y' && bdView.data.urlLink}-->
+    <div>
+        {=__('링크')}&nbsp;:&nbsp;<a href="{=gd_isset(bdView.data.urlLink)}" target="_blank">{=bdView.data.urlLink}</a>
+    </div>
+    <!--{/}-->
+
+    <div class="contents_holder">
+        {=bdView.data.workedContents}
+    </div>
+
+    <!--{ ? bdView.cfg.bdReplyStatusFl == 'y' && bdView.data.replyStatus>1 && bdView.data.workedAnswerContents}-->
+        <div class="js-data-comment-row ">
+            <div class="contents_holder">
+                {bdView.data.answerSubject}<br/>
+                {bdView.data.workedAnswerContents}
+            </div>
+
+            <div class="item-list-summary">
+                <div>
+                    <span class="writer">{bdView.data.answerManagerNm}</span>
+                    <span class="date">{bdView.data.answerModDt}</span>
+                </div>
+            </div>
+        </div>
+    <!--{/}-->
+
+    <div class="comment-box">
+        <div class="comment-options">
+
+            <!--{? bdView.data.auth.modify : 'y' : 'c'}-->
+            <button type="button" class="comment-icon pen" onclick="btnModifyWrite('{req.bdId}',{req.sno},'{bdView.data.auth.modify}')">
+                {=__('수정')}
+            </button>
+            <!--{/}-->
+
+            <!--{? bdView.data.auth.delete : 'y' : 'c'}-->
+            <button type="button" class="comment-icon x" onclick="btnDelete('{req.bdId}',{req.sno},'{bdView.data.auth.delete}')">
+                {=__('삭제')}
+            </button>
+            <!--{/}-->
+        </div>
+
+        <div class="sub-info">
+            <div id="recommendCount">
+                <!--{? bdView.cfg.bdRecommendFl == 'y' }-->
+                <a href="javascript:recommend('{req.bdId}',{req.sno})" class="btn btn_p2">{=__('추천')} <strong>{=bdView.data.recommend}</strong></a>
+                <!--{/}-->
+                <!--{? bdView.data.auth.report == 'y'}-->
+                <a href="javascript:void(0)" class="btn btn_p2 js_btn_report"data-bdsno="{req.sno}" data-bdid="{=bdView.cfg.bdId}">{=__('신고 및 차단')}</a>
+                <!--{/}-->
+            </div>
+        </div>
+    </div>
+
+    <!--{? bdView.data.isFile == 'y'}-->
+    <!-- 파일여부 -->
+    <div class="uploadFile">
+        <!--{ @ bdView.data.uploadedFile}-->
+        <div class="uploadFile-item">
+            <a href="../board/download.php?bdId={=bdView.cfg.bdId}&sno={req.sno}&fid={=.fid}" class="filename">
+                <img src="../img/common/icon-folder.png" alt="" class="icon-folder">
+                {.name}
+            </a>
+        </div>
+        <!--{ / }-->
+    </div>
+    <!--{/}-->
+
+    <!--{ ? bdView.cfg.bdMemoFl == 'y'}-->
+    <!-- 게시글 댓글작성창 -->
+    <div class="comment-wrap js-comment-area" data-bdId="{req.bdId}" data-sno="{req.sno}">
+
+        <!--{ @ bdView.data.memoList }-->
+        <div data-memosno="{.sno}" data-memoauth="{.auth}" class="js-data-comment-row <!--{? .groupThread}-->rereply-row<!--{/}-->">
+
+            <div class="contents_holder">
+                <!--{? .blockFl == 'y'}-->
+                차단 한 회원이 작성한 게시물입니다.
+                <!--{:}-->
+                    <!--{? bdView.data.allReplyShow == 'y' }-->
+                    {.workedMemo}
+                    <!--{:}-->
+                    <!--{? .isSecretReply == 'y' }-->
+                    <!--{? .isShowSecretReply == 'y' }-->
+                    {.workedMemo}
+                    <!--{:}-->
+                    <input type="hidden" name="secretReply" value="y">
+                    <em><img src="{bdView.cfg.iconImageMobile.secret.url}"><a href="#none" class="js-comment-btn-secret">{=secretReplyCheck.secretReplyTitle}</a></em>
+                    <!--{/}-->
+                    <!--{:}-->
+                    {.workedMemo}
+                    <!--{/}-->
+                    <!--{/}-->
+                <!--{/}-->
+            </div>
+
+            <div class="item-list-summary">
+                <!--{? .groupThread}-->
+                <div class="reply">
+                <!--{:}-->
+                <div>
+                <!--{/}-->
+                    <span class="writer">{.writer}</span>
+                    <span class="date">{.regDt}</span>
+                </div>
+            </div>
+
+
+            <div class="comment-box">
+                <div class="comment-options">
+                <!--{?! .groupThread}-->
+                <button type="button" class="comment-icon reply js-comment-btn-reply">{=__('댓글에 댓글달기')}</button>
+                <!--{/}-->
+                <!--{? .auth : 'y' : 'c'}-->
+                <button type="button" class="comment-icon pen js-comment-btn-modify" title="{=__('댓글 수정')}">{=__('댓글 수정')}</button>
+                <button type="button" class="comment-icon x js-comment-btn-delete" title="{=__('댓글 삭제')}">{=__('댓글 삭제')}</button>
+                <!--{ / }-->
+                <!--{ ? .report == 'y' }-->
+                <span class="js_btn_report" data-bdsno="{req.sno}" data-bdid="{=bdView.cfg.bdId}" data-memosno="{.sno}">신고 및 차단</span>
+                <!--{/}-->
+                </div>
+            </div>
+
+
+
+            <!-- 비회원 개인정보 수집동의 -->
+                <div class="js-action-form reply-form"  style="display:none">
+            <table width="100%" cellspacing="0" cellpadding="0" class="comment-reply">
+                <col width="75%"/>
+                <col/>
+                <!--{ ? !gd_is_login()}-->
+                <tr>
+                    <td class="input_line">
+                        <span class="reply-form-idpass">
+                            <input type="text" name="writerNm" placeholder="{=__('이름')}"/>
+                        </span>
+                        <span class="reply-form-idpass">
+                            <input type="password" name="password" placeholder="{=__('비밀번호')}"/>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="inp_chk">
+                            <input class="sp" id="info-collection-agree-action{.sno}" type="checkbox" data-dpmaxz-eid="11">
+                            <label for="info-collection-agree-action{.sno}">
+                                ({=__('비회원')}) {=__('개인정보 수집항목 동의')}
+                            </label>
+                            <a class="c-red fz11 td-u" href="javascript:void(0)" onclick="redirectCollectionAgree()">{=__('전체보기')}&gt;</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" >
+                        <textarea style="width:97%;padding:5px;border:1px #cccccc solid" rows="3">{=bdView.private}</textarea>
+                    </td>
+                </tr>
+                <!--{/}-->
+                <tr>
+                    <td>
+                        <div class="inp_chk">
+                            <!--{ secretReplyCheck.replyModify }-->
+                        </div>
+                        <div class="memo-outer">
+                            <div class="memo-box">
+                                <textarea class="memo" name="memo" placeholder="{=__('댓글을 작성하세요.')}"></textarea>
+                            </div>
+                            <div class="memo-submit">
+                                <button type="button" class="comment_button js-comment-btn-action">{=__('완료')}</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <!--{ ? bdView.cfg.bdSpamMemoFl & 2 }-->
+                <tr class="input_wrap" style="margin-top: 10px;">
+                    <td class="capcha">
+                        <div class="capcha-img">
+                            <img src="../board/captcha.php" align="absmiddle" class="captchaImg">
+                        </div>
+                        <div class="capcha-body">
+                            <div class="capcha-text">
+                                <p class="pre">보이는 순서대로 <br>숫자 및 문자를 모두 입력해 주세요.</p>
+                            </div>
+                            <div class="txt-field hs">
+                                <input type="text" name="captchaKey" maxlength="5" onkeyup="this.value=this.value.toUpperCase();" onfocus="this.select()" placeholder="문자를 입력해주세요." class="text captcha">
+                            </div>
+                            <button type="button" onclick="gd_reload_reply_captcha()" class="normal-btn small1 captchareload">
+                                <em><img src="../img/etc/icon-reset.png" alt="" class="va-m"> 이미지 새로고침</em>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <!--{ / }-->
+            </table>
+                    </div>
+
+            <!-- 비회원 개인정보 수집동의 // -->
+
+
+        </div>
+        <!--{/}-->
+
+
+        <!--{? bdView.cfg.auth.memo == 'y'}-->
+        <div class="reply-form">
+            <table width="100%" cellspacing="0" cellpadding="0" class="js-form-write">
+                <!--{ ? !gd_is_login()}-->
+                <!-- 비회원글쓰기 -->
+                <tr>
+                    <td class="input_line">
+                        <span class="reply-form-idpass">
+                            <input type="text" name="writerNm" placeholder="{=__('이름')}"/>
+                        </span>
+                        <span class="reply-form-idpass">
+                            <input type="password" name="password" placeholder="{=__('비밀번호')}"/>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="inp_chk">
+                            <input class="sp" id="info-collection-agree-write" type="checkbox" data-dpmaxz-eid="11">
+                            <label for="info-collection-agree-write">
+                                ({=__('비회원')}) {=__('개인정보 수집항목 동의')}
+                            </label>
+                            <a class="c-red fz11 td-u" href="javascript:void(0)" onclick="redirectCollectionAgree()">{=__('전체보기')}&gt;</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" >
+                        <textarea style="width:97%;padding:5px;border:1px #cccccc solid" rows="3">{=bdView.private}</textarea>
+                    </td>
+                </tr>
+                <!--{/}-->
+
+                <tr>
+                    <td colspan="2">
+                        <div class="inp_chk">
+                            <!--{ secretReplyCheck.replyWrite }-->
+                        </div>
+                        <div class="memo-outer">
+                            <div class="memo-box">
+                                <textarea class="memo" name="memo" placeholder="{=__('댓글을 작성하세요.')}"></textarea>
+                            </div>
+                            <div class="memo-submit">
+                                <button type="button" class="comment_button js-comment-btn-write">{=__('작성 완료')}</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <!--{ ? bdView.cfg.bdSpamMemoFl & 2 }-->
+                <tr class="input_wrap" style="margin-top: 10px;">
+                    <td class="capcha">
+                        <div class="capcha-img">
+                            <img src="../board/captcha.php" align="absmiddle" class="captchaImg">
+                        </div>
+                        <div class="capcha-body">
+                            <div class="capcha-text">
+                                <p class="pre">보이는 순서대로 <br>숫자 및 문자를 모두 입력해 주세요.</p>
+                            </div>
+                            <div class="txt-field hs">
+                                <input type="text" name="captchaKey" maxlength="5" onkeyup="this.value=this.value.toUpperCase();" onfocus="this.select()" placeholder="문자를 입력해주세요." class="text captcha">
+                            </div>
+                            <button type="button" onclick="gd_reload_reply_captcha()" class="normal-btn small1 captchareload">
+                                <em><img src="../img/etc/icon-reset.png" alt="" class="va-m"> 이미지 새로고침</em>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <!--{ / }-->
+            </table>
+        </div>
+        <!--{:}-->
+        <div class="comment-write js-form-write">
+            <!--{ ? gd_is_login() }-->
+            {=__('댓글 권한이 없습니다.')}
+            <!--{:}-->
+            {=__('로그인을 하셔야 댓글을 등록하실 수 있습니다.')}
+            <!--{/}-->
+        </div>
+        <!--{/}-->
+    </div>
+    <!--{/}-->
+
+</section>

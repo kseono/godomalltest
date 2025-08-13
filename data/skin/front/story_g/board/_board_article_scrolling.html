@@ -1,0 +1,36 @@
+{*** [위젯] 게시글 스크롤 | board/_board_article_scrolling.php ***}
+<!--{?canList}-->
+<h3 class="dn">{bdName}</h3>
+<div id="js-notice-list">
+    <ul>
+        <!--{ @ list}-->
+        <li style="height:30px"><a href="../board/view.php?bdId={bdId}&sno={.sno}">[{bdName}]&nbsp;{.subject}</a></li>
+        <!--{/}-->
+    </ul>
+</div>
+
+<div class="notice-btn">
+    <button type="button" class="prev" title="{=__('이전')}"><span>{=__('이전')}</span></button>
+    <button type="button" class="next" title="{=__('다음')}"><span>{=__('다음')}</span></button>
+</div>
+<script>
+    $(function () {
+        var $scroller = $('#js-notice-list');
+        $scroller.vTicker();
+
+        $(".notice-btn .next").click(function(event){
+            event.preventDefault();
+            $scroller.vTicker('next', true);
+        });
+        $(".notice-btn .prev,.notice-btn .next").hover(function(){
+            $scroller.vTicker('pause', true);
+        }, function(){
+            $scroller.vTicker('pause', false);
+        });
+        $(".notice-btn .prev").click(function(event){
+            event.preventDefault();
+            $scroller.vTicker('prev',true);
+        });
+    });
+</script>
+<!--{/}-->

@@ -1,0 +1,135 @@
+{*** 브랜드 리스트 | goods/goods_list.php ***}
+{ # header }
+
+<div class="brand-wrap">
+    <h2>{=__('브랜드')}</h2>
+    <div class="index">
+        <div class="brand_search_box">
+            <input type="text"  title="{=__('브랜드명 검색')}" placeholder="{=__('브랜드명 검색')}" id="brand_search" autocomplete="off">
+            <input type="image" src="../img/header/btn-search.png" id="" class="btn_brand_search" title="{=__('검색')}" value="{=__('검색')}" alt="{=__('검색')}">
+        </div>
+        <div>
+            <button type="button" class="all on"  data-key="">{=__('전체')}</button>
+
+            <!--{ @ korea_alphabet }-->
+             <button data-key="{=.value_}" type="button" >{=.value_}</button>
+            <!--{ / }-->
+
+        </div>
+        <div class="alphabet">
+            <button type="button" class="all"  data-key="etc">{=__('기타')}</button>
+            <!--{ @ english_alphabet }-->
+            <button data-key="{=.value_}" type="button">{=.value_}</button>
+            <!--{ / }-->
+        </div>
+    </div>
+    <div class="list" id="brand_area">
+
+
+    </div>
+    <div class="no_list">
+        {=__('검색결과가 없습니다.')}
+    </div>
+</div>
+<hr />
+
+
+<script type="text/javascript">
+    <!--
+    $(document).ready(function(){
+
+        $('.brand-wrap button').on('click', function(){
+
+            $('.brand-wrap button').removeClass('on');
+            $(this).addClass('on');
+            show_brand($(this).data('key'), false);
+
+
+        });
+        show_brand('');
+
+    });
+
+    show_brand('', false);
+
+    $("#brand_search").on({
+        'keyup':function(e){
+            if(e.keyCode == 13) show_brand($(this).val(), true);
+        }
+    });
+
+    $('.btn_brand_search').on({
+        'click':function(e){
+            show_brand($("#brand_search").val(), true);
+        }
+    });
+
+    function show_brand(brand, search)
+    {
+
+        if(search && !$.trim(brand)) {
+            alert(__('브랜드명을 입력해주세요.'));
+            return false;
+        }
+        var data = {
+            'mode' : 'get_brand',
+            'brand' : brand,
+        }
+        if(search) data.search = true;
+
+        $.ajax({
+            method: "POST",
+            cache: false,
+            url: "./goods_ps.php",
+            data: data,
+            success: function(data) {
+                $(".no_list").hide();
+                var getData = $.parseJSON(data);
+                if(data =='false') {
+                    $("#brand_area").html('');
+                    $(".no_list").show();
+                } else {
+                    var addHtml = "";
+                    $.each(getData, function (brandKey, brandVal) {
+                        addHtml += "<ul>";
+                            $.each(brandVal, function (key, val) {
+
+                                addHtml += '<li><strong><a href="../goods/goods_list.php?brandCd='+val.cateCd+'">'+val.cateNm+'</strong></a>';
+                                if(val.children) {
+                                    addHtml += '<ul>';
+                                    $.each(val.children, function (key1, val1) {
+                                        addHtml += '<li><a href="../goods/goods_list.php?brandCd='+val1.cateCd+'">'+val1.cateNm+'</a>';
+                                        if(val1.children) {
+                                            addHtml += '<ul>';
+
+                                            $.each(val1.children, function (key2, val2) {
+                                                addHtml += '<li><a href="../goods/goods_list.php?brandCd='+val2.cateCd+'">'+val2.cateNm+'</a></li>';
+                                            });
+                                            addHtml += '</ul>';
+                                        }
+                                        addHtml += '</li>';
+
+                                    });
+                                    addHtml += '</ul>';
+                                }
+
+                                addHtml += '</li>';
+                            });
+                        addHtml += "</ul>";
+                    });
+
+                    $("#brand_area").html(addHtml);
+                }
+
+
+            },
+            error: function (data) {
+                alert(data.message);
+            }
+         });
+    }
+    //-->
+</script>
+
+
+{ # footer }

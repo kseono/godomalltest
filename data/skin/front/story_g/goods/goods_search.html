@@ -1,0 +1,191 @@
+{*** 상품검색화면 | goods/goods_search.php ***} { # header }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var quickBrandFl = false;
+
+        $('select[name=pageNum]').change(function() {
+            quickBrandFl = true;
+            $('form[name=frmSearch] input[name="pageNum"]').val($(this).val());
+            $('form[name=frmSearch]').submit();
+        });
+
+        $('input[name=sort]').click(function() {
+            quickBrandFl = true;
+            $('form[name=frmSearch] input[name="sort"]').val($(this).val());
+            $('form[name=frmSearch]').submit();
+        });
+
+        $('input[name="sort"][value="{sort}"]').prop("checked","checked")
+        $('input[name="sort"][value="{sort}"]').next().addClass('on');
+
+
+
+        $('input[name=reSearch]').click(function() {
+            if($(this).is(":checked") == true)
+            {
+                $('form[name=frmSearch] input[name="keyword"]').val('');
+            }
+
+        });
+
+        $('#btnSearchSubmit').click(function() {
+            $("#frmSearch").submit();
+        });
+
+
+        $("#frmSearch").validate({
+            submitHandler: function (form) {
+                if ($('#frmSearch input[name="reSearch"]').prop('checked') === true) quickBrandFl = true;
+
+                var $orginal = $('#frmSearchDetail');
+
+                if($orginal.length)
+                {
+                    var $cloned = $orginal.clone();
+                    var $originalSelects = $orginal.find('select');
+                    $cloned.find('select').each(function(index, item) {
+                        $(item).val( $originalSelects.eq(index).val() );
+
+                    });
+
+                    var $originalTextareas = $orginal.find('textarea');
+                    $cloned.find('textarea').each(function(index, item) {
+                        $(item).val($originalTextareas.eq(index).val());
+                    });
+
+                    if (quickBrandFl == false) {
+                        $cloned.find('input[type="hidden"]').remove();
+                    }
+
+                    $cloned.appendTo('#detailSearch');
+                }
+
+
+                form.submit();
+            }
+        });
+
+    });
+</script>
+
+
+<div class="contents">
+    <div class="view">
+        <div class="search-page">
+            <strong><em>"{=gd_htmlspecialchars_slashes(goodsData.listSearch['keyword'])}<!--{ @ goodsData.listSearch['reSearchKeyword'] }-->, {=gd_htmlspecialchars_slashes(.value_)}<!--{ / }-->"</em> {=__('검색결과')} {=number_format(gd_isset(page->recode['total']))}{=__('개')}</strong>
+            <!--{ ? paycosearchUse }-->
+            <span class="paycosearch-banner"><img src="../img/etc/payco_search.png" alt="Powered by PAYCO Search" /></span>
+            <!--{ / }-->
+            <form name="frmSearch" id="frmSearch" method="get">
+                <input type=hidden name=reSearchKeyword[] value="{=goodsData.listSearch['keyword']}">
+                <input type=hidden name=reSearchKey[] value="{=goodsData.listSearch['key']}">
+                <!--{ @ goodsData.listSearch['reSearchKeyword'] }-->
+                    <input type=hidden name=reSearchKeyword[] value="{=.value_}">
+                    <input type=hidden name=reSearchKey[] value="{=goodsData.listSearch['reSearchKey'][.key_]}">
+                <!--{ / }-->
+                <input type=hidden name=sort value="{sort}">
+                <input type=hidden name=pageNum value="{pageNum}">
+
+            <div class="search-form">
+                    <fieldset>
+                        <!--{ ?  in_array('keyword',goodsConfig.searchType) }-->
+                        <legend>{=__('검색폼')}</legend>
+                        <div class="search-input">
+                                <span class="form-element">
+                                    <input type="checkbox" id="rescan" name="reSearch" class="checkbox" value="y" <!--{ ?  goodsData.listSearch['reSearch'] =='y' }--> checked='checked' <!--{ / }-->>
+                                    <label for="rescan" class="check-s  <!--{ ?  goodsData.listSearch['reSearch'] =='y' }-->on<!--{ / }-->">{=__('결과 내 재검색')}</label>
+                                </span>
+                            <!--{ ? paycosearchUse == false }-->
+                            <select name="key" class="tune" style="width:100px;">
+                                <!--{ @ goodsData.listSearch['combineSearch'] }-->
+                                <option value="{=.key_}"<!--{ ? .key_ == goodsData.listSearch['key'] }-->selected="selected"
+                                <!--{ / }-->>{=.value_}
+                                </option>
+                                <!--{ / }-->
+                            </select>
+                            <!--{ / }-->
+                            <div class="txt-field" style="width:228px;">
+                                <input type="text" name="keyword" class="text keyword" autocomplete="off">
+                            </div>
+                            <button type="submit"  class="skinbtn point2 gs-search"><em>{=__('검색')}<img src="../img/etc/search.png" alt=""/></em></button>
+                        </div>
+                        <!--{ : }-->
+                        <input type="hidden" name="key" value="all" />
+                        <input type="hidden" name="keyword" value="{=goodsData.listSearch['keyword']}" />
+                        <!--{ / }-->
+                        <!--{ ? hitKeywordConfig.keyword }-->
+                        <div class="related-searches">
+                            <span>{=__('인기검색어')}</span>
+                            <ul>
+                                <!--{ @ hitKeywordConfig.keyword }-->
+                                <li><a href="./goods_search.php?keyword={=urlencode(.value_)}">{=.value_}</a></li>
+                                <!--{ / }-->
+                            </ul>
+                        </div>
+                        <!--{ / }-->
+                        <div id="detailSearch" class="dn"></div>
+                    </fieldset>
+
+
+            </div>
+            </form>
+            <div class="goods-list">
+                    <fieldset>
+                        <legend>{=__('상품 정렬 폼')}</legend>
+                        <div class="align">
+                            <ul>
+                                <li>
+                                    <input type="radio" id="sort1" class="radio" name="sort" value="">
+                                    <label for="sort1">{=__('추천순')}</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="sort2" class="radio" name="sort" value="sellcnt">
+                                    <label for="sort2">{=__('판매인기순')}</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="sort3" class="radio" name="sort" value="price_asc">
+                                    <label for="sort3">{=__('낮은가격순')}</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="sort4" class="radio" name="sort" value="price_dsc">
+                                    <label for="sort4">{=__('높은가격순')}</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="sort5" class="radio" name="sort" value="review">
+                                    <label for="sort5">{=__('상품평순')}</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="sort6" class="radio" name="sort" value="date">
+                                    <label for="sort6">{=__('등록일순')}</label>
+                                </li>
+                            </ul>
+                            <div class="choice">
+                                <div>
+                                    <select name="pageNum" class="tune" style="width: 110px; " >
+                                        <!--{ @ goodsData.multiple }-->
+                                        <option value="{=.value_}"  <!--{ ? pageNum == .value_ }-->selected='selected'<!--{ / }-->>{=__('%s개씩보기', .value_)}</option>
+                                        <!--{ / }-->
+                                    </select>
+                                </div>
+                                <!--
+                                <button type="button" class="gallery on" title="갤러리형">갤러리형</button>
+                                <button type="button" class="list" title="리스트형">리스트형</button>
+                                -->
+                            </div>
+                        </div>
+                    </fieldset>
+
+                { # goodsTemplate }
+
+
+            </div>
+            <div class="board-paging">
+                {page->getPage()}
+            </div>
+        </div>
+    </div>
+    <hr />
+</div>
+{=fbSearchScript}
+{ # footer }

@@ -1,0 +1,104 @@
+{*** 우측 스크롤 배너 | proc/scroll_banner_right.htm ***}
+
+<div class="recent-list">
+    <em>{=__('최근본상품')}</em>
+
+    <div class="list">
+        <!--{ @ dataTodayGoods(5) }-->
+        <ul>
+            <!--{ @ .value_ }-->
+            <li>
+               <a href="../goods/goods_view.php?goodsNo={..goodsNo}" style="background-image:url('{=..goodsImageSrc}');"><span>{=gd_remove_only_tag(..goodsNm)}</span></a>
+                <div>
+                    <p><a href="../goods/goods_view.php?goodsNo={..goodsNo}">{=gd_html_cut(gd_remove_only_tag(..goodsNm),22,'...')}</a></p>
+                    <span><a href="../goods/goods_view.php?goodsNo={..goodsNo}">
+                       <!--{ ? ..goodsPriceString !='' }-->
+                        <strong>{=..goodsPriceString}</strong>
+                        <!--{ : }-->
+                        <strong>{=gd_global_currency_symbol()}{=gd_global_money_format(..goodsPrice)}</strong>{=gd_global_currency_string()}
+                        <!--{ / }-->
+                    </a></span>
+                </div>
+                <button data-goods-no="{..goodsNo}" type="button" title="{=__('최근본 상품에서 삭제')}"><span>{=__('최근본 상품에서 삭제')}</span></button>
+            </li>
+            <!--{ / }-->
+        </ul>
+        <!--{ / }-->
+        <div class="paging">
+            <button type="button" class="prev" title="{=__('최근본 이전 상품')}"><span>{=__('최근본 이전 상품')}</span></button>
+            <span><strong class="js-current">0</strong>/<span class="js-total" style="float:none;width:auto;">0</span></span>
+            <button type="button" class="next" title="{=__('최근본 다음 상품')}"><span>{=__('최근본 다음 상품')}</span></button>
+        </div>
+    </div>
+    <div class="top"><a href="#top"><img src="../../img/side/btn-top.png" alt="{=__('상단으로 이동')}"/></a></div>
+</div>
+
+<script type="text/javascript">
+    // DOM 로드
+    $(function () {
+        $('.recent-list').todayGoods();
+    });
+
+    // 최근본상품 리스트 페이징 처리 플러그인
+    $.fn.todayGoods = function () {
+        // 기본값 세팅
+        var self = $(this);
+        var setting = {
+            page: 1,
+            total: 0,
+            rowno: 5
+        };
+        var element = {
+            goodsList: self.find('.list > ul > li'),
+            closeButton: self.find('.list > ul > li > button'),
+            prev: self.find('.paging > .prev'),
+            next: self.find('.paging > .next'),
+            paging: self.find('.paging')
+        };
+
+        // 페이지 갯수 설정
+        setting.total = Math.ceil(element.goodsList.length / setting.rowno);
+
+        // 화면 초기화 및 갱신 (페이지 및 갯수 표기)
+        var init = function () {
+            if (setting.total == 0) {
+                setting.page = 0;
+                element.paging.hide();
+            }
+            self.find('ul').hide().eq(setting.page - 1).show();
+            self.find('.paging .js-current').text(setting.page);
+            self.find('.paging .js-total').text(setting.total);
+        }
+
+        // 삭제버튼 클릭
+        element.closeButton.click(function(e){
+            $.post('../goods/goods_ps.php', {
+                'mode': 'delete_today_goods',
+                'goodsNo': $(this).data('goods-no')
+            }, function (data, status) {
+                // 값이 없는 경우 성공
+                if (status == 'success' && data == '') {
+                    location.reload(true);
+                }
+                else {
+                    console.log('request fail. ajax status (' + status + ')');
+                }
+            });
+        });
+
+        // 이전버튼 클릭
+        element.prev.click(function (e) {
+            setting.page = 1 == setting.page ? setting.total : setting.page - 1;
+            init();
+        });
+
+        // 다음버튼 클릭
+        element.next.click(function (e) {
+            setting.page = setting.total == setting.page ? 1 : setting.page + 1;
+            init();
+        });
+
+        // 화면 초기화
+        init();
+    };
+</script>

@@ -1,0 +1,138 @@
+{*** [위젯] 메인 상품 출력 | goods/_goods_display_main.php ***}
+<!--{ ? mainData.displayFl == 'y'}-->
+
+<!--{ ? (mainData.kind == 'event' && mainData.displayCategory == 'g' && firstGroup == 'y')}-->
+<div class="item-display-wrap">
+    <!--{ ? mainData.eventThemeName }-->
+    <div class="my_tit">{=__(mainData.eventThemeName)}</div>
+    <!--{ / }-->
+
+    <!--{ ? mainData.eventThemeMobileContents}-->
+    <div class="contents">
+        {=mainData.eventThemeMobileContents}
+    </div>
+    <!--{/}-->
+
+    <!--{ ? mainData.otherEventData }-->
+    <div class="inp_sel" style="margin: 7px 0 7px 0;">
+        <select name="otherEventData" onchange="javascript:location.href='/goods/event_sale.php?sno=' + this.value;">
+            <!--{ @ mainData.otherEventData }-->
+            <option value="{.value_['sno']}">{.value_['themeNm']}</option>
+            <!--{/}-->
+        </select>
+    </div>
+    <!--{/}-->
+</div>
+<!--{/}-->
+
+<div class="item-display-wrap js-main-wrap-{mainData.sno}-{mainData.groupSno}">
+
+    <!--{ ? mainData.themeNm }--> <div class="my_tit">{=__(mainData.themeNm)} <!--{ ? mainData.moreTopFl == 'y'}-->
+        <!--{ ? mainData.displayCategory == 'g'}-->
+            <a class="btn-main-top-more" href="../goods/goods_main.php?sno={mainData.sno}&groupSno={mainData.groupSno}"><em>{=__('더보기')}</em></a>
+        <!--{ : }-->
+            <a class="btn-main-top-more" href="../goods/goods_main.php?sno={mainData.sno}"><em>{=__('더보기')}</em></a>
+        <!--{ / }-->
+    <!--{ / }--></div><!--{ / }-->
+
+    <!--{ ? mainData.mobileContents}-->
+    <div class="contents">
+        {=mainData.mobileContents}
+    </div>
+    <!--{/}-->
+
+    <!--{ ? mainData.kind == 'event' && mainData.displayCategory != 'g'}-->
+        <!--{ ? mainData.otherEventData }-->
+        <div class="inp_sel" style="margin: 7px 0 7px 0;">
+            <select name="otherEventData" onchange="javascript:location.href='/goods/event_sale.php?sno=' + this.value;">
+                <!--{ @ mainData.otherEventData }-->
+                <option value="{.value_['sno']}">{.value_['themeNm']}</option>
+                <!--{/}-->
+            </select>
+        </div>
+        <!--{/}-->
+    <!--{/}-->
+
+<div class="goods-content{mainData.sno}g{mainData.groupSno}">
+    { #goodsTemplate }
+</div>
+<!--{ ? totalPage > 1 && mainData.moreBottomFl == 'y' && themeInfo.displayType !='04' && themeInfo.displayType !='06' && themeInfo.displayType !='07' }-->
+    <div class="block-pd more-btn">
+        <button type="button" class="bn_more btn-main-bottom-more" data-page="2">{=__('더보기')} <img src="../img/etc/m_arrow.png"> </button>
+    </div>
+    <!--{ / }-->
+</div>
+
+<script type="text/javascript">
+    <!--
+    var keyValue{mainData.sno}g{mainData.groupSno}{loginFl} = '{gGlobal.locale}' + '{mainData.sno}' + 'G{mainData.groupSno}{loginFl}';
+    var key{mainData.sno}g{mainData.groupSno}{loginFl} = {
+        html: 'html' + keyValue{mainData.sno}g{mainData.groupSno}{loginFl},
+        page: 'page' + keyValue{mainData.sno}g{mainData.groupSno}{loginFl}
+    };
+    var gdStorage{mainData.sno}g{mainData.groupSno}{loginFl} = loadSession(key{mainData.sno}g{mainData.groupSno}{loginFl}.html);
+    var page{mainData.sno}g{mainData.groupSno}{loginFl} = loadSession(key{mainData.sno}g{mainData.groupSno}{loginFl}.page);
+
+    $(document).ready(function(){
+        var totalPage = '{totalPage}';
+        if (gdStorage{mainData.sno}g{mainData.groupSno}{loginFl}) {
+            $('.goods-content{mainData.sno}g{mainData.groupSno}').html(gdStorage{mainData.sno}g{mainData.groupSno}{loginFl});
+            if (page{mainData.sno}g{mainData.groupSno}{loginFl}) {
+                $('.js-main-wrap-{mainData.sno}-{mainData.groupSno} .btn-main-bottom-more').attr('data-page',page{mainData.sno}g{mainData.groupSno}{loginFl});
+            }
+        }
+
+        $('.js-main-wrap-{mainData.sno}-{mainData.groupSno} .btn-main-bottom-more').on('click', function(e){
+            get_list{mainData.sno}g{mainData.groupSno}{loginFl}($(this).data('page'));
+        });
+
+        if (totalPage == page{mainData.sno}g{mainData.groupSno}{loginFl}-1) {
+            $('.js-main-wrap-{mainData.sno}-{mainData.groupSno} div.more-btn').addClass('dn');
+        }
+
+        $(document).off().on('click','.btn-alert-login',function (e){
+            alert("{=__('로그인하셔야 본 서비스를 이용하실 수 있습니다.')}");
+            document.location.href = "../member/login.php";
+            return false;
+        });
+
+        <!--{ ? themeInfo.displayType == '11' }-->
+        $('body').on('click', '.goods-content{mainData.sno}g{mainData.groupSno} .js-option-layer', function(e){
+            var params = {
+                type : $(this).data('type'),
+                sno: $(this).data('sno'),
+                goodsNo: $(this).data('goodsno'),
+                mainSno : '{mainData.sno}',
+            };
+
+            $('#popup-option').modal({
+                remote: '../goods/layer_option.php',
+                cache: false,
+                params: params,
+                type : 'POST',
+                show: true
+            });
+        });
+        <!--{ / }-->
+
+    });
+
+    function get_list{mainData.sno}g{mainData.groupSno}{loginFl}(page){
+
+        $.post('../goods/goods_ps.php', {'mode' : 'get_main', 'more' : page, 'mainSno' : '{mainData.sno}', 'groupSno' : '{mainData.groupSno}'}, function (data) {
+
+            $(".goods-content{mainData.sno}g{mainData.groupSno}").html(data);
+            saveSession(key{mainData.sno}g{mainData.groupSno}{loginFl}.html, data);
+            if(parseInt(page)+1 > {totalPage}) {
+                $('.js-main-wrap-{mainData.sno}-{mainData.groupSno} .btn-main-bottom-more').hide();
+                saveSession(key{mainData.sno}g{mainData.groupSno}{loginFl}.page, parseInt(page));
+            } else {
+                $('.js-main-wrap-{mainData.sno}-{mainData.groupSno} .btn-main-bottom-more').data('page',parseInt(page)+1);
+                saveSession(key{mainData.sno}g{mainData.groupSno}{loginFl}.page, parseInt(page)+1);
+            }
+        });
+    }
+
+    //-->
+</script>
+<!--{ / }-->

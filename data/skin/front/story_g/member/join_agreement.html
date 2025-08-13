@@ -1,0 +1,368 @@
+{*** 회원가입 > 약관동의 | member/join_agreement.php ***}
+{ # header }
+
+<div class="join">
+    <div class="top">
+        <h2>{=__('회원가입')}</h2>
+
+        <div>
+            <span class="this"><strong>01</strong> {=__('약관동의')}</span>
+            <span><strong>02</strong> {=__('정보입력')}</span>
+            <span class="end"><strong>03</strong> {=__('가입완료')}</span>
+        </div>
+    </div>
+    <div class="terms">
+        <form id="formTerms" name="formTerms" method="post" action="../member/join.php">
+            <input type="hidden" name="token" value="{token}">
+            <input type="hidden" name=mode value="chkRealName">
+            <input type="hidden" name=rncheck value="none">
+            <input type="hidden" name=nice_nm value="">
+            <input type="hidden" name=pakey value="">
+            <input type="hidden" name=birthday value="">
+            <input type="hidden" name=mobile value="">
+            <input type="hidden" name=mobileService value="">
+            <input type="hidden" name=sex value="">
+            <input type="hidden" name=dupeinfo value="">
+            <input type="hidden" name=foreigner value="">
+            <input type="hidden" name=adultFl value="">
+            <input type="hidden" name=phone value="">
+            <input type="hidden" name=type>
+
+            <h3>{=__('약관동의')}</h3>
+            <!--{? under14ConsentFl == 'y'}-->
+            <p class="all-agree" id="termsAgreeDiv">
+                <input type="checkbox" class="checkbox" id="termsAgree" name="under14ConsentFl">
+                <label for="termsAgree">
+                    <span><strong>(필수)</strong> <em>만 14세 이상입니다</em></span>
+                </label>
+            </p>
+            <br/><br/>
+            <!--{/}-->
+            <p class="all-agree">
+                <input type="checkbox" class="checkbox" id="allAgree">
+                <label for="allAgree">
+                    <span><strong>{=__('%s의 모든 약관을 확인하고 전체 동의합니다.', serviceInfo['mallNm'])}</strong></span>
+                    ({=__('전체동의, 선택항목도 포함됩니다.')})
+                </label>
+            </p>
+
+            <div class="terms-view">
+                <p>
+                    <input type="checkbox" class="checkbox require" id="termsAgree1" name="agreementInfoFl">
+                    <label for="termsAgree1">
+                        <span><strong>({=__('필수')})</strong></span>
+                        {=__('이용약관')}
+                    </label>
+                    <a href="../service/agreement.php?code={agreementInfo['informCd']}" target="_blank">{=__('전체보기')}</a>
+                </p>
+
+                <div>
+                    {=nl2br(agreementInfo['content'])}
+                </div>
+            </div>
+            <div class="terms-view">
+                <p>
+                    <input type="checkbox" class="checkbox require" id="termsAgree2" name="privateApprovalFl">
+                    <label for="termsAgree2">
+                        <span><strong>({=__('필수')})</strong></span>
+                        {=__('개인정보 수집 및 이용')}
+                    </label>
+                    <a href="../service/agreement.php?code={privateApproval['informCd']}" target="_blank">{=__('전체보기')}</a>
+                </p>
+
+                <div>
+                    {=nl2br(privateApproval['content'])}
+                </div>
+            </div>
+            <!-- {? privateApprovalOption[0]['modeFl']=='y'} -->
+            <div class="terms-view">
+                <p>
+                    <input type="checkbox" class="checkbox" id="termsAgree3" name="">
+                    <label for="termsAgree3">
+                        <span class="option"><strong>({=__('선택')})</strong></span>
+                        {=__('개인정보 수집 및 이용')}
+                    </label>
+                    <a href="../service/agreement.php?code={privateApprovalOption[0]['informCd']}" target="_blank">{=__('전체보기')}</a>
+                </p>
+                <div class="consignment-box">
+                    <!-- {@ privateApprovalOption} -->
+                    <table summary="{=__('(선택)개인정보 수집 및 이용 내용입니다.')}" class="" cellspacing="0" border="1">
+                        <colgroup>
+                            <col width="79px">
+                            <col>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th scope="col">{=__('선택')}</th>
+                            <th scope="col">{=nl2br(.informNm)}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                            <span class="form-element">
+                                <input type="checkbox" class="checkbox" id="privateApprovalOption_{.sno}" name="privateApprovalOptionFl[{.sno}]">
+                                <label class="single" for="privateApprovalOption_{.sno}">{=__('선택')}</label>
+                            </span>
+                            </td>
+                            <td>
+                                <div>
+                                    {=nl2br(.content)}
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- {/} -->
+                </div>
+            </div>
+            <!-- {/} --><!-- {? privateConsign[0]['modeFl']=='y'} -->
+            <div class="terms-view">
+                <p>
+                    <input type="checkbox" class="checkbox" id="termsAgree4" name="">
+                    <label for="termsAgree4">
+                        <span class="option"><strong>({=__('선택')})</strong></span>
+                        {=__('개인정보 처리위탁')}
+                    </label>
+                    <a href="../service/agreement.php?code={privateConsign[0]['informCd']}" target="_blank">{=__('전체보기')}</a>
+                </p>
+
+                <div class="consignment-box">
+                    <!-- {@ privateConsign} -->
+                    <table summary="{=__('개인정보 처리위탁 내용입니다.')}" class="" cellspacing="0" border="1">
+                        <colgroup>
+                            <col width="79px">
+                            <col>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th scope="col">{=__('선택')}</th>
+                            <th scope="col">{=nl2br(.informNm)}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                            <span class="form-element">
+                                <input type="checkbox" class="checkbox" id="privateConsign_{.sno}" name="privateConsignFl[{.sno}]">
+                                <label class="single" for="privateConsign_{.sno}">{=__('선택')}</label>
+                            </span>
+                            </td>
+                            <td>
+                                <div>
+                                    {=nl2br(.content)}
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- {/} -->
+                </div>
+            </div>
+            <!-- {/} --><!-- {? privateOffer[0]['modeFl']=='y'} -->
+            <div class="terms-view">
+                <p>
+                    <input type="checkbox" class="checkbox" id="termsAgree5" name="">
+                    <label for="termsAgree5">
+                        <span class="option"><strong>({=__('선택')})</strong></span>
+                        {=__('개인정보 제 3자 제공')}
+                    </label>
+                    <a href="../service/agreement.php?code={privateOffer[0]['informCd']}" target="_blank">{=__('전체보기')}</a>
+                </p>
+                <div class="consignment-box">
+                    <!-- {@ privateOffer} -->
+                    <table summary="{=__('개인정보 제 3자 제공 내용입니다.')}" class="" cellspacing="0" border="1">
+                        <colgroup>
+                            <col width="79px">
+                            <col>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th scope="col">{=__('선택')}</th>
+                            <th scope="col">{=nl2br(.informNm)}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                            <span class="form-element">
+                                <input type="checkbox" class="checkbox" id="privateOffer_{.sno}" name="privateOfferFl[{.sno}]">
+                                <label class="single" for="privateOffer_{.sno}">{=__('선택')}</label>
+                            </span>
+                            </td>
+                            <td>
+                                <div>
+                                    {=nl2br(.content)}
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- {/} -->
+                </div>
+            </div>
+            <!-- {/} -->
+            <p class="msg dn">
+                <span>{=__('이용약관과 개인정보 수집 및 이용에 대한 안내 모두 동의해주세요.')}</span>
+            </p>
+            <!-- {? ipinConfig.useFl == 'y' || authCellPhoneConfig.useFl == 'y'} -->
+            <div class="select-certification">
+                <h3>{=__('본인 인증방법 선택')}</h3>
+                <div id="div_RnCheck_hpauthDream">
+                    <fieldset>
+                        <legend>{=__('본인 인증방법 선택폼')}</legend>
+                        <!-- {? ipinConfig.useFl == 'y'} -->
+                        <span class="form-element">
+                            <input type="radio" name="RnCheckType" id="authIpin" value="ipin" class="radio">
+                            <label class="choice" for="authIpin">{=__('아이핀 본인인증')}</label>
+                        </span>
+                        <!-- {/} --><!-- {? authCellPhoneConfig.useFl == 'y'} -->
+                        <span class="form-element">
+                            <input type="radio" name="RnCheckType" id="authCellphone" value="authCellPhone" class="radio">
+                            <label class="choice" for="authCellphone">{=__('휴대폰 본인인증')}</label>
+                        </span>
+                        <!-- {/} -->
+                    </fieldset>
+                </div>
+                <p class="dn" id="errorMessage"></p>
+            </div>
+            <!-- {/} -->
+            <div class="btn">
+                <!--{ ? useThirdParty }-->
+                <button class="skinbtn point1 ja-prev" id="btnPrevStep" type="button"><em>{=__('이전단계')}</em></button>
+                <!--{ / }-->
+                <button class="skinbtn point2 ja-next" id="btnNextStep" type="button"><em>{=__('다음단계')}</em></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var body = $('body'), $formTerms = $('#formTerms');
+
+        $('#btnNextStep').click(function () {
+            var pass = true;
+            /*
+             * 필수 동의 항목 검증
+             */
+            $(':checkbox.require').each(function (idx, item) {
+                var $item = $(item);
+                if (!$item.prop('checked')) {
+                    pass = false;
+                    $('p.msg', $formTerms).removeClass('dn').find('span').text($item.next().text() + "{=__('을 체크해주세요.')}");
+                    _.delay(function () {
+                        $item.focus();
+                    }, 1000);
+                    return false;
+                }
+            });
+
+            /*
+             * 만 14세 이상 동의 항목 검증
+             */
+            if ($("#termsAgreeDiv").length > 0) {
+                if (!$('#termsAgree').prop('checked')) {
+                    pass = false;
+                    alert("{=__('만 14세 이상임에 동의해 주세요.')}");
+                    $("#termsAgreeDiv").attr("tabindex", -1).focus();
+                    return false;
+                }
+            }
+
+            if (pass) {
+                $('p.msg').addClass('dn');
+                /*
+                 * 실명인증 검증
+                 */
+                if ($('input[name="RnCheckType"]').length > 0) {
+                    switch ($('input[name="RnCheckType"]:checked').val()) {
+                        case 'ipin' :
+                            var popupWindow = window.open("/member/ipin/ipin_main.php?callType=joinmember", "popupCertKey", "top=100, left=200, status=0, width=417, height=490");
+                            break;
+                        case  'authCellPhone' :
+                            var protocol = location.protocol;
+                            var callbackUrl = "{=domainUrl}/member/authcellphone/dreamsecurity_result.php";
+                            window.open(protocol + "//hpauthdream.godo.co.kr/module/Mobile_hpauthDream_Main.php?callType=joinmembermobile&shopUrl=" + callbackUrl + "&cpid={=authDataCpCode}&i=1", "auth_popup", "top=30, left=50, status=0, width=425, height=650");
+                            break;
+                        default :
+                            alert("{=__('본인인증이 필요합니다.')}");
+                            $('input[name="RnCheckType"]:first').focus();
+                            break;
+                    }
+                    return false;
+                } else {
+                    $formTerms.submit();
+                }
+            }
+        });
+
+        /*
+         * 전체 동의 체크박스 이벤트
+         */
+        $('#allAgree', $formTerms).change(function (e) {
+            var $target = $(e.target), $checkbox = $(':checkbox').not('#termsAgree'), $label = $checkbox.siblings('label');
+            if ($target.prop('checked') === true) {
+                $checkbox.prop('checked', true).val('y');
+                $label.addClass('on');
+            } else {
+                $checkbox.prop('checked', false).val('n');
+                $label.removeClass('on');
+            }
+        });
+
+        /*
+         * 이전단계 버튼 이벤트
+         */
+        $('#btnPrevStep', $formTerms).click(function (e) {
+            e.preventDefault();
+            window.location.href = '../member/join_method.php'
+        });
+
+        /*
+         * 약관 체크박스 이벤트
+         */
+        $('.terms-view :checkbox', $formTerms).change(function (e) {
+            $('p.msg').addClass('dn');
+            var $target = $(e.target), $label = $target.siblings('label'), $termsView = $target.closest('.terms-view');
+            var isTermsAgreeSelect = (e.target.id === 'termsAgree3') || (e.target.id === 'termsAgree4') || (e.target.id === 'termsAgree5');
+            var isTargetChecked = $target.prop('checked') === true;
+
+            if (isTargetChecked) {
+                if (isTermsAgreeSelect) {
+                    $termsView.find('.consignment-box label').addClass('on');
+                    $termsView.find('.consignment-box :checkbox').prop('checked', true).val('y');
+                } else {
+                    $target.prop('checked', true).val('y');
+                    $label.addClass('on');
+                }
+            } else {
+                if (isTermsAgreeSelect) {
+                    $termsView.find('.consignment-box label').removeClass('on');
+                    $termsView.find('.consignment-box :checkbox').val('n');
+                } else {
+                    $target.prop('checked', false).val('n');
+                    $label.removeClass('on');
+                }
+            }
+        });
+
+       /*
+        * 14세 동의 항목 체크박스 이벤트
+        */
+        if ($("#termsAgreeDiv").length > 0) {
+            $('#termsAgreeDiv :checkbox', $formTerms).change(function (e) {
+                var $termsTarget = $(e.target), $termsLabel = $termsTarget.siblings('label');
+                var isTermsTargetChecked = $termsTarget.prop('checked') === true;
+                if (isTermsTargetChecked) {
+                    $termsTarget.prop('checked', true).val('y');
+                    $termsLabel.addClass('on');
+                } else {
+                    $termsTarget.prop('checked', false).val('n');
+                    $termsLabel.removeClass('on');
+                }
+            });
+        }
+    });
+</script>
+{ # footer }

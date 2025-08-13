@@ -1,0 +1,34 @@
+{*** 발송지연 사유 레이어 | mypage/layer_order_naverpay_reason.php ***}
+<div class="ly_head">
+    <h1 class="h_tit elp">
+        {=__('발송지연정보')}
+    </h1>
+</div>
+<div class="all-borN">
+    <div class="input_wrap ty2">
+        <div class="input_title">{=__('발송지연 사유')}</div>
+        <div class="input_content">
+            {data.reason}
+        </div>
+    </div>
+    <div class="input_wrap ty2">
+        <div class="input_title verTop">{=__('발송기한')}</div>
+        <div class="input_content">
+            {=data.date}
+        </div>
+    </div>
+    <div class="input_wrap ty2">
+        <div class="input_title verTop">{=__('발송지연 <br>상세 사유')}</div>
+        <div class="input_content">
+            {=nl2br(data.contents)}
+        </div>
+    </div>
+</div>
+<div>
+    <ul class="btn_bx">
+        <li>
+            <button type="button" class="btn layerboard-close ly_btn_close"><em>{=__('확인')}</em></button>
+        </li>
+    </ul>
+</div>
+<button type="button" class="bn_cls v2 ly_btn_close"><span class="sp">{=__('닫기')}</span></button>

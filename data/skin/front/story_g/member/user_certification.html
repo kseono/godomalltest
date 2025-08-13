@@ -1,0 +1,107 @@
+{*** 본인인증 수단 선택 | member/user_certification.php ***}
+{ # header }
+<div class="member find-pw-page">
+    <h2>{boxHeader}</h2>
+
+    <div class="box" id="divAuth">
+        <form name="formAuth" id="formAuth" method="post" action="">
+            <input type="hidden" name="act" value="Y"/>
+            <input type="hidden" name="rncheck" value="none"/>
+            <input type="hidden" name="dupeinfo" value=""/>
+            <input type="hidden" name="token" value="{token}"/>
+            <input type="hidden" name="cToken" value="{cToken}"/>
+            <fieldset>
+                <legend>{boxHeader} {=__('폼')}</legend>
+                <h3>{=__('인증수단 선택')}</h3>
+
+                <p class="guide">{=__('본인인증 방법을 선택해 주세요.')}</p>
+
+                <div class="certify">
+                    <!-- {? emailFl === true}  -->
+                    <div class="form-element">
+                        <input type="radio" name="authType" id="authEmail" value="authEmail" class="radio">
+                        <label class="choice" for="authEmail">{=__('이메일 인증')}</label>
+                        <strong>( {email} )</strong>
+
+                        <p>{=__('가입시 등록한 이메일로 인증번호가 발송됩니다.')}</p>
+                    </div>
+                    <!-- {/} --><!-- {? smsFl === true}  -->
+                    <div class="form-element">
+                        <input type="radio" name="authType" id="authSms" value="authSms" class="radio">
+                        <label class="choice" for="authSms">SMS {=__('인증')}</label>
+                        <span>( {cellphone} )</span>
+                    </div>
+                    <!-- {/} --><!-- {? ipinFl === true}  -->
+                    <div class="form-element">
+                        <input type="radio" name="authType" id="authIpin" value="authIpin" class="radio">
+                        <label class="choice" for="authIpin">{=__('아이핀 본인인증')}</label>
+                    </div>
+                    <!-- {/} --><!-- {? authCellphoneFl === true}  -->
+                    <div class="form-element">
+                        <input type="radio" name="authType" id="authCellphone" value="authCellphone" class="radio">
+                        <label class="choice" for="authCellphone">{=__('휴대폰 본인인증')}</label>
+                    </div>
+                    <!-- {/} -->
+                    <p class="dn" id="errorMessage"></p>
+                </div>
+                <div class="btn">
+                    <button class="skinbtn base3 uc-next" type="submit"><em>{=__('다음')}</em></button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<hr/>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#formAuth').validate({
+            dialog: false,
+            rules: {
+                authType: {
+                    required: true
+                }
+            },
+            messages: {
+                authType: {
+                    required: "{=__('인증수단을 선택해 주세요.')}"
+                }
+            }, submitHandler: function (form) {
+                $('#errorMessage').addClass('dn');
+                //                console.log('submitHandler');
+                var params = $(form).serializeArray();
+                params.push({name: "mode", value: "requestAuth"});
+
+                switch ($('input[name=authType]:checked').val()) {
+                    case 'authIpin' :
+                        var popupWindow = window.open("/member/ipin/ipin_main.php?callType=findpwd", "popupCertKey", "top=100, left=200, status=0, width=417, height=490");
+                        return;
+                        break;
+                    case 'authCellphone' :
+                        var protocol = location.protocol;
+                        var callbackUrl = "{=domaiUrl}/member/authcellphone/dreamsecurity_result.php";
+                        window.open(protocol + "//hpauthdream.godo.co.kr/module/Mobile_hpauthDream_Main.php?callType=findid&shopUrl=" + callbackUrl + "&cpid={=authDataCpCode}&i=1", "auth_popup", "top=30, left=50, status=0, width=425, height=650");
+                        break;
+                    case 'authEmail':
+                    case 'authSms':
+                        $.post('../member/user_certification_ps.php', params).done(function (data, textStatus, jqXHR) {
+                            console.log('gd_member ajax', data, textStatus, jqXHR);
+                            var code = data.code;
+                            var message = data.message;
+                            if (_.isUndefined(code) && _.isUndefined(message)) {
+                                alert(data);
+                                form.action = '../member/user_certification_confirm.php';
+                                form.submit();
+                            } else {
+                                $('#errorMessage', form).removeClass('dn').html('<strong>' + message + '</strong>');
+                            }
+                        });
+                        break;
+                    default :
+                }
+
+            }
+        });
+    });
+</script>
+{ # footer }

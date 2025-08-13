@@ -1,0 +1,155 @@
+{*** 쿠폰 다운받기 레이어 | goods/layer_coupon_down.php ***}
+<!-- 쿠폰 다운받기 레이어 -->
+
+<div class="ly_head">
+    <h1 class="h_tit elp">{=__('쿠폰 다운받기')}</span></h1>
+</div>
+<!--{ ? gd_is_login() === false }-->
+<p>{=__('로그인하셔야 본 서비스를 이용하실 수 있습니다.')}</p>
+<!--{ : }-->
+<div class="ly_ct coupondown">
+    <div class="my_info">
+        <strong>{=__('쿠폰 다운받기')} <!--{ ? goodsCouponCnt  > 0 }--><span class="titl_cnt">(<!--{ goodsCouponCnt }-->)<!--{/}--></strong>
+        <a href="#" class="bn_logout" id="btnAllCouponDown">{=__('전체다운로드')}</a>
+    </div>
+    <div class="cp_bx">
+        <ul>
+            <!--{ @ goodsCouponArrData }-->
+            <li>
+                <label for="cp1">
+                    <span class="tit">
+
+                       { .couponNm }
+                             <strong>{ convertCouponArrData[.key_].couponBenefit }</strong> { convertCouponArrData[.key_].couponKindType }<br/>
+                        <span>
+                     <!--{ ? convertCouponArrData[.key_].couponMaxBenefit }-->
+                    { convertCouponArrData[.key_].couponMaxBenefit }<br/>
+                                 <!--{ / }-->
+                                 <!--{ ? convertCouponArrData[.key_].couponMinOrderPrice }-->
+                    { convertCouponArrData[.key_].couponMinOrderPrice }<br/>
+                                 <!--{ / }-->
+                    <!--{ convertCouponArrData[.key_].couponApplyDuplicateType }-->
+
+                            <!--{ ? .chkMemberCoupon == 'YES' }-->
+                        <br/> <img src="../img/icon/icon-check-red.png" alt="" class="icon-check-red"><span class="c-red"> <!--{ convertCouponArrData[.key_].useEndDate }--></span>
+                            <!--{ / }-->
+
+
+                            <!--{ ? .chkMemberCoupon == 'NO_MEMBER_GROUP' }-->
+                       <br/> {=__('해당 회원등급이 아닙니다.')}
+                            <!--{ / }-->
+
+</span>
+                    </span>
+                         <!--{ ? .chkMemberCoupon == 'NO_MEMBER_GROUP' }-->
+                    <span class="sale disabled">
+                      {=__('발급불가')}
+                            <!--{ : .chkMemberCoupon == 'DUPLICATE_COUPON' }-->
+                    <span class="sale complete">
+                        {=__('발급완료')}
+                            <!--{ : .chkMemberCoupon == 'YES' }-->
+                    <span class="sale ">
+                        <a class="btn-coupon-down" data-coupon-no="{ .couponNo }"><em>{=__('다운로드')}</em></a>
+                            <!--{ / }-->
+
+                    </span>
+                </label>
+            </li>
+            <!--{ / }-->
+        </ul>
+    </div>
+</div>
+<button type="button" class="bn_cls v2 ly_btn_close" ><span class="sp">{=__('닫기')}</span></button>
+<!--{ / }-->
+
+
+<!--//쿠폰 다운받기 레이어 -->
+<!--{ ? gd_is_login() !== false }-->
+<script type="text/javascript">
+    <!--
+    $(document).ready(function () {
+
+        $('.couponlist-title .close-btn').on('click', function (e) {
+            close_layer($(this));
+            return false;
+        });
+
+        $('.btn-coupon-down').click(function (e) {
+            var displayBtn = $(this).parent('span');
+            var couponNo = $(this).data('coupon-no');
+            var params = {
+                couponNo: couponNo,
+                mode: 'coupon_down',
+                goodsNo: '{goodsNo}',
+                scmNo: '{scmNo}',
+                brandCd: '{brandCd}'
+            };
+            $.ajax({
+                method: "POST",
+                cache: false,
+                url: "../goods/layer_coupon_ps.php",
+                data: params,
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    alert(data['message']);
+                    displayBtn.html('');
+                    if(data['code'] == 200) {
+                        displayBtn.addClass('complete');
+                        displayBtn.html("<span>{=__('발급완료')}</span>");
+                        $('.titl_cnt').html('(' + data['goodsCouponCnt'] + ')');
+                    } else {
+                        displayBtn.addClass('disabled');
+                        displayBtn.html("<span>{=__('발급불가')}</span>");
+                    }
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        });
+        $('#btnAllCouponDown').click(function (e) {
+            var couponArrData = [];
+            $('.btn-coupon-down').each(function (index, item) {
+                couponArrData.push($(item).data('coupon-no'));
+            });
+            var countCoupon = couponArrData.length;
+            if (countCoupon > 0) {
+                var params = {
+                    couponNo: couponArrData,
+                    mode: 'coupon_down_all',
+                    goodsNo: '{goodsNo}',
+                    scmNo: '{scmNo}',
+                    brandCd: '{brandCd}'
+                };
+                $.ajax({
+                    method: "POST",
+                    cache: false,
+                    url: "../goods/layer_coupon_ps.php",
+                    data: params,
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        alert(data['message']);
+                        $('.titl_cnt').html('(' + data['goodsCouponCnt'] + ')');
+                        couponDownLayerClose();
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+            } else {
+                alert("{=__('발급 가능 쿠폰이 없습니다.')}");
+                return false;
+            }
+        });
+    });
+    function couponDownLayerClose() {
+        $('#couponDownLayer').closest('.layer-wrap').addClass('dn');
+        $('#layerDim').addClass('dn');
+        $('html').removeClass('oh-space');
+        $('#scroll-left, #scroll-right').removeClass('dim');
+    }
+    //-->
+</script>
+<!--{ / }-->

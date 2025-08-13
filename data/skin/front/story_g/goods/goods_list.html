@@ -1,0 +1,128 @@
+{*** 상품 리스트 | goods/goods_list.php ***}
+{ # header }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('form[name=frmList] select[name=pageNum]').change(function() {
+            $('form[name=frmList]').get(0).submit();
+        });
+
+        $('form[name=frmList] input[name=sort]').click(function() {
+            $('form[name=frmList]').get(0).submit();
+        });
+
+        $(':radio[name="sort"][value="{sort}"]').prop("checked","checked")
+        $(':radio[name="sort"][value="{sort}"]').next().addClass('on');
+
+    });
+</script>
+
+<div class="contents">
+    <div class="view">
+        <div class="location">
+            <h3 class="dn">{=__('현재 위치')}</h3>
+            <span>{=__('홈')}</span>
+            <!--{ ? goodsCategoryList }-->
+            <!--{ @ goodsCategoryList }-->
+            <div class="navi">
+                <div class="this">
+                    <a href="#">{=.cateNm}</a>
+                    <div>
+                        <!--{ @ .data }-->
+                        <a href="?{cateType}Cd={..key_}">{=..value_}</a>
+                        <!--{ / }-->
+                    </div>
+                </div>
+            </div>
+            <!--{ / }-->
+            <!--{ / }-->
+        </div>
+
+
+        <div class="cg-main">
+            <h2>{=goodsCategoryList[cateCd]['cateNm']}</h2>
+            <!--{ ? naviDisplay.naviUse =='y' }-->
+            <!--{ ? themeInfo.cateHtml1 }--><div>{=stripslashes(str_replace('&nbsp;', ' ', themeInfo.cateHtml1))}</div><!--{ / }-->
+            <!--{ @ goodsDataSubCategory }-->
+            <!--{ ? .index_ == '0' }--><ul class="lower-category"> <!--{ / }-->
+            <li><span <!--{ ? cateCd == .cateCd }-->style="font-weight:bold"<!--{ / }-->><a href="?{cateType}Cd={.cateCd}">{.cateNm}</a> <!--{ ? naviDisplay.naviCount =='y' }--><em>({.goodsCnt+0})</em> <!--{ / }--></span></li>
+            <!--{ ? .index_+1 == .size_ }--></ul> <!--{ / }-->
+            <!--{ / }-->
+            <!--{ / }-->
+
+            <!-- 설문조사 배너 -->{=pollViewBanner()}<!-- 설문조사 배너 -->
+
+            <!--{ ? themeInfo.recomDisplayFl == 'y'  && widgetGoodsList}-->
+            <!--{ ? themeInfo.cateHtml2 }--><div class="user-tune">{=stripslashes(str_replace('&nbsp;', ' ', themeInfo.cateHtml2))}</div><!--{ / }-->
+            <h3>{=__('추천상품')}</h3>
+            <div class="weekly-best">
+                <!-- 추천상품 -->
+                {=includeWidget('goods/_goods_display.html')}
+                <!-- 추천상품 -->
+            </div>
+            <!--{ / }-->
+            <div class="goods-list">
+                <!--{ ? themeInfo.cateHtml3 }--><div>{=stripslashes(str_replace('&nbsp;', ' ', themeInfo.cateHtml3))}</div><!--{ / }-->
+                <span class="tc">{=__('상품')} <strong>{=number_format(gd_isset(page->recode['total']))}</strong> {=__('개')}</span>
+                <form name="frmList" action="">
+                    <input type="hidden" name="{cateType}Cd" value="{cateCd}"/>
+                    <fieldset>
+                        <legend>{=__('상품 정렬 폼')}</legend>
+                        <div class="align">
+                            <ul>
+                                <li>
+                                    <input type="radio" id="sort1" class="radio" name="sort" value="">
+                                    <label for="sort1">{=__('추천순')}</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="sort2" class="radio" name="sort" value="sellcnt">
+                                    <label for="sort2">{=__('판매인기순')}</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="sort3" class="radio" name="sort" value="price_asc">
+                                    <label for="sort3">{=__('낮은가격순')}</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="sort4" class="radio" name="sort" value="price_dsc">
+                                    <label for="sort4">{=__('높은가격순')}</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="sort5" class="radio" name="sort" value="review">
+                                    <label for="sort5">{=__('상품평순')}</label>
+                                </li>
+                                <li>
+                                    <input type="radio" id="sort6" class="radio" name="sort" value="date">
+                                    <label for="sort6">{=__('등록일순')}</label>
+                                </li>
+                            </ul>
+                            <div class="choice">
+                                <div>
+                                    <select name="pageNum" class="tune" style="width: 110px; " >
+                                        <!--{ @ goodsData.multiple }-->
+                                        <option value="{=.value_}"  <!--{ ? pageNum == .value_ }-->selected='selected'<!--{ / }-->>{=.value_}{=__('개씩보기')}</option>
+                                        <!--{ / }-->
+                                    </select>
+                                </div>
+                                <!--
+                                <button type="button" class="gallery on" title="갤러리형">갤러리형</button>
+                                <button type="button" class="list" title="리스트형">리스트형</button>
+                                -->
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+
+                { # goodsTemplate }
+
+            </div>
+            <div class="board-paging">
+                {page->getPage()}
+            </div>
+        </div>
+    </div>
+    <hr>
+</div>
+
+
+{ # footer }

@@ -1,0 +1,118 @@
+{*** 상품리스트 | goods/goods_list.php ***}
+{#header}
+<!--{ ? mainData.displayFl == 'y'}-->
+<div class="js-main-wrap-{mainData.sno}-{mainData.groupSno}">
+    <div class="goods-sort-area">
+        <div class="goods-sort">
+            <div class="inp_sel">
+                <select name="goods_sort" onchange="get_list{mainData.sno}g{mainData.groupSno}(1);">
+                    <option value="">{=__('상품정렬')}</option>
+                    <option value="date">{=__('등록순')}</option>
+                    <option value="price_asc">{=__('낮은가격순')}</option>
+                    <option value="price_dsc">{=__('높은가격순')}</option>
+                </select>
+            </div>
+        </div>
+        <div class="goods-view-type">
+            <input type="hidden" name="displayType" value="{mainData.displayType}" >
+            <!-- 리스트형식 -->
+            <div class="view-list" data-key="02"><span class="sprite-icon icon-list"></span></div>
+
+            <!-- 하나씩 크게 -->
+            <div class="view-gallery1" data-key="09"><span class="sprite-icon icon-one"></span></div>
+
+            <!-- 두개씩 -->
+            <div class="view-gallery2" data-key="01"><span class="sprite-icon icon-grid1"></span></div>
+            <!-- <div class="view-gallery" onClick="javascript:setViewType('gallery');"><span class="sprite-icon icon-grid2"></span></div> -->
+        </div>
+    </div>
+
+    <div class="goods-content goods-main{mainData.sno}g{mainData.groupSno}">
+    </div>
+
+    <div class="block-pd more-btn">
+        <button type="button" class="bn_more btn-main-bottom-more" data-page="2">{=__('더보기')} </button>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    <!--
+    var keyValue{mainData.sno}g{mainData.groupSno} = '{gGlobal.locale}' + '{mainData.sno}' + 'G{mainData.groupSno}';
+    var key{mainData.sno}g{mainData.groupSno} = {
+        html: 'html' + keyValue{mainData.sno}g{mainData.groupSno},
+        page: 'page' + keyValue{mainData.sno}g{mainData.groupSno},
+        displayType: 'displayType' + keyValue{mainData.sno}g{mainData.groupSno}
+    };
+    var gdStorage{mainData.sno}g{mainData.groupSno} = loadSession(key{mainData.sno}g{mainData.groupSno}.html);
+    var page{mainData.sno}g{mainData.groupSno} = loadSession(key{mainData.sno}g{mainData.groupSno}.page);
+    var displayType{mainData.sno}g{mainData.groupSno} = loadSession(key{mainData.sno}g{mainData.groupSno}.displayType);
+
+    $(document).ready(function(){
+        _initDisplayType();
+        if (displayType{mainData.sno}g{mainData.groupSno}) {
+            // storage 저장된 진열 타입이 있는 경우
+            _setDisplayType(displayType{mainData.sno}g{mainData.groupSno});
+        } else {
+        // 저장된 값 없으면 default
+            _setDisplayType("{mainData.displayType}");
+        }
+        if (gdStorage{mainData.sno}g{mainData.groupSno}) {
+            $('.goods-main{mainData.sno}g{mainData.groupSno}').html(gdStorage{mainData.sno}g{mainData.groupSno});
+            if (page{mainData.sno}g{mainData.groupSno}) {
+                $('.js_main_wrap_{mainData.sno}_{mainData.groupSno} .btn_main_bottom_more').attr('data-page',page{mainData.sno}g{mainData.groupSno});
+                if($('input[name="totalPage"]').val() < parseInt(page{mainData.sno}g{mainData.groupSno})) {
+                    $('.js-main-wrap-{mainData.sno}-{mainData.groupSno} .btn-main-bottom-more').hide();
+                }
+            }
+        } else {
+            get_list{mainData.sno}g{mainData.groupSno}(1);
+        }
+
+        $('.js-main-wrap-{mainData.sno}-{mainData.groupSno} .btn-main-bottom-more').on('click', function(e){
+            get_list{mainData.sno}g{mainData.groupSno}($(this).data('page'));
+        });
+
+        $('.goods-view-type div').on('click', function(e){
+            _initDisplayType();
+            _setDisplayType($(this).data('key'));
+            saveSession(key{mainData.sno}g{mainData.groupSno}.displayType, $(this).data('key'));
+            get_list{mainData.sno}g{mainData.groupSno}(1);
+        });
+
+    });
+
+    function get_list{mainData.sno}g{mainData.groupSno}(page){
+
+        var sort =  $('select[name="goods_sort"]').val();
+        var displayType = $('input[name="displayType"]').val();
+
+        $.post('../goods/goods_ps.php', {'mode' : 'get_main', 'more' : page, 'mainSno' : '{mainData.sno}', 'sort' : sort, 'displayType' :displayType, 'groupSno' : '{mainData.groupSno}'}, function (data) {
+
+            $(".goods-main{mainData.sno}g{mainData.groupSno}").html(data);
+            saveSession(key{mainData.sno}g{mainData.groupSno}.html, data);
+
+            if($(data).filter("input[name='totalPage']").val() > 1) {
+                $('.js-main-wrap-{mainData.sno}-{mainData.groupSno} .btn-main-bottom-more').data('page',parseInt(page)+1);
+                saveSession(key{mainData.sno}g{mainData.groupSno}.page, parseInt(page)+1);
+            } else {
+                $('.js-main-wrap-{mainData.sno}-{mainData.groupSno} .btn-main-bottom-more').hide();
+                saveSession(key{mainData.sno}g{mainData.groupSno}.page, parseInt(page));
+            }
+        });
+    }
+
+    // Initialize goods list display type
+    function _initDisplayType () {
+        $(".goods-view-type div").removeClass('view-on');
+    }
+    function _setDisplayType (displayType) {
+        $('input[name="displayType"]').val(displayType);
+        $(".goods-view-type div[data-key=" + displayType + "]").addClass('view-on');
+    }
+
+//-->
+</script>
+<!--{ / }-->
+
+{#footer}

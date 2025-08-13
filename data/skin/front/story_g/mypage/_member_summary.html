@@ -1,0 +1,86 @@
+{*** [위젯] 마이페이지 요약정보 | mypage/_member_summary.html ***}
+
+<!--{ ? checkLogin != 'guest' }-->
+<div class="section {? gGlobal.isFront}mypage-summary-empty{:}mypage-summary{/}">
+    <div class="member-info">
+        <!--{ ? gMemberInfo.groupImageGb != 'none' }-->
+        <div class="member-grade-img">
+            <img src="{=gd_get_group_image_http_path(gMemberInfo.groupSno)}" alt="" />
+        </div>
+        <!--{ / }-->
+        <div class="member-grade-text">
+            {=__('%s%s님의%s 회원등급은 %s%s%s%s 입니다.', '<p>', gMemberInfo.memNm, '</p><p class="l-text">', '<span class="strong">', gMemberInfo.groupNm, gd_display_group_label(), '</span>')}</p>
+            <a href="#layer-grade-benefit" class="btn-open-fixlayer normal-btn small1 m1"><em>{=__('등급혜택보기')}<img class="arrow" src="../img/etc/bl_arrow.png" alt="" /></em></a>
+            <!-- 등급혜택 안내 레이어 -->
+            <div id="layer-grade-benefit" class="favor-layer layer-grade-benefit dn">
+                <div class="wrap">
+                    <strong>{=__('등급혜택 안내')}</strong>
+                    <div>
+                        <div class="table2">
+                            <table>
+                                <colgroup>
+                                    <col style="width:80px;" />
+                                    <col />
+                                </colgroup>
+                                <tr>
+                                    <th class="ta-l va-t">{=__('회원 등급')}</th>
+                                    <td class="va-t">{=__(gMemberInfo.groupNm)}{=__(gd_display_group_label())}</td>
+                                </tr>
+                                <tr>
+                                    <th class="ta-l va-t">{=__('추가 할인')}</th>
+                                    <td class="va-t">
+                                        <b class="c-red">{=__('%s이상 구매시 상품 판매금액의 %s 추가 할인', gd_global_currency_display(gMemberInfo.dcLine), number_format(gMemberInfo.dcPercent, 1) + '%')}</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="ta-l va-t">{=__('중복 할인')}</th>
+                                    <td class="va-t">
+                                        <b class="c-red">{=__('%s이상 구매시 상품 판매금액의 %s 추가 할인', gd_global_currency_display(gMemberInfo.overlapDcLine), number_format(gMemberInfo.overlapDcPercent, 1) + '%')}</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="ta-l va-t">{=__('추가')} {=gd_display_mileage_name} {=__('적립')}</th>
+                                    <td class="va-t">{=__('%s이상 구매 시 구매금액당 %s 추가 적립', gd_global_currency_display(gMemberInfo.mileageLine), number_format(gMemberInfo.mileagePercent, 1) + '%')}
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <button type="button" class="close" title="{=__('닫기')}">{=__('닫기')}</button>
+                </div>
+            </div>
+            <!-- //등급혜택 안내 레이어 -->
+        </div>
+    </div>
+    <div class="member-points">
+        <!--{? gd_use_coupon()}-->
+        <div class="point-item coupon">
+            <div class="inner">
+                <span class="icon icon-ticket">&nbsp;</span>
+                <p>{=__('쿠폰')}</p>
+                <div><a href="../mypage/coupon.php"><span class="number">{=gd_money_format(myCouponCount)}</span></a>{=__('장')}</div>
+            </div>
+        </div>
+        <!--{/}-->
+        <!--{? gd_use_mileage()}-->
+        <div class="point-item mileage">
+            <div class="inner">
+                <span class="icon icon-coin">&nbsp;</span>
+                <p>{=gd_display_mileage_name()}</p>
+                <div><a href="../mypage/mileage.php"><span class="number">{=gd_money_format(gMemberInfo.mileage)}</span></a>{=gd_display_mileage_unit()}</div>
+            </div>
+        </div>
+        <!--{/}-->
+        <!--{? gd_use_deposit()}-->
+        <div class="point-item balance">
+            <div class="inner">
+                <span class="icon icon-wallet">&nbsp;</span>
+                <p>{=gd_display_deposit('name')}</p>
+                <div><a href="../mypage/deposit.php"><span class="number">{=gd_money_format(gMemberInfo.deposit)}</span></a>{=gd_display_deposit('unit')}</div>
+            </div>
+        </div>
+        <!--{/}-->
+    </div>
+</div>
+<!--{ / }-->

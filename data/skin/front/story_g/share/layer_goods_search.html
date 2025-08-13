@@ -1,0 +1,60 @@
+<div class="section">
+<form id="frmSelect">
+    <div class="section-header">
+        <h3 class="h3">
+            {=__('상품')} <b class="c-red">{total}</b>{=__('건')}
+        </h3>
+    </div>
+    <div class="section-body">
+        <div class="table1 type3">
+            <table class="goods-board">
+                <colgroup>
+                    <col style="width:77px">
+                    <col>
+                    <col style="width:137px">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>{=__('선택')}</th>
+                    <th>{=__('상품명')}</th>
+                    <th>{=__('상품금액')}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--{ @list }-->
+                <tr id="tbl_add_{.goodsNo}">
+                    <td class="ta-c">
+                        <span class="form-element">
+                            <input type="radio" name="goodsNo[]" id="{.goodsNo}" class="radio" value="{.goodsNo}">
+                            <label class="choice-s" for="{.goodsNo}"></label>
+                        </span>
+                    </td>
+                    <td class="add-item">
+                        <div class="img">
+                            <img src="{.goodsImageSrc}"  class="img-size-m">
+                        </div>
+                        <div class="item-info">
+                            <div>{.goodsNm}</div>
+                        </div>
+                    </td>
+                    <td class="ta-c item-price">
+                        <!--{ ? .soldOut =='y' && soldoutDisplay.soldout_price == 'text'}-->
+                        <b>{=soldoutDisplay.soldout_price_text}</b>
+                        <!--{ : }-->
+                        <!--{ ? .goodsPriceString !='' }-->
+                        <b>{.goodsPriceString}</b>
+                        <!--{ : }-->
+                        <b>{=gd_global_currency_symbol()}{=gd_global_money_format(.oriGoodsPrice)}</b>
+                        {=gd_global_currency_string()}
+                        <!--{ / }-->
+                        <!--{ / }-->
+                    </td>
+                </tr>
+                <!--{/}-->
+                </tbody>
+            </table>
+        </div>
+        {pagination}
+    </div>
+</form>
+</div>

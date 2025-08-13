@@ -1,0 +1,146 @@
+{*** 아이디 찾기 | member/find_id.php ***}
+{ # header }
+
+<div class="member">
+    <h2>{=__('아이디찾기')}</h2>
+
+    <form id="formFindId" method="post" action="../member/member_ps.php">
+        <div class="box">
+            <div id="divFindId">
+                <h3>{=__('회원 아이디찾기')}</h3>
+                <div class="form-element">
+                    <input type="radio" id="findIdEmail" class="radio ignore" name="findIdFl" value="email" checked="checked">
+                    <label for="findIdEmail" class="sp choice on" >{=__('이메일')}</label>
+                    <input type="radio" id="findIdPhone" class="radio ignore" name="findIdFl" value="cellPhone">
+                    <label for="findIdPhone" class="sp choice" >{=__('휴대폰번호')}</label>
+                </div>
+                <div class="login">
+                    <div class="input-info">
+                        <div>
+                            <input type="text" class="text" id="userName" name="userName" placeholder="{=__('이름')}">
+                            <label for="userName"></label>
+                        </div>
+                        <div>
+                            <input type="text" class="text input_email" id="userEmail" name="userEmail" placeholder="{=__('가입메일주소')}">
+                            <label for="userEmail"></label>
+                            <!--{ ? gGlobal.isFront }-->
+                            {=gd_select_box('cellPhoneCountryCode', 'cellPhoneCountryCode', countryPhone, null, null, __('국가코드'), 'style="width: 120px; height:38px; padding:0 0 0 8px; border:1px solid #d0d0d0; display:none;"')}
+                            <!--{ / }-->
+                            <input type="text" class="text" id="userCellPhoneNum" name="userCellPhoneNum" placeholder="{=__('가입휴대폰번호')}" disabled="disabled" style="display:none;<!--{ ? gGlobal.isFront }-->width:145px; float: right;<!--{ / }-->" maxlength="12">
+                            <label for="userCellPhoneNum"></label>
+                            <select name="emailDomain" id="emailDomain" class="email_select">
+                                <!--{@ emailDomain}-->
+                                <option value="{.key_}">{.value_}</option>
+                                <!--{/}-->
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="skinbtn point2 fi-id"><em>{=__('아이디 찾기')}</em></button>
+                </div>
+                <p class="dn caution-msg1">{=__('일치하는 회원정보가 없습니다. 다시 입력해 주세요.')}</p>
+            </div>
+            <div class="btn">
+                <button class="skinbtn default fi-pw find-id btn-find-password"><em>{=__('비밀번호 찾기')}</em></button>
+                <button class="skinbtn default fi-login find-id btn-login"><em>{=__('로그인하기')}</em></button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        select_email_domain('userEmail');
+
+        $('input').keyup(function () {
+            $('.caution-msg1', 'form').addClass('dn');
+        });
+        $('.btn-find-password', 'form').click(function (e) {
+            location.href = '../member/find_password.php';
+            e.preventDefault();
+        });
+        $('.btn-login', 'form').click(function (e) {
+            location.href = '../member/login.php';
+            e.preventDefault();
+        });
+
+        $('input[name="findIdFl"]').on('click', function(){
+            // $('#cellPhoneCountryCode').css('display', 'none');
+            // $('#cellPhoneCountryCode_chosen').css('width', '120px');
+            // $('#cellPhoneCountryCode_chosen .chosen-single').css('height', '36px');
+            // $('#cellPhoneCountryCode_chosen .chosen-single span').css('height', '36px').css('line-height', '32px');
+            if ($(this).val() == 'cellPhone') {
+                $('input[id="userEmail"]').attr('style','display:none !important').prop('disabled', true);
+                $('select[id="emailDomain"]').hide().prop('disabled', true);
+                $('input[id="userCellPhoneNum"]').prop('disabled', false).show();
+                $('#cellPhoneCountryCode').prop('disabled', false).show();
+                // $('#cellPhoneCountryCode_chosen').prop('disabled', false).show();
+            } else {
+                $('input[id="userCellPhoneNum"]').hide().prop('disabled', true);
+                $('input[id="userEmail"]').prop('disabled', false).show();
+                $('select[id="emailDomain"]').prop('disabled', false).show();
+                $('#cellPhoneCountryCode').hide().prop('disabled', true);
+                // $('#cellPhoneCountryCode_chosen').hide().prop('disabled', true);
+            }
+        })
+
+        $('input[id="userCellPhoneNum"]').on('keyup', function(){
+            var value = $(this).val();
+            $(this).val(value.replace(/[^\d]/g, ''));
+        })
+
+        $('#formFindId').validate({
+            dialog: false,
+            rules: {
+                userName: {
+                    required: true
+                },
+                userEmail: {
+                    required: true,
+                    email: true
+                },
+                userCellPhoneNum: {
+                    required: true,
+                }
+            },
+            messages: {
+                userName: {
+                    required: "{=__('이름을 입력해주세요.')}"
+                },
+                userEmail: {
+                    required: "{=__('이메일을 입력해주세요.')}",
+                    email: "{=__('메일 형식이 틀렸습니다.')}"
+                },
+                userCellPhoneNum: {
+                    required: "{=__('휴대폰 번호를 입력해주세요.')}",
+                }
+            }, submitHandler: function (form) {
+                var params = $(form).serializeArray();
+                params.push({name: "mode", value: "findId"});
+                $.post('../member/find_ps.php', params).done(function (data, textStatus, jqXHR) {
+                    if (data.result) {
+                        var compiled = _.template($('#templateFindIdResult').html());
+                        var templateData = {memberId: data.memberId, userName: $('#userName').val()};
+                        $('#divFindId').html(compiled(templateData));
+                    } else {
+                        if (data['code'] == 500) {
+                            alert(data['message']);
+                        } else {
+                            $(form).find('.caution-msg1').removeClass('dn').text(data.message);
+                        }
+                    }
+                });
+            }, invalidHandler: function (form, validator) {
+                var errors = validator.numberOfInvalids();
+                if (errors) {
+                    $(form.target).find('.caution-msg1').removeClass('dn').text(validator.errorList[0].message);
+                    validator.errorList[0].element.focus();
+                }
+            }
+        });
+    });
+</script>
+<script type="text/template" id="templateFindIdResult">
+    <p class="result-msg"><%=userName%> {=__('회원님의 아이디는 %s 입니다', '<br><strong>'+'<%=memberId%>'+ '</strong>')}</p>
+</script>
+{ # footer }

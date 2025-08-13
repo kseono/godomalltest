@@ -1,0 +1,83 @@
+{*** 하단 기본타입 | main/index.php ***}
+<hr />
+<div class="bottom">
+    <div class="container">
+        <div class="cs-center">
+            <h3>CS CENTER</h3>
+            <strong>{gMall.centerPhone}</strong>
+            <p>{=nl2br(gMall.centerHours)}</p>
+        </div>
+        <!--{ ? !gGlobal.isFront }-->
+        <div class="bank-info">
+            <h3>BANK INFO</h3>
+            <strong>{gBank.accountNumber}</strong>
+            <p><strong>{gBank.bankName}</strong> <br />{=__('예금주')} : {gBank.depositor}</p>
+        </div>
+        <!--{/}-->
+        <!--{ ? canNotice}-->
+        <div class="notice">
+            <h3><a href="../board/list.php?bdId={noticeBdId}" title="{=__('공지 리스트')}">NOTICE</a></h3>
+            {=includeWidget('board/board_article', 'bdId', noticeBdId, 'listCount', 5, 'strCut', 20)}
+        </div>
+        <!--{/}-->
+        <!--{ ? canGoodsReview}-->
+        <div class="review">
+            <h3><a href="../board/list.php?bdId={goodsReviewBdId}" title="{=__('리뷰 리스트')}">REVIEW</a></h3>
+            {=includeWidget('board/board_article', 'bdId', goodsReviewBdId, 'listCount', 5, 'strCut', 10)}
+        </div>
+        <!--{/}-->
+    </div>
+</div>
+<div class="footer">
+    <div class="link">
+        <div class="container">
+            <ul>
+                <li><a href="../service/company.php">{=__('회사소개')}</a></li>
+                <li><a href="../service/agreement.php">{=__('이용약관')}</a></li>
+                <li><a href="../service/private.php" class="privacy">{=__('개인정보처리방침')}</a></li>
+                <li><a href="../service/guide.php">{=__('이용안내')}</a></li>
+                <li><a href="../service/cooperation.php">{=__('광고/제휴 문의')}</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="logo">
+            <!--{ @dataBanner('781726638') }-->{.tag}<!--{ / }-->
+        </div>
+        <div class="policy">
+            <address><strong>{=gMall.companyNm}</strong>  {=gMall.address} {=gMall.addressSub} </address>
+            <ul>
+                <li>{=__('대표')} : {=gMall.ceoNm}</li>
+                <li>{=__('사업자등록번호')} : {=gMall.businessNo} <img src="../../img/btn/btn_bizinfo.gif" class="va-m hand" onclick="popup_bizInfo('{=str_replace('-', '', gMall.businessNo)}');" alt="{=__('사업자정보확인')}" /></li>
+                <li>{=__('통신판매업신고번호')} : {=gMall.onlineOrderSerial}</li>
+                <li>{=__('개인정보관리자')} : {=gMall.privateNm}</li>
+            </ul>
+            <ul>
+                <li>{=__('대표번호')} : <strong>{=gMall.phone}</strong></li>
+                <li>{=__('팩스번호')} : {=gMall.fax}</li>
+                <li>{=__('메일')} : <button type="button" onclick="popup_email('{=gMall.email}');">{=gMall.email}</button></li>
+                <li>{=__('호스팅제공 : 엔에이치엔커머스(주)')}</li>
+            </ul>
+            <p>copyright. {=gMall.startYear}. <strong>{=gMall.mallDomain}</strong>. All rights reserved.</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="certify-mark">
+            <!--{? gFairTrade['logoFl'] == 'default'}-->
+            <span><a href="https://www.ftc.go.kr/www/cop/bbs/selectBoardList.do?key=201&bbsId=BBSMSTR_000000002320&bbsTyCode=BBST01" target="_blank"><img alt="{=__('공정거래위원회')}" src="../../img/certify/logo_kftc.png"></a></span>
+            <!--{: gFairTrade['logoFl'] == 'upload'}-->
+            <span><img alt="{=__('공정거래위원회')}" src="{=gFairTrade['uploadLogoPath']}"></span>
+            <!--{/}-->
+            <span>{=displaySSLSeal}</span>
+            <span>{=dataEggBanner()}</span>
+            <span>{=dataReceiptBanner}</span>
+        </div>
+    </div>
+    <!--{ ? isMobileDevice == true }-->
+    <div class="container">
+        <p class="ta-c">
+            <a href="{=currentPageMobileUri}"><img src="../../img/etc/btn_go_mobile.png"></a>
+        </p>
+    </div>
+    <!--{ / }-->
+</div>

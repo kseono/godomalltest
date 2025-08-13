@@ -1,0 +1,137 @@
+{*** 자주묻는 질문 | service/faq.php ***}
+{ # header }
+<div class="contents-inner cs-page <!--{ ? req.noheader == 'y'}-->index<!--{/}-->">
+    <form name="frmList" id="frmList" action="faq.php" method="get">
+        <input type="hidden" name="noheader" value="{req.noheader}">
+        <div class="box-b clear">
+            <div class="col-a">
+                <h2 class="h2">{=__('자주묻는 질문 검색')}</h2>
+                <div class="input faq-search">
+                    <span class="txt-field" style="width:387px;">
+                        <input type="hidden" name="searchField" value="all"/>
+                        <input type="text" id="time" name="searchWord" class="text" placeholder="{=__('검색어를 입력하세요')}"/>
+                    </span>
+                    <button type="submit" class="skinbtn base3 faq-search"><em>{=__('검색')} <img alt="" src="../img/etc/search.png"/></em></button>
+                </div>
+            </div>
+            <div class="col-b">
+                <p><b class="c-black">{=__('찾으시는 질문이 없다면?')}</b></p>
+                <a href="qa.php" class="normal-btn small1 m1" target="_top"><em>1:1 {=__('문의하기')}</em></a>
+            </div>
+        </div>
+    </form>
+
+    <div class="section main">
+        <div class="section-header bd">
+            <h2 class="h2">{title}</h2>
+            <div class="option">
+                <!--{ ? req.noheader == 'y' }-->
+                <a href="faq.php" target="_top">{=__('더보기')} <img src="../img/etc/icon-arr2-r.png" alt="" class="va-m"/></a>
+                <!--{/}-->
+            </div>
+        </div>
+        <div class="section-body m2">
+            <div class="board-sorting clear">
+                <ul>
+                    <li><a href="faq.php?noheader={req.noheader}&isBest={req.isBest}&searchField={req.searchField}&searchWord={req.searchWord}" <!--{? !req.category}-->
+                        class="active"<!--{/}-->>{=__('전체')}</a></li>
+                    <!--{ @ faqCode}-->
+                    <li><a href="faq.php?category={.key_}&noheader={req.noheader}&isBest={req.isBest}&searchField={req.searchField}&searchWord={req.searchWord}"
+                        <!--{? req.category == .key_}-->class="active"<!--{/}-->>{.value_}</a></li>
+                    <!--{/}-->
+                </ul>
+            </div>
+            <div class="table1 type2 m1 bd" id="faqList">
+                <table style="table-layout: fixed;">
+                    <colgroup>
+                        <col style="width:72px"/>
+                        <col style="width:120px"/>
+                        <col/>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>{=__('번호')}</th>
+                        <th>{=__('분류')}</th>
+                        <th>{=__('내용')}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--{ @ faqList.data }-->
+                    <tr class="toggle-faq" data-sno="{.sno}">
+                        <td class="ta-c">{.no}</td>
+                        <td class="ta-c">[{.categoryNm}]</td>
+                        <td>
+                            <div class="qatype">Q</div>
+                            <div class="toggle-btn">&nbsp;</div>
+                            <div class="faq-content"><a href="javascript:void(0)" class="btnView">{.subject}</a></div>
+                        </td>
+                    </tr>
+                    <!--{/}-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{faqList.pagination}
+
+<script>
+    $(function () {
+        $('.btnView').bind('click', function () {
+            var targetTr = $(this).closest('tr');
+            var sno = targetTr.attr('data-sno');
+            //열려진거 다 삭제
+            $('#faqList tr.toggle-faq.a').hide();
+
+            if (targetTr.hasClass('open')) {    //내용이 열려있으면
+                $('#faqList tr').removeClass('open');
+                // targetTr.addClass('open');
+                resize_frame(parent.document.getElementById('faqIframe'));
+            }
+            else {
+                $('#faqList tr').removeClass('open');
+                targetTr.addClass('open');
+
+                //내용뷰
+                $.ajax({
+                    method: "POST",
+                    url: "./faq.php",
+                    data: {mode: 'getAnswer', sno: sno},
+                    dataType: 'json'
+                }).success(function (data) {
+                    var answerHtml = _.template($("#template").html());
+                    targetTr.after(answerHtml({questionContents: data['questionContents'], answerContents: data['answerContents']}));
+                    var ele = parent.document.getElementById('faqIframe');
+                    if (typeof(ele) != 'undefined' && ele != null) {
+                        resize_frame(parent.document.getElementById('faqIframe'));
+                    }
+                    $('.js-smart-img').css('max-width', '100%');
+                }).error(function (e) {
+                    alert(e.responseText);
+                });
+            }
+        })
+
+    });
+
+</script>
+{ # footer }
+
+<script type="text/template" id="template">
+    <tr class="toggle-faq a">
+        <!--<td></td>-->
+        <!--<td></td>-->
+        <td colspan="3">
+            <div class="qatype"></div>
+            <div class="faq-content">
+                <%=questionContents%>
+            </div>
+            <br/>
+            <div class="qatype">A</div>
+            <div class="faq-content">
+                <%=answerContents%>
+            </div>
+        </td>
+    </tr>
+</script>

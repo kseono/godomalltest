@@ -1,0 +1,498 @@
+{*** 플러스 리뷰 팝업창 | board/plus_review_mypage.php ***}
+{ # share_header }
+<script>
+    $(function () {
+            $('#plusReviewPopup').css('height',$('#plusReviewPopup').height());
+            window.resizeTo(410,$('#plusReviewPopup').height()+90);
+    });
+</script>
+<style>
+    html {
+        overflow-x: hidden;
+    }
+</style>
+<link type="text/css" rel="stylesheet" href="\{=c.PATH_SKIN}css/gd_plus_review.css?ts={=time()}">
+<div id="plusReviewPopup" style="background: #fff;">
+    <div class="ly_head" style="padding-top:15px;padding-bottom:15px;padding-left:150px">
+        <h1 class="h_tit elp">{=__('리뷰등록')}</h1>
+    </div>
+    <div class="box">
+        <div class="view">
+            <div class="ly_ct">
+                <section class="content plus_review_register">
+                    <form id="plusPlusReviewForm" method="post" action="../board/plus_review_ps.php" enctype="multipart/form-data">
+                        <input type="hidden" name="mode" value="addMypage">
+                        <input type="hidden" name="naverReviewCnt" value="{=data.buyGoodsData.naverReviewCnt}"/>
+                        <input type="hidden" name="plusReviewCnt" value="{=data.buyGoodsData.plusReviewCnt}"/>
+                        <div class="goods-area" style="border-top:1px solid #ddd">
+                            <div>
+                                <!--{? plusReviewConfig.reviewBenefitInfo}-->
+                                <div class="input_wrap ty2 gray">
+                                    <div class="benefit-info">{=plusReviewConfig.viewReviewBenefitInfo}
+                                    </div>
+                                </div>
+                                <!--{/}-->
+                                <!--{ ? gd_is_login() }-->
+                                <div class="input_wrap ty2">
+                                    <div class="input_title">작성자</div>
+                                    <div class="input_content">
+                                        <b>{=writer}</b>
+                                    </div>
+                                </div>
+                                <!--{:}-->
+                                <div class="input_wrap ty2">
+                                    <div class="input_title">작성자</div>
+                                    <div class="row">
+                                        <input type="text" name="writerNm" class="review-input input-text wp100 ">
+                                    </div>
+                                </div>
+                                <div class="input_wrap ty2">
+                                    <div class="input_title">비밀번호</div>
+                                    <div class="row">
+                                        <input type="password" name="writerPw" class="review-input input-text wp100 ">
+                                    </div>
+                                </div>
+                                <!--{/}-->
+                                <!--{ ? plusReviewConfig.authWriteExtra === 'all'}-->
+                                <div style="position:relative">
+                                    <div class="selected-goods-wrap">
+                                        <div class="selected-goods js-select-item" style="position:relative">
+                                            <input type="hidden" name="goodsNo" value="{=data.buyGoodsData.goodsNo}">
+                                            <div class="goods-item-cell cell-img">
+                                                <div class="goods-img">
+                                                    <img src="{=data.buyGoodsData.goodsImageSrc}" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="goods-item-cell cell-info">
+                                                {=data.buyGoodsData.goodsNm}
+                                            </div>
+                                            <div class="goods-item-cell cell-price">
+                                                {=data.buyGoodsData.totalGoodsPriceText}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--{ : }-->
+                                <!--{ ? req.orderGoodsNo }-->
+                                <input type="hidden" name="orderGoodsNo" value="{=req.orderGoodsNo}">
+                                <div style="position:relative">
+                                    <div class="selected-goods-wrap">
+                                        <div class="selected-goods js-select-item" style="position:relative">
+                                            <div class="goods-item-cell cell-img">
+                                                <div class="goods-img">
+                                                    <img src="{=data.buyGoodsData.goodsImageSrc}" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="goods-item-cell cell-info">
+                                                {=data.buyGoodsData.goodsNm}
+                                            </div>
+                                            <div class="goods-item-cell cell-price">
+                                                {=data.buyGoodsData.totalGoodsPriceText}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--{ : data.buyGoodsData}-->
+                                <div style="position:relative">
+                                    <div class="selected-goods-wrap">
+                                        <div class="selected-goods js-select-item" style="position:relative">
+                                            <input type="hidden" name="orderGoodsNo" value="{=data.buyGoodsData.sno}">
+                                            <div class="goods-item-cell cell-img">
+                                                <div class="goods-img">
+                                                    <img src="{=data.buyGoodsData.goodsImageSrc}" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="goods-item-cell cell-info">
+                                                {=data.buyGoodsData.goodsNm}
+                                            </div>
+                                            <div class="goods-item-cell cell-price">
+                                                {=data.buyGoodsData.totalGoodsPriceText}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--{/}-->
+                                <!--{/}-->
+                                <div class="input_wrap ty2">
+                                    <div class="input_title">{=__('평가')}</div>
+                                    <input type="hidden" name="goodsPt" value="5">
+                                    <div class="input_content">
+                                        <div class="select-small-outer inp_sel">
+                                            <!-- [D] 활성화 시  class="selected" 추가 -->
+                                            <button type="button" class="bn_opt js-option-select">
+                                                <span><span></span></span>
+                                            </button>
+                                            <div class="optbx" style="display:block;display:none">
+                                                <!-- [D] 3행의 높이값 구하여 height적용 -->
+                                                <div class="scroll" style="overflow-y:auto;overflow-x:hidden;max-height:150px;">
+                                                    <ul class="choice-rating">
+                                                        <!--{ @ range(5,1) }-->
+                                                        <li><span class="rating" data-value="{.value_}"><span style="width:{.value_*20}%;">{=__('평가')}{.value_}</span></span></li>
+                                                        <!--{/}-->
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--{ ? plusReviewConfig.serviceAddForm  || (plusReviewConfig.displayOptionFl == 'y' && data.buyGoodsData.option)}-->
+                                <div class="input_wrap ty2  reivew-option">
+                                    <!--{@plusReviewConfig.serviceAddForm}-->
+                                    <div class="row" style="display:table;width:100%">
+                                        <div class="input_title" style="display:table-cell;width:90px;">{=.labelName}</div>
+                                        <div style="display:table-cell">
+                                            <input type="hidden" name="addFormLabel[]" value="{=.labelName}">
+                                            <!--{ ? .inputType == 'select'}-->
+                                            <select name="addFormValue[]" class="<!--{?.requireFl == 'y'}-->js-pr-valid-form<!--{/}-->" data-label="{=.labelName}">
+                                                <option value="">{=__('=선택=')}</option>
+                                                <!--{@.labelValue}-->
+                                                <option value="{=..value_}">{=..value_}</option>
+                                                <!--{/}-->
+                                            </select>
+                                            <!--{:}-->
+                                            <input type="text" data-label="{=.labelName}" name="addFormValue[]"
+                                                   class="review-input input-text wp100 <!--{ ? .requireFl == 'y'}-->js-pr-valid-form <!--{/}-->" placeholder="{=.labelValue[0]}">
+                                            <!--{/}-->
+                                        </div>
+                                    </div>
+                                    <!--{/}-->
+                                    <!--{ ? plusReviewConfig.displayOptionFl == 'y' && plusReviewConfig.authWriteExtra !== 'all'}-->
+                                    <div class="js-buy-goods-option">
+                                        <!--{ @ data.buyGoodsData.option}-->
+                                        <div class="row">
+                                            <div class="input_title option-label">{=.name}</div>
+                                            <div class="option-value">
+                                                {=.value}
+                                            </div>
+                                        </div>
+                                        <div style="clear:both"></div>
+                                        <!--{/}-->
+                                    </div>
+                                    <!--{/}-->
+                                </div>
+                                <!--{/}-->
+                                <div class="input_wrap ty3">
+                                    <div class="input_content">
+                                        <textarea class="textarea" style="padding:0 0 35px;" name="contents" placeholder="{=plusReviewConfig.reviewPlaceHolder}"></textarea>
+                                        <p style="float: right"><span class="write_num js_textCount">0</span>/<span class="write_max_num">{=plusReviewConfig.formCheckMinLength}</span></p>
+                                    </div>
+                                </div>
+                                <div class="input_wrap ty2">
+                                    <ul id="board-attach" class="attach-container js-pr-attach-list" style="float:left">
+
+                                    </ul>
+                                    <div style="float:left;position:relative">
+                                        <button class="file-face" style="position:absolute" type="button">{=__('파일첨부')}</button>
+                                        <input class="file-hidden" style="position:relative" type="file" name="upfiles[]" accept="*"/>
+                                    </div>
+                                    <div class="clear-both"></div>
+                                </div>
+                            </div>
+                            <!--{ ? gd_is_login()=== false}-->
+                            <div class="input_wrap ty3">
+                            <span class="inp_chk">
+                                <input type="checkbox" name="agreeFl"  value="y" id="temp-id" class="sp">
+                                <label for="temp-id" class="check_s"><strong>{=__('비회원 글작성에 대한 개인정보 수집 및 이용동의')}</strong></label>
+                                <a href="../service/private.php" target="_blank" class="c-red fz11 td-u">{=__('전체보기')}&gt;</a>
+                            </span>
+                            </div>
+                            <!--{/}-->
+                            <div class="block-pd">
+                                <ul class="btn_bx">
+                                    <li>
+                                        <button type="button" class="pbtn" onclick="closePlusReviewPopup()">{=__('취 소')}</button>
+                                    </li>
+                                    <li>
+                                        <button type="submit" class="pbtn btn-red">{=__('저 장')}</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var goodsNo = '{=data.buyGoodsData.goodsNo}';
+    var plusReviewSuubmitFl = true;
+
+    function closePlusReviewPopup() {
+        self.close();
+    }
+
+    $(function () {
+        var maxFileNumber = '{=plusReviewConfig.uploadMaxCount}';
+        var widthPx = 400;
+
+        $('.js-pr-btn-popup-today').bind('click', function () {
+            var name = 'plusReview';
+            $.cookie(name, 'true', {path: '/', expires: 1});
+            setTimeout("closePlusReviewPopup()");
+        })
+
+        $('#plusReviewPopup .box .view').css('width', widthPx + 'px');
+
+        initFileUpload();
+
+        var formCheckMinLength = '{ = plusReviewConfig.formCheckMinLength}';
+        var uploadRequiredFl = '{=plusReviewConfig.uploadRequiredFl}';
+        var unMinLimitLengthFl = '{=plusReviewConfig.unMinLimitLengthFl}';
+        var mileageFl = '{=plusReviewConfig.mileageFl}';
+        var mileageAddminLimit = '{=plusReviewConfig.mileageAddminLimit}';
+        var mileageAddGuid = '{=plusReviewConfig.mileageAddGuid}';
+        var mileageAddGoodsPriceFl = '{=plusReviewConfig.mileageAddGoodsPriceFl}';
+        $("#plusPlusReviewForm").validate({
+            ignore: ':hidden',
+            submitHandler: function (form) {
+
+                if (plusReviewSuubmitFl === false) {
+                    alert(__('처리중입니다. 잠시만 기다려주세요.'));
+                    return false;
+                }
+
+                var contents = $('#plusPlusReviewForm').find('textarea[name=contents]');
+                var contentsLength = contents.val().length;
+                if(_.isEmpty(contents.val())){
+                    alert(__('내용을 입력해주세요.'));
+                    contents.focus();
+                    return false;
+                }
+
+                if(unMinLimitLengthFl != 'y' && contentsLength < formCheckMinLength ){
+                    alert(__('최소 '+formCheckMinLength+'자 이상 작성하셔야 합니다.'));
+                    contents.focus();
+                    return false;
+                }
+
+                if(mileageAddGoodsPriceFl === 'y' && mileageFl == 'y' && contentsLength < mileageAddminLimit && !_.isEmpty(mileageAddGuid)){
+                    if (!window.confirm(mileageAddGuid)) {
+                        contents.focus();
+                        return false;
+                    }
+                }
+
+                var isValidSuccess = true;
+
+                $('.js-pr-valid-form').each(function () {
+                    if (_.isEmpty($(this).val())) {
+                        alert(__('%s 항목을 입력(선택)해주세요.', $(this).data('label')));
+                        $(this).focus();
+                        isValidSuccess = false;
+                        return false;
+                    }
+                })
+
+                if (isValidSuccess === false) {
+                    return false;
+                }
+
+                if ($('input[name=writerNm]').length > 0) {
+                    if (_.isEmpty($('input[name=writerNm]').val())) {
+                        alert(__('작성자는 필수 입니다.'));
+                        return false;
+                    }
+                }
+
+                if ($('input[name=writerPw]').length > 0) {
+                    if (_.isEmpty($('input[name=writerPw]').val())) {
+                        alert(__('비밀번호는는 필수 입니다.'));
+                        return false;
+                    }
+                }
+
+                if (uploadRequiredFl == 'y') {
+                    if ($('#plusReviewPopup').find('[name^="uploadFileNm"]').length < 1) {
+                        alert(__('파일첨부는 필수 입니다.'));
+                        return false;
+                    }
+                }
+
+                {
+                    customReviewScript
+                }
+                form.submit();
+                plusReviewSuubmitFl = false;
+            },
+
+            rules: {
+                'agreeFl' : {
+                    required : true
+                }
+            },
+            messages: {
+                'agreeFl' : {
+                    required : __('비회원 개인정보 수집동의를 체크해주세요.')
+                }
+            },
+        });
+
+
+        // 평가 설정
+        $(".js-option-select").on('click', function (e) {
+            if ($(this).next('div').is(':hidden')) {
+                $(this).addClass("selected");
+                $(this).next('div.optbx').show();
+
+            } else {
+                $(this).removeClass("selected");
+                $(this).next('div.optbx').hide();
+            }
+        });
+
+        $(".choice-rating li").on('click', function () {
+            $(".js-option-select").removeClass("selected");
+            $(".js-option-select").next('div.optbx').hide();
+
+            $(".select-small-outer > button > span").addClass('rating');
+            $(".js-option-select > .rating > span").css('width', $(this).children().children().css('width'));
+            $(".js-option-select > .rating > span").css('height', '15');
+            $('input[name="goodsPt"]').val($(this).children().data('value'));
+        });
+
+        if ($('input[name="goodsPt"]').val() > 0) {
+            $(".select-small-outer > button > span").addClass('rating');
+            $(".js-option-select > .rating > span").css('width', $('input[name="goodsPt"]').val() * 20 + '%');
+            $(".js-option-select > .rating > span").css('height', '15');
+        }
+
+
+        function initFileUpload() {
+            var maxUploadFile = maxFileNumber;
+            maxUploadFile = maxUploadFile ? maxUploadFile : 0;
+
+            /**
+             * 첨부파일삭제
+             */
+            $("#plusReviewPopup .attach-container").on('click', '.item', function () {
+                var form = $(this).closest('form');
+                if (confirm(__('첨부된 파일을 삭제하시겠습니까?'))) {
+                    $(this).remove();
+                    var index = $(this).data('index');
+                    if ($(this).data('mode') == 'old') {
+                        var delHtml = '<input type="hidden" name="delFile[' + index + ']" value="y" />';
+                        form.append(delHtml);
+                    }
+                    else {
+                        var saveFileNm = $('#plusReviewPopup input[name="saveFileNm[]"].js-pr-file-' + index).val();
+                        $('#plusReviewPopup .js-pr-file-' + index).remove();
+
+                        var token = '{=token}';
+                        $.ajax({
+                            method: "POST",
+                            data: {mode: 'deleteImage', token: token, goodsNo: goodsNo, saveFileNm: saveFileNm},
+                            cache: false,
+                            url: "../board/plus_review_ps.php",
+                            success: function (data) {
+                            },
+                            error: function (data) {
+                            }
+                        });
+                    }
+                }
+            });
+
+            $('#plusReviewPopup input:file').bind("click", function () {
+                var form = $(this).closest('form');
+                if (form.find('.js-pr-attach-list .item').length >= maxFileNumber) {
+                    alert(__('첨부파일은 최대 %1$s개 까지 업로드 가능합니다.', maxFileNumber.toString()));
+                    return false;
+                }
+            })
+
+            /**
+             * 첨부파일 업로드
+             */
+            $('#plusReviewPopup input:file').bind("change", function () {
+                var form = $(this).closest('form');
+                //ajax업로드 처리
+                var uploadImages = [];
+                var orderGoodsNo = 0;
+                if ($('[name=orderGoodsNo]').length > 0) {
+                    orderGoodsNo = $('[name=orderGoodsNo]').val();
+                }
+                var self = this;
+                gdAjaxUpload.upload(
+                    {
+                        formObj: $("#plusReviewPopup"),
+                        thisObj: $(this),
+                        actionUrl: '../board/plus_review_ps.php',
+                        params: {orderGoodsNo: orderGoodsNo, goodsNo: goodsNo, 'mode': 'ajaxUpload'},
+                        successAfter: function (data) {
+                            form.find('[name="uploadFileNm[0]"]').remove();
+                            form.find('[name="saveFileNm[0]"]').remove();
+                            var fileReader = new FileReader();
+                            var uniqueId = (new Date().getTime());
+                            fileReader.readAsDataURL(self.files[0]);
+                            fileReader.onload = function () {
+                                var previewUrl = this.result;
+                                var attachHtml = '<li class="item" data-index="' + uniqueId + '"><img src="' + previewUrl + '" width="100%" height="100%" alt="' + data.uploadFileNm + '"></li>';
+                                form.find('.js-pr-attach-list').append(attachHtml);
+                            };
+                            var uploadFileNm = "<input type='hidden' name='uploadFileNm[]' class='js-pr-file-" + uniqueId + "' value='" + data.uploadFileNm + "'  >";
+                            var saveFileNm = "<input type='hidden' name='saveFileNm[]' class='js-pr-file-" + uniqueId + "' value='" + data.saveFileNm + "'  >";
+                            form.append(uploadFileNm);
+                            form.append(saveFileNm);
+
+                            // ie 일때 파일첨부 변경
+                            var agent = navigator.userAgent.toLowerCase();
+                            if ((navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1)) {
+                                $('#plusReviewPopup input:file').replaceWith($('#plusReviewPopup input:file').clone(true));
+                            } else {
+                                $('#plusReviewPopup input:file').val('');
+                            }
+                        },
+                        failAfter: function (data) {
+                        }
+                    }
+                )
+
+                if (gdAjaxUpload.isSuccess == false) {
+                    return false;
+                }
+
+            });
+        }
+
+        $('#plusPlusReviewForm').find('textarea[name=contents]').keyup(function() {
+            var textLength = $(this).val().length;
+            $(this).closest('#plusPlusReviewForm').find('.js_textCount').text(textLength);
+        });
+
+    });
+
+    function setAddOrder(orderGoodsNo) {
+        $.ajax({
+            method: "POST",
+            data: {mode: 'getOrder', 'orderGoodsNo': orderGoodsNo},
+            cache: false,
+            url: "../board/plus_review_ps.php",
+            success: function (data) {
+                console.log(data.data);
+                var orderData = data.data;
+                $('[name=orderGoodsNo]').val(orderData.sno);
+                $('.goods-item-cell.cell-info').html(orderData.goodsNm);
+                $('.goods-item-cell.cell-img img').attr('src', orderData.goodsImageSrc);
+                $('.goods-item-cell.cell-price').html(orderData.totalGoodsPriceText);
+                var optHtml = '';
+                if (!_.isUndefined(orderData.option)) {
+                    for (var i = 0; i < orderData.option.length; i++) {
+                        optHtml += '<div class="row">';
+                        optHtml += '<div class="input_title option-label" >' + orderData.option[i].name + '</div>';
+                        optHtml += '<div class="option-value">' + orderData.option[i].value + '</div>';
+                        optHtml += '</div>';
+                        optHtml += ' <div style="clear:both"></div>';
+                    }
+                }
+                $('.js-buy-goods-option').empty().html(optHtml);
+
+            },
+            error: function (data) {
+                alert(data.message);
+                closeLayer();
+            }
+        });
+    }
+</script>
+{customHeader}

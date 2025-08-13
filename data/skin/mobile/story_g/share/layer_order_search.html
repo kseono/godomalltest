@@ -1,0 +1,32 @@
+{*** 주문 선택 레이어 | share/layer_order_search.php ***}
+<!--{ @ data}-->
+<h2 class="my_tit">
+    주문번호 {.orderNo}
+    <span style="float:right">{.regDt}</span>
+</h2>
+<ul class="my_goods" data-ordergoodsno="{.sno}">
+    <input type="hidden" name="goodsNo" value="{.goodsNo}">
+    <input type="hidden" name="orderNo" value="{.orderNo}">
+    <li>
+        <p class="hd v2">
+            <span>{=__('주문상품')}</span>
+            <strong class="icon_deli ing status"> {.orderStatusText}</strong>
+        </p>
+        <div class="info">
+            <div class="itemhead" style="padding-bottom:10px">
+                <div class="thmb img">
+                    <img src="{.goodsImageSrc}" width="50"  class="middle">
+                </div>
+            </div>
+            <div class="itembody">
+                <span class="elp2 goods-name">{.goodsNm}</span>
+                <dd class="goods-option">{.optionName}</dd>
+                <strong class="prc">{=__('상품금액')} : <span class="goods-price">{=gd_currency_display(.totalGoodsPrice)}</span></strong>
+            </div>
+            <ul class="btn_bx">
+                <li><a href="javascript:void(0)" class="btn btn_w js-select-confirm">{=__('선택')}</a></li>
+            </ul>
+        </div>
+    </li>
+</ul>
+<!--{/}-->

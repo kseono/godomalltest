@@ -1,0 +1,28 @@
+{*** 인기상품 | goods/populate.php ***}
+{ # header }
+
+<div class="contents">
+    <div class="view">
+        <div class="cg-main">
+
+            <h2>{=themeInfo['populateName']}</h2>
+            <div class="goods-list">
+                <span class="tc">{=__('상품 %s개', '<strong>' + number_format(gd_isset(total)) + '</strong>')}</span>
+                <form name="frmList" action="">
+                    <input type="hidden" name="sno" value="{sno}"/>
+                    <fieldset>
+                   `     <legend>{=__('상품 정렬 폼')}</legend>
+                        <div class="align">
+                        </div>
+                    </fieldset>
+                </form>
+
+                { # goodsTemplate }
+
+            </div>
+        </div>
+    </div>
+    <hr>
+</div>
+
+{ # footer }

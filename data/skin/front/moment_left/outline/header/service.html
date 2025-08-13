@@ -1,0 +1,97 @@
+{*** 상단 고객센터 | mypage/index.php ***}
+<div id="header">
+
+    <div class="header_top">
+        <div class="header_top_cont">
+
+            <!-- 멀티상점 선택 -->
+            {=includeWidget('proc/_global_select.html')}
+            <!-- 멀티상점 선택 -->
+
+            <ul class="top_member_box">
+                <!--{ ? gd_is_login() === false }-->
+                <li><a href="../member/login.php">LOGIN</a><span class="txt_bar"></span></li>
+                <li><a href="../member/join_method.php">JOIN</a><span class="txt_bar"></span>
+                    <!--<span class="accent">
+                        <span><strong>2,000 P</strong></span>
+                    </span>-->
+                </li>
+                <!--{ : }-->
+                <li><a href="../member/logout.php?returnUrl={=logoutReturnUrl}">LOGOUT</a><span class="txt_bar"></span></li>
+                <!--{ / }-->
+                <li>
+                    <div class="top_mypage_cont">
+                        <span class="top_mypage_tit"><a href="../mypage/index.php">MYPAGE</a></span>
+                        <ul style="display:none;">
+                            <li><a href="../mypage/order_list.php">{=__('주문조회')}</a></li>
+                            <li><a href="../mypage/my_page_password.php">{=__('내정보수정')}</a></li>
+                            <li><a href="../mypage/wish_list.php">{=__('찜 리스트')}</a></li>
+                            <li><a href="../mypage/mypage_qa.php">1:1 {=__('문의')}</a></li>
+                        </ul>
+                    </div>
+                    <span class="txt_bar"></span>
+                </li>
+                <li><a href="../order/cart.php">{=__('장바구니')}( <strong>{=dataCartGoodsCnt()}</strong> )</a><span class="txt_bar"></span></li>
+                <li><a href="../service/index.php">{=__('고객센터')}</a></li>
+            </ul>
+
+        </div>
+        <!-- //header_top_cont -->
+    </div>
+    <!-- //header_top -->
+	<!--{ ? layout.current_page == 'y' && layout.page_name }-->
+    <div class="location_wrap">
+        <div class="location_cont">
+            <em><a href="#" class="local_home">HOME</a> > {=layout.page_name}</em>
+        </div>
+    </div>
+    <!--{ / }-->
+	<!-- //location_wrap -->
+
+    <div class="header_side_cont">
+        <div class="sub_menu_cont">
+            <div class="service_menu_box">
+                <dl>
+                    <dt>{=__('고객센터')}</dt>
+                    <dd>
+                        <ul>
+                            <!--{?canNotice}-->
+                            <li><a href="../service/notice.php">· {=__('공지사항')}</a></li>
+                            <!--{/}-->
+                            <!--{?canQa}-->
+                            <li><a href="../service/qa.php">· 1:1 {=__('문의하기')}</a></li>
+                            <!--{/}-->
+                            <li><a href="../service/faq.php">· FAQ</a></li>
+                        </ul>
+                    </dd>
+                </dl>
+                <div class="info_box">
+                    <dl>
+                        <dt>{=__('고객상담센터')}</dt>
+                        <dd>
+                            <strong class="info_num">{gMall.centerPhone}</strong><br>
+                            <a href="mailto:{gMall.centerEmail}" class="info_mail_link">{gMall.centerEmail}</a>
+                            <p>{=nl2br(gMall.centerHours)}</p>
+                        </dd>
+                    </dl>
+                    <!--{ ? !gGlobal.isFront }-->
+                    <dl>
+                        <dt>{=__('은행계좌 안내')}</dt>
+                        <dd>
+                            <strong class="info_num">{gBank.accountNumber}</strong>
+                            <p>
+                                <em>{gBank.bankName}</em> <br>
+                                <span>[{=__('예금주')} : {gBank.depositor}]</span>
+                            </p>
+                        </dd>
+                    </dl>
+                    <!--{ / }-->
+                </div>
+            </div>
+            <!-- //service_menu_box -->
+        </div>
+        <!-- //sub_menu_cont -->
+    </div>
+
+</div>
+<!-- //header -->

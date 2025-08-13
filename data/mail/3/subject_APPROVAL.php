@@ -1,0 +1,1 @@
+[{rc_mallNm}] {rc_memNm}, 注册批准。

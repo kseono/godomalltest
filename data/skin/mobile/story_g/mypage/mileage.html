@@ -1,0 +1,99 @@
+{*** 마일리지 | mypage/mileage.php ***}
+{ # header }
+<p class="my_money">
+    <span class="tit">{=__('사용 가능한')} {=gd_display_mileage_name()}</span>
+    <strong>{=gd_money_format(gMemberInfo.mileage)}{=gd_display_mileage_unit()}</strong>
+</p>
+<div class="my_tit">
+    <h2 class="my_tit">{=gd_display_mileage_name()} {=__('내역')}</h2>
+    <form method="get" name="frmDateSearch" id="frmDateSearch" autocomplete="off">
+        <input type="hidden" name="mode" value="{mode}">
+        <fieldset>
+            <legend>{=gd_display_mileage_name()} {=__('내역')}</legend>
+            <div>
+                <span class="select-cal">
+                    <div class="select-small-outer inp_sel">
+                        {=gd_select_box(null, 'searchPeriod', searchDate, null, selectDate, null, null, 'check-option-inner')}
+                    </div>
+                </span>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<!--{ ? list }-->
+<div class="money_history">
+    <div class="tbl2">
+        <table>
+            <caption><span>{=gd_display_mileage_name()} {=__('내역 표')}</span></caption>
+            <colgroup>
+                <col style="width:105px">
+                <col>
+                <col style="width:110px">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th scope="col">{=__('일자')}</th>
+                    <th scope="col">{=__('내용')}</th>
+                    <th scope="col">{=gd_display_mileage_name()}</th>
+                </tr>
+            </thead>
+            <tbody>
+            <!--{ @ list }-->
+                <tr>
+                    <td>{.regdate}</td>
+                    <td class="contx">
+                        {.contents} <br />
+                        <!--{ ? .mileage > 0 }--><span class="expiration"><time>{=gd_date_format('Y-m-d H:i', .deleteScheduleDt)}<time> {=__('까지')}</span><!--{ / }-->
+                    </td>
+                    <td class="<!--{ ? .mileage < 0 }-->minus<!--{ / }-->">{=gd_mileage_display(.mileage, true, null, null, true)}</td>
+                </tr>
+            <!--{ / }-->
+            </tbody>
+        </table>
+    </div>
+    <button type="button" class="btn btn_tbl" data-page="2">{=__('내역 더보기')}</button>
+</div>
+<!--{ : }-->
+<div class="money_history no">
+    <p>
+        <!--{ ? !gGlobal.isFront }-->
+        {=__('%s 내역이 없습니다.', gd_display_mileage_name())}
+        <!--{ : }-->
+        {=__('조회내역이 없습니다.')}
+        <!--{ / }-->
+    </p>
+</div>
+<!--{ / }-->
+
+<script type="text/javascript">
+    <!--
+    $(document).ready(function(){
+        $('.btn.btn_tbl').on('click', function(){
+            get_list($(this).data('page'));
+        });
+
+        // 검색기간 선택
+        if ($('.check-option-inner').length) {
+            $('.check-option-inner').change(function (e) {
+                $('#frmDateSearch').submit();
+            });
+        }
+    });
+
+    function get_list(page) {
+        var searchPeriod = parseInt($('.check-option-inner').val());
+        $.get('./mileage.php', {'page' : page, 'searchPeriod' : searchPeriod}, function (data) {
+            var addMileageList = $(data).find('.tbl2 tbody tr');
+
+            if (addMileageList.length) {
+                $('.tbl2 tbody').append(addMileageList);
+
+                $('.btn.btn_tbl').data('page', page + 1);
+            } else {
+                alert("{=__('더이상 %s 내역이 없습니다.', gd_display_mileage_name())}");
+            }
+        });
+    }
+    //-->
+</script>
+{ # footer}

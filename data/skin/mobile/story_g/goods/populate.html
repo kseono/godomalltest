@@ -1,0 +1,26 @@
+{*** 인기상품 | goods/populate.php ***}
+{#header}
+
+<section id="goodslist" class="content">
+    <div class="goods-area">
+
+        <div class="goods-content">
+            { # goodsTemplate }
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    <!--
+    $(document).ready(function(){
+
+        $('.goods-view-type div').on('click', function(e){
+            $(".goods-view-type div").removeClass('view-on');
+            $('input[name="displayType"]').val($(this).data('key'));
+            $(this).addClass('view-on');
+        });
+    });
+    //-->
+</script>
+
+{#footer}

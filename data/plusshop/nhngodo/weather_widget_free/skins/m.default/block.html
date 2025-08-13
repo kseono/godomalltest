@@ -1,0 +1,75 @@
+<link rel="stylesheet" type="text/css" href="css/weather.css">
+<link rel="stylesheet" type="text/css" href="css/jquery.loadmask.css">
+<style>
+    .weather_widget_wrapper * { color: {widget_config.font_color}; }
+    .locate { color: {widget_config.font_color} !important; }
+    .locate > option{ color: {widget_config.font_color} !important; }
+    {? widget_config.widget_type == 0}
+    .weather { background-color: {widget_config.background_color}; }
+    {: widget_config.widget_type == 1}
+    .weather.list { background-color: {widget_config.background_color}; }
+    {: widget_config.widget_type == 2}
+    .weather.sim { background-color: {widget_config.background_color}; }
+    .wt_title  { border-bottom : 1px solid #e4e4e4 !important; }
+    {/}
+    {? widget_config.widget_border_usable_setting == 1}
+    .weather { border : 0 !important; }
+    .wt_top { border : 0 !important; }
+    {/}
+    .locate option { color: black !important; }
+</style>
+
+<script>
+    if(typeof(require) !== "undefined") {
+        var godo_require = require;
+    }
+    if(typeof(define) !== "undefined") {
+        var godo_define = define;
+    }
+    if(typeof(requirejs) !== "undefined") {
+        var godo_requirejs = requirejs;
+    }
+    if (typeof(require) === 'object' && $.isEmptyObject(require)) {
+        require = undefined;
+    }
+    if (typeof(define) === 'object' && $.isEmptyObject(define)) {
+        define = undefined;
+    }
+</script>
+<script src="js/require.js"></script>
+<script>
+    var _require = require;
+    var _define = define;
+    var _requirejs = requirejs;
+    require = godo_require || {};
+    define = godo_define || {} ;
+    requirejs = godo_requirejs || {};
+</script>
+<script src="js/moment.min.js"></script>
+<script src="js/jquery.loadmask.min.js"></script>
+<script src="js/block.js"></script>
+
+<div class="weather_widget_wrapper"></div>
+
+<script type="text/javascript">
+  _require([
+    'PSApps.NHNGodo.WeatherWidgetFree.MobileFrontBlock'
+  ], function (block) {
+    $(document).ready(function () {
+      var _refWeatherWidgetBlock_ = block.block;
+      _refWeatherWidgetBlock_.init({
+        process : "/plusshop/weather_widget.php",
+        refresh : "/",
+        widget_link_usable_setting : "{widget_config.widget_link_usable_setting}",
+        widget_background_color_usable_setting : "{widget_config.widget_background_color_usable_setting}",
+        widget_border_usable_setting : "{widget_config.widget_border_usable_setting}",
+        font_color : "{widget_config.font_color}",
+        background_color : "{widget_config.background_color}",
+        border_color : "{widget_config.border_color}",
+        widget_type : "{widget_config.widget_type}",
+        image_path : "{APP_SKIN_PATH}../img/"
+      });
+      _refWeatherWidgetBlock_.bind();
+    });
+  });
+</script>

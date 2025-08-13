@@ -1,0 +1,251 @@
+{*** 목록 | list.php ***}
+<!--{ ? bdList.cfg.bdHeader && !inList}-->
+<div class="admin-wrap">
+    <p>{=bdList.cfg.bdHeader}</p>
+</div>
+<!--{/}-->
+<div class="section">
+    <!--{?!inList}-->
+    <div class="section-header">
+        <h2 class="h2">{=__(bdList.cfg.bdNm)}</h2>
+
+        <div class="option type1">
+            <!--{? bdList.cfg.auth.write == 'y'}-->
+            <a class="skinbtn base2 boardlist-write" href="javascript:btnWrite('{req.bdId}')"><em>{=__('글쓰기')}</em></a>
+            <!--{/}-->
+        </div>
+    </div>
+    <!--{/}-->
+    <div class="section-body">
+        <div class="table1 type2" align="{bdList.cfg.bdAlign}">
+            <table {bdList.cfg.bdWidthStyle}>
+                <colgroup>
+                    <col style="width:72px"/>
+                    <!--{ ? bdList.cfg.bdListImageFl == 'y'}-->
+                    <col style="">
+                    <!--{/}-->
+                    <!--{ ? bdList.cfg.bdCategoryFl == 'y'}-->
+                    <col style="width:86px"/>
+                    <!--{/}-->
+                    <col>
+                    <col style="width:81px"/>
+                    <col style="width:86px"/>
+                    <!--{ ? bdList.cfg.bdRecommendFl == 'y'}-->
+                    <col style="width:41px"/>
+                    <!--{/}-->
+                    <!--{ ? bdList.cfg.bdPcHitFl == 'y'}-->
+                    <col style="width:61px"/>
+                    <!--{/}-->
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>{=__('번호')}</th>
+                    <!--{ ? bdList.cfg.bdListImageFl == 'y'}-->
+                    <th>{=__('이미지')}</th>
+                    <!--{/}-->
+                    <!--{ ? bdList.cfg.bdCategoryFl == 'y'}-->
+                    <th>{=__('말머리')}</th>
+                    <!--{/}-->
+                    <th>{=__('제목')}</th>
+                    <!--{ ? bdList.cfg.bdGoodsPtFl == 'y' }-->
+                    <th>{=__('별점')}</th>
+                    <!--{/}-->
+                    <th>{=__('날짜')}</th>
+                    <th>{=__('작성자')}</th>
+                    <!--{ ? bdList.cfg.bdRecommendFl == 'y'}-->
+                    <th>{=__('추천')}</th>
+                    <!--{/}-->
+                    <!--{ ? bdList.cfg.bdPcHitFl == 'y'}-->
+                    <th>{=__('조회')}</th>
+                    <!--{/}-->
+                </tr>
+                </thead>
+                <tbody>
+                <!--{ @ bdList.noticeList }-->
+                <tr class="notice-item" {bdList.cfg.bdHeightStyle}>
+                    <td class="ta-c"><img src="{bdList.cfg.iconImage.notice.url}" alt="{=__('공지')}"/></td>
+                    <!--{ ? bdList.cfg.bdListImageFl == 'y' }-->
+                    <td class="ta-c">
+                        <!--{ ? bdList.cfg.bdListNoticeImageDisplayPc == 'y'}-->
+                        <div class="thumbnail">
+                            <a href="javascript:btnView('{req.bdId}',{.sno} , '{.auth.view}')">
+                                <img src="{=gd_isset(.viewListImage, 'img/etc/noimg.png')}" width="{bdList.cfg.bdListImgWidth}" height="{bdList.cfg.bdListImgHeight}" class="js-image-load"/>
+                            </a>
+                        </div>
+                        <!--{/}-->
+                    </td>
+                    <!--{/}-->
+                    <!--{ ? bdList.cfg.bdCategoryFl == 'y'}-->
+                    <td class="c-gray ta-c">
+                        <!--{? .category }-->[{.category}]<!--{/}-->
+                    </td>
+                    <!--{/}-->
+                    <td class="tit">
+                        <a href="javascript:btnView('{req.bdId}',{.sno} ,'{.auth.view}')" class="c-red"><b>{.subject}</b></a>
+                            <!--{? bdList.cfg.bdMemoFl == 'y' && .memoCnt>0}-->
+                            <span class="c-red">({.memoCnt})</span>
+                            <!--{/}-->
+                    </td>
+                    <!--{ ? bdList.cfg.bdGoodsPtFl == 'y' }-->
+                    <td class="c-gray ta-c">
+                       <div class="div-star">
+                           <span class="rating-b"><span style="width:{.goodsPtPer}%;">{=__('별 다섯개중 다섯개')}</span></span>
+                       </div>
+                    </td>
+                    <!--{/}-->
+                    <td class="c-gray ta-c">
+                        {.regDate}
+                    </td>
+                    <td class="c-gray ta-c">
+                        {.writer}
+                    </td>
+                    <!--{ ? bdList.cfg.bdRecommendFl == 'y'}-->
+                    <td class="c-gray ta-c">
+                        {.recommend}
+                    </td>
+                    <!--{/}-->
+                    <!--{ ? bdList.cfg.bdPcHitFl == 'y'}-->
+                    <td class="c-gray ta-c">
+                        {.hit}
+                    </td>
+                    <!--{/}-->
+                </tr>
+                <!--{/}-->
+
+                <!--{? bdList.list}-->
+                <!--{ @ bdList.list }-->
+                <tr data-sno="{.sno}" data-auth="{.auth.view}" {bdList.cfg.bdHeightStyle}>
+                    <td class="ta-c">
+                        {=.articleListNo}
+                    </td>
+                    <!--{ ? bdList.cfg.bdListImageFl == 'y'}-->
+                    <td class="ta-c">
+                        <div class="thumbnail">
+                            <a href="javascript:btnView('{req.bdId}',{.sno} , '{.auth.view}')">
+                                <img src="{=gd_isset(.viewListImage, 'img/etc/noimg.png')}" width="{bdList.cfg.bdListImgWidth}" height="{bdList.cfg.bdListImgHeight}" class="js-image-load"/>
+                            </a>
+                        </div>
+                    </td>
+                    <!--{/}-->
+                    <!--{ ? bdList.cfg.bdCategoryFl == 'y'}-->
+                    <td class="c-gray ta-c">
+                        <!--{? .category }-->[{.category}]<!--{/}-->
+                    </td>
+                    <!--{/}-->
+                    <td class="tit">
+                        {.gapReply}
+                        <!--{ ? .groupThread }--><img src="{bdList.cfg.iconImage.re.url}" alt="{=__('답변')}" style="padding:0 5px"/><!--{/}-->
+                        <!--{ ? .isSecret == 'y' }-->
+                        <img src="{bdList.cfg.iconImage.secret.url}" align=absmiddle>
+                        <!--{ / }-->
+                        <a href="javascript:btnView('{req.bdId}',{.sno} ,'{.auth.view}')">{.subject}</a>
+                        <!--{? bdList.cfg.bdMemoFl == 'y' && .memoCnt>0}-->
+                        <span class="c-red">({.memoCnt})</span>
+                        <!--{/}-->
+                        <!--{ ? .isFile == 'y' }-->
+                        <img src="{bdList.cfg.iconImage.attach_file.url}" alt="{=__('파일첨부 있음')}"/>
+                        <!--{/}-->
+                        <!--{ ? .isImage == 'y' }-->
+                        <img src="{bdList.cfg.iconImage.attach_img.url}" alt="{=__('이미지첨부 있음')}"/>
+                        <!--{/}-->
+                        <!--{ ? .isNew == 'y' }-->
+                        <img src="{bdList.cfg.iconImage.new.url}" alt="{=__('신규 등록글')}"/>
+                        <!--{/}-->
+                        <!--{ ? .isHot == 'y' }-->
+                        <img src="{bdList.cfg.iconImage.hot.url}" alt="{=__('인기글')}"/>
+                        <!--{/}-->
+                    </td>
+                    <!--{ ? bdList.cfg.bdGoodsPtFl == 'y' }-->
+                    <td class="ta-c">
+                        <div class="div-star">
+                            <span class="rating-b"><span style="width:{.goodsPtPer}%;">{=__('별 다섯개중 다섯개')}</span></span>
+                        </div>
+                    </td>
+                    <!--{/}-->
+                    <td class="c-gray ta-c">
+                        {.regDate}
+                    </td>
+                    <td class="c-gray ta-c">
+                        {.writer}
+                    </td>
+                    <!--{ ? bdList.cfg.bdRecommendFl == 'y'}-->
+                    <td class="c-gray ta-c">
+                        {.recommend}
+                    </td>
+                    <!--{/}-->
+                    <!--{ ? bdList.cfg.bdPcHitFl == 'y'}-->
+                    <td class="c-gray ta-c">
+                        {.hit}
+                    </td>
+                    <!--{/}-->
+                </tr>
+                <!--{/}-->
+                <!--{:}-->
+                <tr>
+                    <td colspan="7" align="center">
+                        {=__('게시글이 존재하지 않습니다.')}
+                    </td>
+                </tr>
+                <!--{/}-->
+                </tbody>
+            </table>
+        </div>
+        {bdList.pagination}
+        <form name="frmList" id="frmList" action="list.php" method="get">
+            <input type="hidden" name="bdId" value="{bdList.cfg.bdId}">
+            <input type="hidden" name="memNo" value="{req.memNo}"/>
+            <input type="hidden" name="noheader" value="{req.noheader}"/>
+            <input type="hidden" name="mypageFl" value="{mypageFl}"/>
+
+            <div class="search-box m3 ta-c">
+                <div class="item">
+                    <div class="st-hs">
+                        <!--{ ? bdList.cfg.bdCategoryFl == 'y'}-->
+                        {=gd_select_box('category', 'category', bdList.cfg.arrCategory, null, gd_isset(req.category), __('=선택='), 'style="width: 80px;"','tune')}
+                        <!--{/}-->
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="st-hs">
+                        <select name="searchField" class="tune" style="width:80px;">
+                            <option value="subject"
+                            <!--{ ? req.searchField == 'subject'}-->selected<!--{/}--> >{=__('제목')}</option>
+                            <option value="contents"
+                            <!--{ ? req.searchField == 'contents'}-->selected<!--{/}--> >{=__('내용')}</option>
+                            <option value="writerNm"
+                            <!--{ ? req.searchField == 'writerNm'}-->selected<!--{/}--> >{=__('작성자')}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="txt-field hs" style="width:210px;">
+                        <input type="text" class="text" name="searchWord" value="{=req.searchWord}">
+                    </div>
+                </div>
+                <div class="item">
+                    <button class="skinbtn base2 boardlist-search" tyle="submit"><em>{=__('검색')}</em></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--{?bdList.cfg.bdFooter && !inList}-->
+    <div class="admin-wrap">
+        <p>{=bdList.cfg.bdFooter}</p>
+    </div>
+    <!--{/}-->
+</div>
+<form id="frmWritePassword">
+    <div class="cite-layer dn js-list-password-layer">
+        <div class="wrap">
+            <h4>{=__('비밀번호 인증')}</h4>
+            <div>
+                <p>{=__('비밀번호를 입력해 주세요.')}</p>
+                <input type="password" name="writerPw" class="text"/>
+                <a href="javascript:void(0)" class="skinbtn base2 boardlist-submit js-submit"><em>{=__('확인')}</em></a>
+            </div>
+            <button type="button" class="close" title="{=__('닫기')}">{=__('닫기')}</button>
+        </div>
+    </div>
+</form>
+<div id="layerDim" class="dn">&nbsp;</div>
+<script type="text/javascript" src="\{=c.PATH_SKIN}js/gd_board_list.js" charset="utf-8"></script>

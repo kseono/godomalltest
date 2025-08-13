@@ -1,0 +1,75 @@
+{*** 고객센터 | service/faq_list.php ***}
+{ # header }
+
+<div class="contents-inner cs-page">
+    <iframe src="faq.php?noheader=y&isBest=y" width='100%' height='100%' marginwidth='0' marginheight='0' frameborder='no' scrolling='no' id="faqIframe"
+            onload='resize_frame(this)'></iframe>
+
+    <div class="col2 m8 colspace2">
+        <!--{ ? canNoticeList == 'y' && notice.list.data}-->
+        <div class="col">
+            <div class="section col-inner">
+                <div class="section-header bd non-border">
+                    <h2 class="h2">{=__(notice.cfg.bdNm)}</h2>
+                    <div class="option">
+                        <a href="../service/notice.php"> {=__('더보기')} <img src="../img/etc/icon-arr2-r.png" alt="" class="va-m"></a>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <div class="table1 type2 dot-list">
+                        <table>
+                            <colgroup>
+                                <col>
+                                <col style="width:70px">
+                            </colgroup>
+                            <tbody>
+                            <!--{ @notice.list.data}-->
+                            <tr>
+                                <td><a href="../board/view.php?bdId={notice.cfg.bdId}&sno={.sno}">{.subject}</a></td>
+                                <td class="c-gray">{.regDate}</td>
+                            </tr>
+                            <!--{/}-->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--{/}-->
+        <!--{ ? canEventList == 'y' && event.list.data}-->
+        <div class="col">
+            <div class="section col-inner">
+                <div class="section-header bd non-border">
+                    <h2 class="h2">{=__(event.cfg.bdNm)}</h2>
+                    <div class="option">
+                       <a href="../service/event.php"> {=__('더보기')} <img src="../img/etc/icon-arr2-r.png" alt="" class="va-m"></a>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <div class="section-body">
+                        <div class="table1 type2 dot-list">
+                            <table>
+                                <colgroup>
+                                    <col>
+                                    <col style="width:80px">
+                                </colgroup>
+                                <tbody>
+                                <!--{@event.list.data}-->
+                                <tr>
+                                    <td><a href="../board/view.php?bdId={event.cfg.bdId}&sno={.sno}">{.subject}</a></td>
+                                    <td class="c-gray">{.regDate}</td>
+                                </tr>
+                                <!--{/}-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--{/}-->
+    </div>
+</div>
+
+
+{ # footer }

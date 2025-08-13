@@ -1,0 +1,68 @@
+<!-- footer -->
+<div id="footer">
+	<a href="#" class="bn_top"><span class="sp">TOP</span></a>
+	<ul class="ft_menu">
+        <!--{ ? gd_is_login() === false }-->
+		<li><a href="../member/login.php">{=__('로그인')}</a></li>
+		<!--{ : }-->
+		<li><a href="../member/logout.php">{=__('로그아웃')}</a></li>
+		<!--{ / }-->
+		<li><a href="{=c.URI_OVERSEAS_HOME}main/index.php?pcView=y">{=__('PC화면')}</a></li>
+		<li><a href="tel:{=gMall.centerPhone}">{=__('고객센터')}</a></li>
+	</ul>
+
+	<div class="ft_info_area">
+		<dl class="ft_info">
+			<dt>{=__('상호')}</dt>
+			<dd>{=gMall.companyNm}</dd>
+		</dl>
+		<dl class="ft_info">
+			<dt>{=__('대표')}</dt>
+			<dd>{=gMall.ceoNm}</dd>
+		</dl>
+		<dl class="ft_info">
+			<dt>{=__('주소')}</dt>
+			<dd>{=gMall.address} {=gMall.addressSub}</dd>
+		</dl>
+		<dl class="ft_info">
+			<dt>{=__('사업자번호')}</dt>
+			<dd>{=gMall.businessNo}</dd>
+		</dl>
+		<dl class="ft_info">
+			<dt>{=__('통신판매업신고')}</dt>
+			<dd>{=gMall.onlineOrderSerial}</dd>
+		</dl>
+		<dl class="ft_info">
+			<dt>{=__('대표번호')}</dt>
+			<dd>{=gMall.phone}</dd>
+		</dl>
+		<dl class="ft_info">
+			<dt>{=__('이메일')}</dt>
+			<dd>{=gMall.email}</dd>
+		</dl>
+	</div>
+	<ul class="ft_menu2">
+		<li><a href="../service/faq_list.php">FAQ</a></li>
+		<li><a href="../service/agreement.php">{=__('이용약관')}</a></li>
+		<li><a href="../service/private.php" class="privacy">{=__('개인정보처리방침')}</a></li>
+	</ul>
+	<address class="ft_copy">copyright. {=gMall.startYear}. <strong>{=gMall.mallDomain}</strong>. All rights reserved.<br/>{=__('호스팅제공 : 엔에이치엔커머스(주)')}</address>
+	<a href="#footer" class="ft_baro js-add-favorite" data-title="{=gMall.mallNm}" style="display:none;">
+        <span class="txt" style="background-image:url({gMobile.mobileShopIcon});"><em>{gMall.mallNm}</em> {=__('바로가기 아이콘 추가하기')}</span>
+        <iframe id="ifrmAddFavoriteLauncher" src="/blank.php" style="display:none" width="0" height="0"></iframe>
+	</a>
+
+	<!-- //ft_info2_box -->
+	<div class="foot_certify">
+		<!--{? gFairTrade['logoFl'] == 'default'}-->
+		<span><a href="https://www.ftc.go.kr/www/cop/bbs/selectBoardList.do?key=201&bbsId=BBSMSTR_000000002320&bbsTyCode=BBST01" target="_blank"><img alt="{=__('공정거래위원회')}" src="../../img/certify/logo_kftc.png"></a></span>
+		<!--{: gFairTrade['logoFl'] == 'upload'}-->
+		<span><img alt="{=__('공정거래위원회')}" src="{=gFairTrade['uploadLogoPath']}"></span>
+		<!--{/}-->
+		<span>{=displaySSLSeal}</span>
+		<span>{=dataEggBanner()}</span>
+		<span>{=dataReceiptBanner}</span>
+	</div>
+	<!-- //foot_certify -->
+</div>
+<!-- //footer -->

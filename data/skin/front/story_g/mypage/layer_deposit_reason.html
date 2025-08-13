@@ -1,0 +1,27 @@
+{*** 예치금 사유 레이어 | mypage/layer_deposit_reason.php ***}
+<style>
+    .reason-layer{height:auto;}
+</style>
+<div class="box reason-layer">
+    <div class="view">
+        <h2>
+            {=__('환불 상세 정보')}
+        </h2>
+        <div class="claim-reason refund_cause_type">
+            <div class="refund_cause_infor">
+                <ul>
+                    <li>{=__('주문일')} : {=data['regDt']}</li>
+                    <li>{=__('환불사유')} : {=data['handleReason']}</li>
+                    <li>{=__('환불상품')} : {=data['goodsNm']}</li>
+                </ul>
+            </div>
+            <div class="scroll_box refund_cause_txt">
+                {=nl2br(data['handleDetailReason'])}
+            </div>
+        </div>
+        <div class="btn">
+            <a href="#" class="skinbtn point2 layerboard-save btn-close"><em>{=__('확인')}</em></a>
+        </div>
+        <button title="{=__('닫기')}" class="close" type="button">{=__('닫기')}</button>
+    </div>
+</div>

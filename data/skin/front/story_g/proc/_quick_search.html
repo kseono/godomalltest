@@ -1,0 +1,110 @@
+{*** [위젯] 퀵 검색 | proc/_quick_search.php ***}
+<!--{ ? is_array(gd_isset(headerScript)) }-->
+<!-- Add script : start -->
+<!--{ @ headerScript }-->
+<script type="text/javascript" src="{=.value_}"></script>
+<!--{ / }-->
+<!-- Add script : end -->
+<!--{ / }-->
+
+<form name="frmQuickSearch" id="frmQuickSearch" action="../goods/goods_search.php" method="get">
+    <input type="hidden" name="mode" value="quick">
+<div class="quick-search <!--{ ?  quickConfig.area =='top' }-->location-top <!--{ : }--> location-side {quickConfig.area}<!--{ / }-->">
+    <div class="box">
+        <h2>{=__('퀵검색')}</h2>
+        <!--{ ?  in_array('brand',quickConfig.searchType) && paycosearchUse == false }-->
+        <div class="<!--{ ?  quickConfig.area =='top' }-->list<!--{ / }--> ctgr">
+            <h3>{=__('브랜드')}</h3>
+            <div>
+                {=brandDisplay}
+            </div>
+
+        </div>
+        <!--{ / }-->
+        <!--{ ?  in_array('category',quickConfig.searchType) }-->
+        <div class="<!--{ ?  quickConfig.area =='top' }-->list<!--{ / }--> ctgr">
+            <h3>{=__('카테고리')}</h3>
+            <div>
+            {=cateDisplay}
+            </div>
+
+        </div>
+        <!--{ / }-->
+        <!--{ ?  in_array('price',quickConfig.searchType) }-->
+        <div class="list price">
+            <h3>{=__('가격')}</h3>
+            <div>
+                {=gd_global_currency_symbol()}<input type="text"  name="goodsPrice[]" value="{=search.goodsPrice[0]}" class="text field-s" />
+                <span>{=gd_global_currency_string()}</span>
+                ~
+                {=gd_global_currency_symbol()}<input type="text" name="goodsPrice[]" class="text field-s" value="{=search.goodsPrice[1]}" />
+                <span>{=gd_global_currency_string()}</span>
+            </div>
+        </div>
+        <!--{ / }-->
+        <!--{ ?  in_array('color',quickConfig.searchType) && paycosearchUse == false }-->
+        <div class="list color">
+            <h3>{=__('색상')}</h3>
+            <div>
+            <!--{ @ goodsColorList}-->
+
+						<span class="form-element">
+							<input type="checkbox" id="quickSearchColor{.value_}" name="goodsColor[]" class="checkbox" value="{.value_}" >
+							<label for="quickSearchColor{.value_}" class="check-s <!--{ ?  .value_ == 'FFFFFF' }--> color-white  <!--{ / }-->"  <!--{ ?  .value_ != 'FFFFFF' }-->style="background:#{.value_};border:1px solid #{.value_}"<!--{ / }--> title="{.value_}">{.value_}</label>
+						</span>
+            <!--{ / }-->
+            </div>
+        </div>
+        <!--{ / }-->
+
+        <!--{ ?  in_array('keyword',quickConfig.searchType) }-->
+        <div class="list search-word">
+            <h3>{=__('검색어')}</h3>
+            <div>
+                <input type="text" name="keyword" class="text field-s" />
+            </div>
+        </div>
+        <!--{ / }-->
+        <!--{ ?  (in_array('delivery',quickConfig.searchType)  || in_array('regdt',quickConfig.searchType)) && paycosearchUse == false  }-->
+        <div class="list benefit">
+            <h3>{=__('혜택')}/{=__('조건')}</h3>
+            <div>
+
+
+                <!--{ ?  in_array('delivery',quickConfig.searchType)   }-->
+                <span class="form-element">
+                    <input type="checkbox" id="quickFreeDelivery"  name="freeDelivery" value="y" class="checkbox">
+                    <label for="quickFreeDelivery" class="check-s">{=__('무료배송')}</label>
+                </span>
+                <!--{ / }-->
+                <!--{ ?  in_array('regdt',quickConfig.searchType)  }-->
+                <span class="form-element">
+                    <input type="checkbox" id="quickNewGoods"  name="newGoods" value="y" class="checkbox" >
+                    <label for="quickNewGoods" class="check-s">{=__('최근등록상품')}</label>
+                </span>
+                <!--{ / }-->
+
+            </div>
+        </div>
+        <!--{ / }-->
+        <!--{ ?  in_array('icon', quickConfig.searchType) && paycosearchUse == false }-->
+        <div class="list icons">
+            <h3>{=__('아이콘')}</h3>
+            <div>
+                <!--{ @ goodsIconList }-->
+                <!--{ ? .iconImage }-->
+                <span class="form-element icon-check<!--{ ? quickConfig.area != 'top' && .key_ % 3 == 0 }--> clear-both<!--{ / }-->">
+                    <input type="checkbox" id="quickSearchIcon{.sno}"  class="checkbox"  name="goodsIcon[{.iconPeriodFl}][]"  value="{.iconCd}" <!--{ ?  is_array(search.goodsIcon) && is_array(search.goodsIcon[.iconPeriodFl]) && in_array(.iconCd, search.goodsIcon[.iconPeriodFl]) }--> checked='checked'   <!--{ / }--> >
+                    <label for="quickSearchIcon{.sno}" class="check-s <!--{ ? is_array(search.goodsIcon) && is_array(search.goodsIcon[.iconPeriodFl]) && in_array(.iconCd,search.goodsIcon[.iconPeriodFl]) }--> on <!--{ / }-->" title="{.iconNm}">{=.iconImage}</label>
+                </span>
+                <!--{ / }-->
+                <!--{ / }-->
+            </div>
+        </div>
+        <!--{ / }-->
+        <button type="submit" class="skinbtn base3 btn-search"><em>{=__('검색')}</em></button>
+        <button type="button" class="btn-close" title="{=__('퀵검색레이어 닫기')}">{=__('닫기')}</button>
+    </div>
+    <button type="button" class="btn-layer"><strong>{=__('퀵검색')}</strong><em><!--화살표--></em></button>
+</div>
+</form>
